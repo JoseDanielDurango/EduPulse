@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function for user auth
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Users collection (Google Sign-In profiles)
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Sessions collection
+    match /sessions/{sessionId} {
+      allow read, write: if true; // Public access allows participant taking the interview and researcher observing real-time
+    }
+
+    // Guides collection
+    match /guides/{guideId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

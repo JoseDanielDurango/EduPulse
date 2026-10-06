@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profiles",
+      "description": "Authenticated users and researchers via Google Sign-In with Firebase Auth",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "lastLoginAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "sessions": {
+      "title": "Interview Sessions",
+      "description": "Live and completed semi-structured AI research interview sessions",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "guideId": { "type": "string" },
+        "guideTitle": { "type": "string" },
+        "researcherId": { "type": "string" },
+        "participantName": { "type": "string" },
+        "participantRole": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed", "paused"] },
+        "currentQuestionIndex": { "type": "number" },
+        "totalQuestions": { "type": "number" },
+        "currentClarificationCount": { "type": "number" },
+        "messages": { "type": "array" },
+        "structuredResponses": { "type": "array" },
+        "summary": { "type": "object" },
+        "exportedSheetUrl": { "type": "string" },
+        "exportedSheetId": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "status", "participantName", "messages"]
+    },
+    "guides": {
+      "title": "Interview Guides",
+      "description": "Structured interview guides and protocols for research sessions",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "targetPersona": { "type": "string" },
+        "researchGoals": { "type": "array" },
+        "questions": { "type": "array" },
+        "createdBy": { "type": "string" },
+        "isTemplate": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "questions"]
+    }
+  }
+}

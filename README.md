@@ -1,10 +1,10 @@
-# EduPulse 🎓🤖
+# EduPulse
 ### Plataforma Inteligente para la Recolección y Análisis de Datos Cualitativos
 **Instrumento de Investigación para la Formación Docente en la Era de la Inteligencia Artificial**
 
 ---
 
-## 📌 Contexto de la Investigación
+## Contexto de la Investigación
 
 **EduPulse** es una plataforma y agente conversacional inteligente diseñado como instrumento principal de recolección de datos cualitativos para el proyecto de trabajo de grado:
 
@@ -19,13 +19,13 @@
 
 ---
 
-## 🎯 Propósito del Instrumento
+## Propósito del Instrumento
 
 Bajo el **paradigma hermenéutico–interpretativo** y un **enfoque cualitativo**, EduPulse reemplaza el formulario rígido tradicional por una experiencia de **entrevista semiestructurada asistida por IA**. 
 
 El agente conversacional (denominado **Maya**) interactúa con una muestra intencional de 8 a 12 estudiantes en formación docente del programa, adaptando su lenguaje pedagógico, garantizando el rigor ético, y profundizando mediante repreguntas reflexivas (*probing*) neutrales.
 
-### 📐 Matriz de Categorías Cualitativas (Tabla 1 de la Investigación)
+### Matriz de Categorías Cualitativas (Tabla 1 de la Investigación)
 
 | Categoría de análisis | Subcategorías | Foco y Unidades de Análisis |
 | :--- | :--- | :--- |
@@ -35,7 +35,7 @@ El agente conversacional (denominado **Maya**) interactúa con una muestra inten
 
 ---
 
-## 🧠 Características del Agente Conversacional ("Maya")
+## Características del Agente Conversacional ("Maya")
 
 1. **Adaptabilidad Formativa según Semestre:**
    * **Semestres Iniciales (1° a 3°):** Aborda la experiencia como aprendiz de tecnologías y medios, evitando tecnicismos curriculares o suponer prácticas de aula aún no realizadas.
@@ -55,7 +55,7 @@ El agente conversacional (denominado **Maya**) interactúa con una muestra inten
 
 ---
 
-## 🛠️ Arquitectura Técnica y Stack
+## Arquitectura Técnica y Stack
 
 * **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, Lucide Icons, Framer Motion.
 * **Backend:** Node.js, Express, TypeScript (`tsx`).
@@ -65,7 +65,7 @@ El agente conversacional (denominado **Maya**) interactúa con una muestra inten
 
 ---
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```text
 EduPulse/
@@ -100,7 +100,7 @@ EduPulse/
 
 ---
 
-## 🚀 Instalación y Puesta en Marcha
+## Instalación y Puesta en Marcha
 
 ### Prerrequisitos
 * [Node.js](https://nodejs.org/) (versión 18 o superior recomendada).
@@ -134,7 +134,7 @@ EduPulse/
 
 ---
 
-## 📄 Licencia y Reconocimientos
+## Licencia y Reconocimientos
 
 Desarrollado para la investigación de pregrado en la **Universidad de Córdoba (Montería, Colombia)**. 
 Bajo licencia Apache 2.0.

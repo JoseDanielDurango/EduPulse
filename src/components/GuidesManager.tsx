@@ -98,68 +98,70 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
     const newGuide: InterviewGuide = {
       id: `guide-custom-${Date.now()}`,
       title: title.trim(),
-      description: description.trim() || 'Guion de entrevista semiestructurada para el estudio de IA en formación docente.',
-      targetPersona: targetPersona.trim() || 'Docentes en formación del programa',
-      institutionalContext: 'Universidad de Córdoba - Licenciatura en Informática con Énfasis en Medios Audiovisuales',
-      researchGoals: goalsInput
-        .split('\n')
-        .map((g) => g.trim())
-        .filter(Boolean),
-      questions: questions,
+      description: description.trim() || 'Guion personalizado de entrevista cualitativa.',
+      targetPersona: targetPersona.trim() || 'Estudiantes y Docentes en formación',
+      researchGoals: goalsInput.split('\n').map((g) => g.trim()).filter(Boolean),
+      institutionalContext: 'Universidad de Córdoba - Montería, Colombia',
+      questions,
       isTemplate: false,
       createdAt: new Date().toISOString(),
     };
 
-    await saveGuide(newGuide);
-    setIsCreating(false);
-    setTitle('');
-    setDescription('');
-    setTargetPersona('Docentes en formación (Licenciatura en Informática)');
-    setGoalsInput('');
+    try {
+      await saveGuide(newGuide);
+      setIsCreating(false);
+      setTitle('');
+      setDescription('');
+      setGoalsInput('');
+    } catch (err) {
+      console.error('Error saving guide:', err);
+      alert('No se pudo guardar la guía.');
+    }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 font-body">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
-              {language === 'en' ? 'Discussion Guides' : 'Temas y Ejes de Diálogo'}
+            <h1 className="font-display text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Guiones e Instrumentos Cualitativos
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+              Metodología de Grado
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {t.topicsTitle}
-          </h1>
-          <p className="text-sm text-slate-500">
-            {t.topicsSubtitle}
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Guiones semiestructurados para recolección hermenéutica en la Universidad de Córdoba.
           </p>
         </div>
 
         <button
           onClick={() => setIsCreating(!isCreating)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition active:scale-95 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition active:scale-95 self-start sm:self-auto cursor-pointer"
         >
           <Plus className="h-4 w-4" />
-          <span>{isCreating ? (language === 'en' ? 'Cancel' : 'Cancelar') : t.topicsCreateBtn}</span>
+          <span>{isCreating ? 'Cerrar Creador' : 'Crear Guion'}</span>
         </button>
       </div>
 
-      {/* Guide Creation Modal/Drawer */}
+      {/* Form to Create Custom Guide */}
       {isCreating && (
         <form
           onSubmit={handleSaveCustomGuide}
-          className="bg-white border-2 border-emerald-300 rounded-3xl p-6 shadow-xl space-y-5 animate-fade-in"
+          className="bg-white dark:bg-slate-900 border-2 border-emerald-300 dark:border-emerald-700 rounded-3xl p-6 shadow-xl space-y-5 animate-fade-in"
         >
-          <div className="border-b border-slate-100 pb-3">
-            <h2 className="text-lg font-bold text-slate-900">Diseñar Guion de Entrevista Semiestructurada</h2>
-            <p className="text-xs text-slate-500">
+          <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 className="font-display text-lg font-bold text-slate-900 dark:text-white">Diseñar Guion de Entrevista Semiestructurada</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Las preguntas deben alinearse con las categorías institucionales: Inteligencia Artificial, Formación Docente y Efectos de la IA.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
                 Título del Guion *
               </label>
               <input
@@ -168,24 +170,24 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                 placeholder="ej. Guion para Egresados de la Licenciatura"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
                 Población / Informantes
               </label>
               <input
                 type="text"
                 value={targetPersona}
                 onChange={(e) => setTargetPersona(e.target.value)}
-                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
                 Objetivos Específicos que Responde (Uno por línea)
               </label>
               <textarea
@@ -193,7 +195,7 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                 placeholder="Identificar prácticas actuales con IA&#10;Evaluar beneficios en el desarrollo de competencias pedagógicas"
                 value={goalsInput}
                 onChange={(e) => setGoalsInput(e.target.value)}
-                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
               />
             </div>
           </div>
@@ -201,13 +203,13 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
           {/* Dynamic Questions Builder with Thesis Categories */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 Preguntas de la Entrevista ({questions.length})
               </label>
               <button
                 type="button"
                 onClick={handleAddQuestion}
-                className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800"
+                className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800"
               >
                 <Plus className="h-3.5 w-3.5" />
                 <span>Agregar Pregunta</span>
@@ -218,15 +220,15 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
               {questions.map((q, idx) => (
                 <div
                   key={q.id}
-                  className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 relative"
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3 relative"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs text-emerald-800">Pregunta {idx + 1}</span>
+                    <span className="font-bold text-xs text-emerald-800 dark:text-emerald-300">Pregunta {idx + 1}</span>
                     {questions.length > 1 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveQuestion(idx)}
-                        className="text-slate-400 hover:text-rose-600 p-1"
+                        className="text-slate-400 hover:text-rose-600 p-1 cursor-pointer"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -235,13 +237,13 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">
+                      <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-0.5">
                         Categoría de Análisis
                       </label>
                       <select
                         value={q.category}
                         onChange={(e) => handleUpdateQuestion(idx, 'category', e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 bg-white"
+                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
                       >
                         <option value="Inteligencia Artificial (IA)">Inteligencia Artificial (IA)</option>
                         <option value="Formación Docente">Formación Docente</option>
@@ -250,7 +252,7 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">
+                      <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-0.5">
                         Subcategoría
                       </label>
                       <input
@@ -258,12 +260,12 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                         placeholder="ej. Dimensión ética y crítica"
                         value={q.subCategory}
                         onChange={(e) => handleUpdateQuestion(idx, 'subCategory', e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 bg-white"
+                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">
+                      <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-0.5">
                         Tema Específico
                       </label>
                       <input
@@ -271,13 +273,13 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                         placeholder="ej. Privacidad y Sesgos"
                         value={q.topic}
                         onChange={(e) => handleUpdateQuestion(idx, 'topic', e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 bg-white"
+                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">
+                    <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-0.5">
                       Pregunta Abierta para el Informante *
                     </label>
                     <input
@@ -286,12 +288,12 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                       placeholder="Pregunta abierta y dialógica que formulará la entrevistadora..."
                       value={q.question}
                       onChange={(e) => handleUpdateQuestion(idx, 'question', e.target.value)}
-                      className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 bg-white font-medium"
+                      className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">
+                    <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-0.5">
                       Orientaciones para Repreguntar (Probing)
                     </label>
                     <input
@@ -299,7 +301,7 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                       placeholder="Pautas para que la IA repregunte si la respuesta es breve (ej. pedir ejemplos en clases de la Licenciatura)."
                       value={q.probingTips}
                       onChange={(e) => handleUpdateQuestion(idx, 'probingTips', e.target.value)}
-                      className="w-full px-3 py-1.5 text-xs rounded-lg border border-dashed border-amber-300 bg-amber-50/50 text-amber-900"
+                      className="w-full px-3 py-1.5 text-xs rounded-lg border border-dashed border-amber-300 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200"
                     />
                   </div>
                 </div>
@@ -307,17 +309,17 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 border-t border-slate-200">
+          <div className="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
             <button
               type="button"
               onClick={() => setIsCreating(false)}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm"
+              className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm cursor-pointer"
             >
               Guardar Guion
             </button>
@@ -330,11 +332,11 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
         {guides.map((g) => (
           <div
             key={g.id}
-            className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs hover:shadow-md transition flex flex-col justify-between"
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xs hover:shadow-md transition flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                   {g.isTemplate ? 'Instrumento Oficial de Tesis' : 'Guion Complementario'}
                 </span>
                 <span className="text-[11px] text-slate-400 font-bold">
@@ -342,52 +344,48 @@ export const GuidesManager: React.FC<GuidesManagerProps> = ({
                 </span>
               </div>
 
-              <h3 className="font-extrabold text-slate-900 text-base mb-1">{g.title}</h3>
-              <p className="text-xs text-slate-500 leading-relaxed mb-3">
+              <h3 className="font-display font-extrabold text-slate-900 dark:text-white text-base mb-1">{g.title}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
                 {g.description}
               </p>
 
-              <div className="p-3 rounded-2xl bg-emerald-50/60 border border-emerald-100 text-xs mb-3 space-y-1">
-                <div className="font-semibold text-emerald-900">
+              <div className="p-3 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900 text-xs mb-3 space-y-1">
+                <div className="font-semibold text-emerald-900 dark:text-emerald-300">
                   Población: {g.targetPersona}
                 </div>
                 {g.institutionalContext && (
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400">
                     {g.institutionalContext}
                   </div>
                 )}
               </div>
 
-              {/* Questions preview */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                  Matriz de Preguntas:
-                </span>
-                <div className="space-y-1.5">
-                  {g.questions.slice(0, 4).map((q, qIdx) => (
-                    <div key={q.id || qIdx} className="text-xs text-slate-700 flex items-start gap-2">
-                      <span className="font-bold text-emerald-700 text-[11px] shrink-0">P{qIdx + 1}.</span>
-                      <div>
-                        <span className="font-bold text-slate-800 mr-1">[{q.category || 'Categoría'}]:</span>
-                        <span className="line-clamp-1 text-slate-600">{q.question}</span>
-                      </div>
-                    </div>
+              <div className="space-y-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Categorías Abordadas:
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {Array.from(new Set(g.questions.map((q) => q.category))).map((cat, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                    >
+                      {cat}
+                    </span>
                   ))}
-                  {g.questions.length > 4 && (
-                    <div className="text-[11px] text-emerald-700 font-bold">
-                      +{g.questions.length - 4} preguntas más en la matriz...
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-100">
+            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-[11px] text-slate-400">
+                Creado: {new Date(g.createdAt).toLocaleDateString()}
+              </span>
               <button
                 onClick={() => onSelectGuideForSession(g)}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition active:scale-95"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition active:scale-95 shadow-xs cursor-pointer"
               >
-                <span>{t.topicsApplyBtn}</span>
+                <span>Usar este Guion</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </div>

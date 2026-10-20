@@ -105,6 +105,10 @@ export const translations = {
     dashNewBtn: 'Nueva Charla',
     statusActive: 'En curso',
     statusCompleted: 'Completada',
+    statusNotExported: 'Sin exportar',
+    dashDelete: 'Eliminar conversación',
+    dashBtnView: 'Ver resultados',
+    dashBtnContinue: 'Continuar diálogo',
 
     // Guides / Topics
     topicsTitle: 'Guías y Temas de Charla',
@@ -224,6 +228,10 @@ export const translations = {
     dashNewBtn: 'New Chat',
     statusActive: 'In progress',
     statusCompleted: 'Completed',
+    statusNotExported: 'Not exported',
+    dashDelete: 'Delete conversation',
+    dashBtnView: 'View results',
+    dashBtnContinue: 'Continue chat',
 
     // Guides / Topics
     topicsTitle: 'Discussion Topics & Guides',

@@ -228,14 +228,14 @@ export default function App() {
 
                 {/* Hero Title & Subtitle */}
                 <div className="space-y-4 max-w-3xl mx-auto">
-                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
                     {t.heroTitlePrefix}{' '}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 dark:from-emerald-400 dark:via-teal-400 dark:to-indigo-400">
                       {t.heroTitleGradient}
                     </span>
                   </h1>
 
-                  <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                  <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
                     {t.heroSubtitle}
                   </p>
                 </div>
@@ -255,56 +255,56 @@ export default function App() {
 
                   <button
                     onClick={() => setCurrentTab('guides')}
-                    className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-semibold text-sm bg-white hover:bg-slate-50 text-slate-700 border border-slate-300/80 shadow-2xs transition cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs transition cursor-pointer"
                   >
-                    <BookOpen className="h-4 w-4 text-emerald-600" />
+                    <BookOpen className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     <span>{t.heroTopicsBtn}</span>
                   </button>
 
                   <button
                     onClick={() => setIsThesisModalOpen(true)}
-                    className="inline-flex items-center gap-2 px-4 py-3.5 rounded-2xl font-semibold text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer"
+                    className="inline-flex items-center gap-2 px-4 py-3.5 rounded-2xl font-semibold text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                     title={t.navInfo}
                   >
-                    <Info className="h-4 w-4 text-slate-400" />
+                    <Info className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                     <span>{t.navInfo}</span>
                   </button>
                 </div>
 
                 {/* 3 Friendly Value Pillars */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left pt-6">
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-2xs space-y-3 hover:border-emerald-200 transition">
-                    <div className="h-10 w-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-2xs space-y-3 hover:border-emerald-200 dark:hover:border-emerald-800 transition">
+                    <div className="h-10 w-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold">
                       <MessageCircle className="h-5 w-5" />
                     </div>
-                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+                    <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop1Title}
                     </h3>
-                    <p className="text-xs text-slate-500 leading-relaxed">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                       {t.prop1Desc}
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-2xs space-y-3 hover:border-emerald-200 transition">
-                    <div className="h-10 w-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
+                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-2xs space-y-3 hover:border-emerald-200 dark:hover:border-emerald-800 transition">
+                    <div className="h-10 w-10 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-400 flex items-center justify-center font-bold">
                       <FileSpreadsheet className="h-5 w-5" />
                     </div>
-                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+                    <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop2Title}
                     </h3>
-                    <p className="text-xs text-slate-500 leading-relaxed">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                       {t.prop2Desc}
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-2xs space-y-3 hover:border-emerald-200 transition">
-                    <div className="h-10 w-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
+                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-2xs space-y-3 hover:border-emerald-200 dark:hover:border-emerald-800 transition">
+                    <div className="h-10 w-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold">
                       <ShieldCheck className="h-5 w-5" />
                     </div>
-                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+                    <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop3Title}
                     </h3>
-                    <p className="text-xs text-slate-500 leading-relaxed">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                       {t.prop3Desc}
                     </p>
                   </div>
@@ -312,24 +312,24 @@ export default function App() {
 
                 {/* Recent Dialogues (if any exist) */}
                 {sessions.length > 0 && (
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200 text-left shadow-2xs">
+                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-2xs">
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500">
+                        <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
                           {t.heroRecentChats}
                         </h4>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-slate-400 dark:text-slate-500">
                           {sessions.length} {language === 'en' ? 'recorded dialogues' : 'conversaciones registradas'}
                         </p>
                       </div>
                       <button
                         onClick={() => setCurrentTab('dashboard')}
-                        className="text-xs font-bold text-emerald-700 hover:text-emerald-800 transition"
+                        className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition"
                       >
                         {t.heroViewAll} →
                       </button>
                     </div>
-                    <div className="divide-y divide-slate-100">
+                    <div className="divide-y divide-slate-100 dark:divide-slate-800">
                       {sessions.slice(0, 4).map((s) => (
                         <div
                           key={s.id}

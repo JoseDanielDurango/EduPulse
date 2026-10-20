@@ -99,3 +99,6 @@ export interface ThesisProjectInfo {
   subLine: string;
   populationAndSample: string;
 }
+
+export type ThemeMode = 'light' | 'dark' | 'system';
+

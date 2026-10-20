@@ -20,7 +20,7 @@ import {
 } from './lib/firebase';
 import { DEFAULT_GUIDES } from './lib/defaultGuides';
 import { THESIS_PROJECT_INFO } from './lib/thesisContext';
-import { InterviewGuide, InterviewSession } from './types';
+import { InterviewGuide, InterviewSession, ThemeMode } from './types';
 import { Language, translations } from './lib/i18n';
 import {
   Play,
@@ -54,6 +54,34 @@ export default function App() {
     const saved = localStorage.getItem('edupulse_lang');
     return (saved === 'en' || saved === 'es') ? (saved as Language) : 'es';
   });
+
+  // Theme state: light, dark, or system (persisted in localStorage)
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    const saved = localStorage.getItem('edupulse_theme');
+    return (saved === 'light' || saved === 'dark' || saved === 'system') ? (saved as ThemeMode) : 'system';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applyTheme = () => {
+      const isDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
+      if (isDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    };
+
+    applyTheme();
+    localStorage.setItem('edupulse_theme', theme);
+
+    if (theme === 'system') {
+      mediaQuery.addEventListener('change', applyTheme);
+      return () => mediaQuery.removeEventListener('change', applyTheme);
+    }
+  }, [theme]);
 
   const handleToggleLanguage = () => {
     setLanguage((prev) => {
@@ -146,7 +174,7 @@ export default function App() {
   const currentGuide = guides.find((g) => g.id === activeSession?.guideId) || guides[0] || DEFAULT_GUIDES[0];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans selection:bg-emerald-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b1120] text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-emerald-600 selection:text-white transition-colors duration-200">
       {/* Sticky Navigation */}
       <Navbar
         currentTab={currentTab}
@@ -166,6 +194,8 @@ export default function App() {
         hasActiveSession={!!activeSession && activeSession.status === 'active'}
         language={language}
         onToggleLanguage={handleToggleLanguage}
+        theme={theme}
+        onSelectTheme={setTheme}
       />
 
       {/* Main View Area */}

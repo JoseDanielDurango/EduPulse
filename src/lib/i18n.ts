@@ -13,6 +13,9 @@ export const translations = {
     signInGoogle: 'Acceder con Google',
     signOut: 'Cerrar sesión',
     langToggle: 'EN',
+    themeLight: 'Modo claro',
+    themeDark: 'Modo oscuro',
+    themeSystem: 'Ajustado al sistema',
     
     // Landing Hero
     heroBadge: 'Conversaciones auténticas sobre educación y tecnología',
@@ -129,6 +132,9 @@ export const translations = {
     signInGoogle: 'Sign in with Google',
     signOut: 'Sign out',
     langToggle: 'ES',
+    themeLight: 'Light mode',
+    themeDark: 'Dark mode',
+    themeSystem: 'System default',
 
     // Landing Hero
     heroBadge: 'Authentic conversations on learning & AI',

@@ -4,14 +4,15 @@ import {
   Mic,
   MicOff,
   Sparkles,
-  Bot,
-  User,
   Volume2,
   VolumeX,
   FileCheck2,
   AlertCircle,
   HelpCircle,
-  MessageCircle,
+  MessageSquare,
+  GraduationCap,
+  Sparkle,
+  CheckCircle2,
 } from 'lucide-react';
 import { InterviewGuide, InterviewSession, ChatMessage } from '../types';
 import { saveSession } from '../lib/firebase';
@@ -110,8 +111,9 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
     }
   };
 
+  // Text-to-Speech synthesis
   const speakText = (text: string) => {
-    if (!('speechSynthesis' in window) || !autoSpeechSynthesis) return;
+    if (!autoSpeechSynthesis || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = language === 'en' ? 'en-US' : 'es-ES';
@@ -120,7 +122,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
     window.speechSynthesis.speak(utterance);
   };
 
-  // Start interview if brand new (0 messages)
+  // Initial greeting if session has 0 messages
   useEffect(() => {
     if (session.messages.length === 0 && !isAiResponding) {
       triggerInitialGreeting();
@@ -148,7 +150,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error('Greeting failed');
+        throw new Error('Failed to generate initial greeting');
       }
 
       const data = await response.json();
@@ -159,14 +161,12 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
         timestamp: new Date().toISOString(),
         questionIndex: 0,
         isClarifying: false,
-        category: currentQuestion?.category,
+        category: guide.questions[0]?.category,
       };
 
       const updatedSession: InterviewSession = {
         ...session,
         messages: [initialMessage],
-        currentQuestionIndex: 0,
-        currentClarificationCount: 0,
         status: 'active',
       };
 
@@ -347,52 +347,83 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
     }
   };
 
+  // Participant Pseudonym format for Stitch
+  const participantCode = session.studentCode || `EST-${(session.participantName || '01').slice(0, 2).toUpperCase()}`;
+
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-4xl mx-auto px-4 py-3 sm:py-4">
-      {/* Friendly Chat Header */}
-      <div className="bg-white border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 mb-3 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-5xl mx-auto px-4 py-3 sm:py-4">
+      {/* Stitch Design System: Methodological Phases Bar */}
+      <div className="bg-white border border-[#e2e8f0] rounded-xl px-4 py-2.5 mb-3 shadow-xs">
+        <div className="flex items-center justify-between gap-2 overflow-x-auto text-[11px] font-body">
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <span className="h-5 w-5 rounded-full bg-slate-100 flex items-center justify-center font-bold text-[10px] text-slate-500">1</span>
+            <span className="hidden sm:inline">Preparación Contextual</span>
+          </div>
+
+          <div className="h-0.5 w-6 bg-emerald-200"></div>
+
+          <div className="flex items-center gap-1.5 text-[#059669] font-semibold">
+            <span className="h-5 w-5 rounded-full bg-[#059669] text-white flex items-center justify-center font-bold text-[10px]">2</span>
+            <span>Entrevista Cualitativa (Activa)</span>
+          </div>
+
+          <div className="h-0.5 w-6 bg-slate-200"></div>
+
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <span className="h-5 w-5 rounded-full bg-slate-100 flex items-center justify-center font-bold text-[10px] text-slate-500">3</span>
+            <span className="hidden sm:inline">Transcripción y Codificación</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Header & Participant Badge (Stitch Academic Pulse) */}
+      <div className="elevation-card rounded-xl p-4 mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#e2e8f0]">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-emerald-500 to-indigo-600 flex items-center justify-center text-white shadow-xs">
-              <MessageCircle className="h-5 w-5" />
+            <div className="h-10 w-10 rounded-xl bg-[#0f172a] flex items-center justify-center text-white shrink-0 shadow-xs">
+              <GraduationCap className="h-5 w-5 text-emerald-400" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-sm sm:text-base font-bold text-slate-900">
-                  {t.chatWith}
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="font-display font-bold text-sm sm:text-base text-[#0f172a]">
+                  Sala de Entrevista Reflexiva
                 </h1>
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
-                  {guide.title}
+                {/* Stitch Participant Badge */}
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#ecfdf5] border border-[#a7f3d0] text-[#065f46]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#059669]"></span>
+                  {participantCode} • {session.semester || 'Licenciatura'}
                 </span>
-              </div>
-              <p className="text-xs text-slate-500 truncate max-w-xs sm:max-w-md">
-                {t.chatSubtitle} • <span className="font-semibold text-slate-700">{session.participantName}</span>
-                {session.semester && (
-                  <span className="text-slate-400"> ({session.semester})</span>
+                {session.centerLocation && (
+                  <span className="hidden md:inline-flex text-[11px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">
+                    {session.centerLocation}
+                  </span>
                 )}
+              </div>
+              <p className="text-xs text-slate-500 font-body">
+                Entrevistadora: <span className="font-semibold text-slate-700">Maya</span> • Universidad de Córdoba
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 self-end sm:self-center">
-            {/* Audio narration toggle */}
+            {/* Audio Speech Toggle */}
             <button
               onClick={() => setAutoSpeechSynthesis(!autoSpeechSynthesis)}
               title={autoSpeechSynthesis ? t.voiceToggleOn : t.voiceToggleOff}
-              className={`p-2 rounded-xl text-xs font-medium border transition flex items-center gap-1.5 ${
+              className={`p-2 rounded-lg text-xs font-medium border transition flex items-center gap-1.5 ${
                 autoSpeechSynthesis
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                  : 'bg-white border-slate-200 text-slate-500 hover:text-slate-800'
+                  ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                  : 'bg-white border-[#e2e8f0] text-slate-500 hover:text-slate-800'
               }`}
             >
               {autoSpeechSynthesis ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
             </button>
 
-            {/* Complete & View takeaways */}
+            {/* Complete & View Analysis */}
             <button
               onClick={() => handleTriggerFullSynthesis(session)}
               disabled={isAiResponding || session.messages.length < 2}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition disabled:opacity-50 shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#059669] text-white hover:bg-[#047857] transition disabled:opacity-50 shadow-xs"
             >
               <FileCheck2 className="h-3.5 w-3.5" />
               <span>{session.status === 'completed' ? t.viewSummary : t.finishChat}</span>
@@ -400,68 +431,78 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
           </div>
         </div>
 
-        {/* Progress & Current Topic */}
-        <div className="pt-2.5">
-          <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-medium">
-            <span className="font-semibold text-slate-700">
-              {currentQuestion?.topic || guide.title}
-            </span>
-            <span>{progressPercent}%</span>
+        {/* Qualitative Topic Card & Step Progress */}
+        <div className="pt-3">
+          <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5 font-body">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-[#0f172a]">
+                Tópico: {currentQuestion?.topic || guide.title}
+              </span>
+              {currentQuestion?.category && (
+                <span className="hidden sm:inline-flex px-2 py-0.2 rounded text-[10px] font-semibold bg-sky-50 text-sky-800 border border-sky-200">
+                  {currentQuestion.category}
+                </span>
+              )}
+            </div>
+            <span className="font-semibold text-slate-600">{progressPercent}%</span>
           </div>
 
-          <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
             <div
-              className="bg-gradient-to-r from-emerald-500 to-indigo-500 h-full rounded-full transition-all duration-500 ease-out"
+              className="bg-[#059669] h-full rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
       </div>
 
-      {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto px-1 py-2 space-y-3.5">
+      {/* Messages Scroll Area - Stitch Reflexive Dialogue Bubbles */}
+      <div className="flex-1 overflow-y-auto px-1 py-2 space-y-4 font-body">
         {session.messages.map((message) => {
           const isAgent = message.sender === 'agent';
           return (
             <div
               key={message.id}
-              className={`flex items-start gap-2.5 sm:gap-3 ${isAgent ? 'justify-start' : 'justify-end'}`}
+              className={`flex items-start gap-3 ${isAgent ? 'justify-start' : 'justify-end'}`}
             >
               {isAgent && (
-                <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-2xs text-xs font-bold">
+                <div className="h-8 w-8 rounded-lg bg-[#0f172a] text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-xs">
                   M
                 </div>
               )}
 
+              {/* Message Content Container */}
               <div
-                className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-3.5 sm:p-4 leading-relaxed text-sm shadow-2xs ${
+                className={`max-w-[88%] sm:max-w-[78%] rounded-xl p-4 leading-relaxed text-sm ${
                   isAgent
-                    ? 'bg-white border border-slate-200/90 text-slate-800 rounded-tl-xs'
-                    : 'bg-emerald-600 text-white rounded-tr-xs shadow-emerald-100'
+                    ? 'bg-[#f1f5f9] border border-[#e2e8f0] text-[#1e293b]'
+                    : 'bg-white border border-[#e2e8f0] border-l-4 border-l-[#0284c7] text-[#0f172a] shadow-xs'
                 }`}
               >
-                <div className="flex items-center justify-between gap-3 mb-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-xs">
-                      {isAgent ? 'Maya' : session.participantName}
+                <div className="flex items-center justify-between gap-3 mb-1.5 pb-1 border-b border-slate-200/60">
+                  <div className="flex items-center gap-2">
+                    <span className="font-display font-bold text-xs text-[#0f172a]">
+                      {isAgent ? 'Maya (Entrevistadora)' : `${session.participantName} [Cita Textual]`}
                     </span>
                     {message.isClarifying && (
-                      <span className="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-semibold bg-amber-100 text-amber-800">
+                      <span className="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
                         {t.clarifyingBadge}
                       </span>
                     )}
                   </div>
-                  <span className={`text-[10px] ${isAgent ? 'text-slate-400' : 'text-emerald-200'}`}>
+                  <span className="text-[10px] text-slate-400 font-mono">
                     {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
 
-                <div className="whitespace-pre-wrap">{message.text}</div>
+                <div className={isAgent ? 'whitespace-pre-wrap text-slate-800' : 'quote-reflexive whitespace-pre-wrap'}>
+                  {message.text}
+                </div>
               </div>
 
               {!isAgent && (
-                <div className="h-8 w-8 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center shrink-0 font-bold text-xs shadow-2xs">
-                  {(session.participantName || 'U')[0].toUpperCase()}
+                <div className="h-8 w-8 rounded-lg bg-sky-100 text-sky-900 border border-sky-300 flex items-center justify-center shrink-0 font-bold text-xs shadow-xs">
+                  {(session.participantName || 'E')[0].toUpperCase()}
                 </div>
               )}
             </div>
@@ -469,19 +510,19 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
         })}
 
         {isAiResponding && (
-          <div className="flex items-start gap-2.5 justify-start animate-fade-in">
-            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-2xs text-xs font-bold">
+          <div className="flex items-start gap-3 justify-start">
+            <div className="h-8 w-8 rounded-lg bg-[#0f172a] text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-xs">
               M
             </div>
-            <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-xs p-3.5 shadow-2xs">
-              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-700 mb-1">
-                <Sparkles className="h-3 w-3 animate-spin" />
+            <div className="bg-[#f1f5f9] border border-[#e2e8f0] rounded-xl p-3.5 shadow-xs">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[#059669] mb-1">
+                <Sparkles className="h-3.5 w-3.5 animate-spin" />
                 <span>{t.mayaThinking}</span>
               </div>
-              <div className="flex items-center gap-1 py-0.5">
-                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]" />
-                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]" />
-                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce" />
+              <div className="flex items-center gap-1.5 py-1">
+                <div className="h-1.5 w-1.5 rounded-full bg-[#059669] animate-bounce [animation-delay:-0.3s]" />
+                <div className="h-1.5 w-1.5 rounded-full bg-[#059669] animate-bounce [animation-delay:-0.15s]" />
+                <div className="h-1.5 w-1.5 rounded-full bg-[#059669] animate-bounce" />
               </div>
             </div>
           </div>
@@ -491,15 +532,15 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       </div>
 
       {speechError && (
-        <div className="text-xs text-rose-600 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-lg mb-2 flex items-center gap-1.5">
+        <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-lg mb-2 flex items-center gap-1.5 font-body">
           <AlertCircle className="h-3.5 w-3.5" />
           <span>{speechError}</span>
         </div>
       )}
 
-      {/* Input Bar */}
-      <div className="mt-2 bg-white border border-slate-200 rounded-2xl p-2.5 shadow-sm">
-        <form onSubmit={handleSendMessage} className="flex flex-col gap-2">
+      {/* Input Console (Stitch Academic Pulse Input Styling) */}
+      <div className="mt-2 bg-white border border-[#cbd5e1] rounded-xl p-3 shadow-xs">
+        <form onSubmit={handleSendMessage} className="flex flex-col gap-2.5">
           <div className="relative">
             <textarea
               ref={textareaRef}
@@ -509,20 +550,20 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               disabled={isAiResponding || session.status === 'completed'}
               placeholder={session.status === 'completed' ? t.inputCompleted : t.inputPlaceholder}
               rows={2}
-              className="w-full resize-none rounded-xl border-0 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 disabled:opacity-50 transition"
+              className="w-full resize-none rounded-lg border border-slate-200 bg-[#f8fafc] px-3.5 py-2.5 text-sm text-[#0f172a] placeholder-slate-400 focus:bg-white focus:outline-hidden focus:border-[#0284c7] focus:ring-3 focus:ring-sky-500/15 disabled:opacity-50 transition font-body"
             />
           </div>
 
-          <div className="flex items-center justify-between px-1">
+          <div className="flex items-center justify-between px-0.5">
             <div className="flex items-center gap-2 text-xs text-slate-500">
               {speechSupported && (
                 <button
                   type="button"
                   onClick={toggleSpeechRecognition}
                   disabled={session.status === 'completed' || isAiResponding}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition border ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition border cursor-pointer ${
                     isListening
-                      ? 'bg-rose-50 border-rose-300 text-rose-700 animate-pulse'
+                      ? 'bg-rose-50 border-rose-300 text-rose-700 ring-2 ring-rose-200 animate-pulse'
                       : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
                   }`}
                 >
@@ -530,15 +571,16 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                   <span>{isListening ? t.listeningBtn : t.dictateBtn}</span>
                 </button>
               )}
-              <span className="hidden sm:inline text-slate-400">
+              <span className="hidden sm:inline text-slate-400 font-body">
                 {t.tipMessage}
               </span>
             </div>
 
+            {/* Primary Action Button (Stitch Deep Navy) */}
             <button
               type="submit"
               disabled={!inputText.trim() || isAiResponding || session.status === 'completed'}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 active:scale-95 transition shadow-sm disabled:opacity-40 disabled:pointer-events-none"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0f172a] text-white font-semibold text-xs hover:bg-[#1e293b] active:scale-95 transition shadow-xs disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
             >
               <span>{t.sendBtn}</span>
               <Send className="h-3.5 w-3.5" />

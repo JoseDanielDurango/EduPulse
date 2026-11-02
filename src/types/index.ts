@@ -59,21 +59,23 @@ export interface InterviewSummary {
 
 export interface InterviewSession {
   id: string;
-  studentCode?: string; // e.g. E01, E02 (Anonymized qualitative participant code)
+  studentCode?: string; // e.g. EST-01, EST-02 (Anonymized qualitative participant code)
   title: string;
   guideId: string;
   guideTitle: string;
   researcherId: string;
   researcherEmail?: string;
   participantName: string;
-  participantRole: string; // e.g. "Docente en Formación"
-  semester: string; // e.g. "8° Semestre"
+  participantRole: string; // e.g. "Docente en Formación - Licenciatura en Informática"
+  semester: string; // e.g. "3° Semestre", "8° Semestre"
   centerLocation: string; // e.g. "Montería", "Lorica", "Planeta Rica", "Sahagún"
   priorAiExperience?: string;
   status: 'active' | 'completed' | 'paused';
   currentQuestionIndex: number;
   totalQuestions: number;
   currentClarificationCount: number;
+  currentDimension?: string;
+  qualitativePhase?: string;
   messages: ChatMessage[];
   structuredResponses?: StructuredResponseItem[];
   summary?: InterviewSummary;
@@ -86,6 +88,7 @@ export interface InterviewSession {
 export interface ThesisProjectInfo {
   title: string;
   authors: string[];
+  director: string;
   institution: string;
   faculty: string;
   program: string;
@@ -98,6 +101,8 @@ export interface ThesisProjectInfo {
   researchLine: string;
   subLine: string;
   populationAndSample: string;
+  legalFramework: string;
+  methodologicalTechniques: string[];
 }
 
 export type ThemeMode = 'light' | 'dark' | 'system';

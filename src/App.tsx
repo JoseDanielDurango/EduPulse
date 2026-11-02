@@ -9,7 +9,6 @@ import { Navbar } from './components/Navbar';
 import { InterviewRoom } from './components/InterviewRoom';
 import { SummaryView } from './components/SummaryView';
 import { SessionsDashboard } from './components/SessionsDashboard';
-import { GuidesManager } from './components/GuidesManager';
 import { NewSessionModal } from './components/NewSessionModal';
 import { ThesisProjectModal } from './components/ThesisProjectModal';
 import {
@@ -40,14 +39,13 @@ import {
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [currentTab, setCurrentTab] = useState<'interview' | 'dashboard' | 'guides'>('interview');
+  const [currentTab, setCurrentTab] = useState<'interview' | 'dashboard'>('interview');
   const [sessions, setSessions] = useState<InterviewSession[]>([]);
   const [guides, setGuides] = useState<InterviewGuide[]>(DEFAULT_GUIDES);
   const [activeSession, setActiveSession] = useState<InterviewSession | null>(null);
   const [viewingSummarySession, setViewingSummarySession] = useState<InterviewSession | null>(null);
   const [isNewSessionModalOpen, setIsNewSessionModalOpen] = useState(false);
   const [isThesisModalOpen, setIsThesisModalOpen] = useState(false);
-  const [selectedGuideForNewSession, setSelectedGuideForNewSession] = useState<string | undefined>();
 
   // Language state (persisted in localStorage)
   const [language, setLanguage] = useState<Language>(() => {
@@ -171,7 +169,7 @@ export default function App() {
     setViewingSummarySession(completedSession);
   };
 
-  const currentGuide = guides.find((g) => g.id === activeSession?.guideId) || guides[0] || DEFAULT_GUIDES[0];
+  const currentGuide = guides[0] || DEFAULT_GUIDES[0];
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0b1120] text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-emerald-600 selection:text-white transition-colors duration-200">
@@ -186,7 +184,6 @@ export default function App() {
         }}
         currentUser={currentUser}
         onNewSession={() => {
-          setSelectedGuideForNewSession(undefined);
           setIsNewSessionModalOpen(true);
         }}
         onOpenThesisModal={() => setIsThesisModalOpen(true)}
@@ -221,8 +218,8 @@ export default function App() {
               /* Friendly, Modern Conversational Landing */
               <div className="max-w-4xl mx-auto px-4 py-10 sm:py-16 text-center space-y-12">
                 {/* Hero Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-100/80 text-emerald-900 border border-emerald-300 shadow-2xs">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-600 animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-100/90 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 animate-pulse" />
                   <span>{t.heroBadge}</span>
                 </div>
 
@@ -230,7 +227,7 @@ export default function App() {
                 <div className="space-y-4 max-w-3xl mx-auto">
                   <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
                     {t.heroTitlePrefix}{' '}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 dark:from-emerald-400 dark:via-teal-400 dark:to-indigo-400">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#059669] via-teal-600 to-indigo-600 dark:from-emerald-400 dark:via-teal-400 dark:to-indigo-400">
                       {t.heroTitleGradient}
                     </span>
                   </h1>
@@ -244,30 +241,20 @@ export default function App() {
                 <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
                   <button
                     onClick={() => {
-                      setSelectedGuideForNewSession(undefined);
                       setIsNewSessionModalOpen(true);
                     }}
-                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold text-sm bg-[#059669] hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition active:scale-95 cursor-pointer"
                   >
                     <MessageCircle className="h-5 w-5" />
                     <span>{t.heroStartBtn}</span>
                   </button>
 
                   <button
-                    onClick={() => setCurrentTab('guides')}
+                    onClick={() => setIsThesisModalOpen(true)}
                     className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs transition cursor-pointer"
                   >
                     <BookOpen className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                    <span>{t.heroTopicsBtn}</span>
-                  </button>
-
-                  <button
-                    onClick={() => setIsThesisModalOpen(true)}
-                    className="inline-flex items-center gap-2 px-4 py-3.5 rounded-2xl font-semibold text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-                    title={t.navInfo}
-                  >
-                    <Info className="h-4 w-4 text-slate-400 dark:text-slate-500" />
-                    <span>{t.navInfo}</span>
+                    <span>{language === 'en' ? 'Research Project Info' : 'Ficha de Investigación'}</span>
                   </button>
                 </div>
 
@@ -324,7 +311,7 @@ export default function App() {
                       </div>
                       <button
                         onClick={() => setCurrentTab('dashboard')}
-                        className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition"
+                        className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition cursor-pointer"
                       >
                         {t.heroViewAll} →
                       </button>
@@ -338,23 +325,31 @@ export default function App() {
                               ? handleViewSummary(s)
                               : handleOpenExistingSession(s)
                           }
-                          className="py-3 flex items-center justify-between hover:bg-slate-50 px-2 rounded-xl cursor-pointer transition"
+                          className="py-3 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/60 px-2 rounded-xl cursor-pointer transition"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs border border-emerald-200">
+                            <div className="h-8 w-8 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-xs border border-emerald-200 dark:border-emerald-800">
                               {(s.participantName || 'A')[0].toUpperCase()}
                             </div>
                             <div>
-                              <span className="font-bold text-xs text-slate-900">
+                              <span className="font-bold text-xs text-slate-900 dark:text-white">
                                 {s.participantName}
                               </span>
-                              <span className="text-xs text-slate-400 ml-2">
-                                • {s.guideTitle || 'Tema general'}
+                              <span className="text-xs text-slate-400 dark:text-slate-500 ml-2">
+                                • {s.studentCode || 'EST'} ({s.semester || 'Licenciatura'})
                               </span>
                             </div>
                           </div>
-                          <span className="text-xs font-semibold text-emerald-700 inline-flex items-center gap-1">
-                            <span>{s.status === 'completed' ? (language === 'en' ? 'View takeaways' : 'Ver reflexiones') : (language === 'en' ? 'Resume chat' : 'Continuar charla')}</span>
+                          <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 inline-flex items-center gap-1">
+                            <span>
+                              {s.status === 'completed'
+                                ? language === 'en'
+                                  ? 'View takeaways'
+                                  : 'Ver reflexiones'
+                                : language === 'en'
+                                ? 'Resume chat'
+                                : 'Continuar charla'}
+                            </span>
                             <ChevronRight className="h-3.5 w-3.5" />
                           </span>
                         </div>
@@ -364,16 +359,16 @@ export default function App() {
                 )}
 
                 {/* Subtle, Professional Research Footer */}
-                <div className="pt-8 border-t border-slate-200/80 text-center space-y-2 text-xs text-slate-500 max-w-xl mx-auto">
-                  <p className="font-medium text-slate-600">
+                <div className="pt-8 border-t border-slate-200/80 dark:border-slate-800 text-center space-y-2 text-xs text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
+                  <p className="font-medium text-slate-600 dark:text-slate-300">
                     {t.footerContext}
                   </p>
-                  <p className="text-slate-400 text-[11px]">
-                    {t.footerInstitutional} • {t.footerResearchers} {THESIS_PROJECT_INFO.authors.join(' & ')}
+                  <p className="text-slate-400 dark:text-slate-500 text-[11px]">
+                    {t.footerInstitutional} • {t.footerResearchers} {THESIS_PROJECT_INFO.authors.join(' & ')} • Director: {THESIS_PROJECT_INFO.director}
                   </p>
                   <button
                     onClick={() => setIsThesisModalOpen(true)}
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 hover:underline pt-1 cursor-pointer"
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 hover:underline pt-1 cursor-pointer"
                   >
                     <GraduationCap className="h-3 w-3" />
                     <span>{t.footerAboutBtn}</span>
@@ -390,18 +385,6 @@ export default function App() {
             onOpenSession={handleOpenExistingSession}
             onViewSummary={handleViewSummary}
             onNewSession={() => {
-              setSelectedGuideForNewSession(undefined);
-              setIsNewSessionModalOpen(true);
-            }}
-            language={language}
-          />
-        )}
-
-        {currentTab === 'guides' && (
-          <GuidesManager
-            guides={guides}
-            onSelectGuideForSession={(guide) => {
-              setSelectedGuideForNewSession(guide.id);
               setIsNewSessionModalOpen(true);
             }}
             language={language}
@@ -414,7 +397,6 @@ export default function App() {
         isOpen={isNewSessionModalOpen}
         onClose={() => setIsNewSessionModalOpen(false)}
         guides={guides}
-        defaultGuideId={selectedGuideForNewSession}
         onStartSession={handleStartNewSession}
         currentUserId={currentUser?.uid || 'anonymous'}
         currentUserEmail={currentUser?.email || undefined}

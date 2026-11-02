@@ -12,10 +12,11 @@ Cada uno de los seis documentos técnicos ha sido elaborado con el máximo nivel
 | :--- | :--- |
 | **Título del proyecto** | La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba |
 | **Institución** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas |
-| **Programa académico** | Licenciatura en Informática con Énfasis en Medios Audiovisuales |
-| **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
+| **Programa académico** | Licenciatura en Informática |
+| **Investigadores (Autores)** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
+| **Director del proyecto** | Juan Carlos Giraldo Cardozo |
 | **Línea de investigación** | Estudio de impacto de las tecnologías de la información y comunicación en educación · Sublínea: Evaluación educativa y TIC |
-| **Población y muestra** | Población: ~430 estudiantes activos del programa · Muestra: 8 a 12 informantes clave en formación docente |
+| **Población y muestra** | Población: ~430 estudiantes activos del programa · Muestra: 20 a 40 informantes en formación docente |
 | **Ubicación y año** | Montería, Córdoba, Colombia · 2025–2026 |
 
 ---

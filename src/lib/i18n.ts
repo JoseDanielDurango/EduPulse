@@ -55,20 +55,20 @@ export const translations = {
 
     // New Session Modal
     modalTitle: 'Empecemos a charlar',
-    modalSubtitle: 'Espacio para estudiantes de la Licenciatura en Informática con Énfasis en Medios Audiovisuales.',
-    modalTopicLabel: 'Tema principal',
-    modalNameLabel: '¿Cómo te llamas o cómo te gustaría que te llame?',
-    modalNamePlaceholder: 'Tu nombre o apodo (ej. Sofía)',
-    modalSemesterLabel: '¿En qué semestre estás?',
-    modalSemesterPlaceholder: 'Selecciona tu semestre actual',
-    modalSemesterOptionDefault: '-- Selecciona tu semestre actual --',
+    modalSubtitle: 'Espacio de diálogo cualitativo para docentes en formación de la Licenciatura en Informática.',
+    modalTopicLabel: 'Protocolo de investigación',
+    modalNameLabel: '¿Cómo te llamas o cómo prefieres que te llame Maya?',
+    modalNamePlaceholder: 'Tu nombre (ej. Carlos, Laura)',
+    modalSemesterLabel: '¿Qué semestre estás cursando actualmente?',
+    modalSemesterPlaceholder: 'Selecciona tu semestre en curso',
+    modalSemesterOptionDefault: '-- Selecciona tu semestre en curso --',
     modalSemesterCustomOption: 'Otro / Escribir manualmente...',
-    modalLocationLabel: 'Sede / Ciudad (opcional)',
-    modalLocationPlaceholder: 'ej. Montería, Lorica, Sahagún...',
-    modalRequiredNotice: '* Campos obligatorios: Maya adaptará el diálogo según el semestre que estás cursando.',
-    modalRequiredWarning: 'Por favor completa Nombre y Semestre para poder iniciar.',
+    modalLocationLabel: 'Sede o Centro de Tutoría',
+    modalLocationPlaceholder: 'ej. Sede Central Montería, Lorica, Planeta Rica...',
+    modalRequiredNotice: '* Campos requeridos: Maya adapta su diálogo según el semestre que estás cursando.',
+    modalRequiredWarning: 'Por favor completa Nombre y Semestre para poder iniciar el diálogo.',
     modalCancel: 'Cancelar',
-    modalStart: 'Iniciar conversación',
+    modalStart: 'Iniciar diálogo cualitativo',
 
     // Summary View
     summaryBack: 'Volver a la charla',
@@ -119,10 +119,10 @@ export const translations = {
 
     // Footer
     footerBadge: 'Iniciativa académica y reflexiva',
-    footerContext: 'EduPulse — Espacio de diálogo y reflexión sobre el impacto de la Inteligencia Artificial en la educación.',
-    footerInstitutional: 'Universidad de Córdoba • Licenciatura en Informática con Énfasis en Medios Audiovisuales',
+    footerContext: 'EduPulse — Instrumento cualitativo de interacción dialógica mediada por IA para la investigación pedagógica.',
+    footerInstitutional: 'Universidad de Córdoba • Facultad de Educación y Ciencias Humanas • Licenciatura en Informática',
     footerResearchers: 'Investigadores:',
-    footerAboutBtn: 'Ver ficha del proyecto',
+    footerAboutBtn: 'Ver ficha de la investigación',
   },
   en: {
     appName: 'EduPulse',
@@ -178,20 +178,20 @@ export const translations = {
 
     // New Session Modal
     modalTitle: "Let's start chatting",
-    modalSubtitle: 'Dedicated space for Bachelor of Computer Science & Audiovisual Media students.',
-    modalTopicLabel: 'Discussion topic',
+    modalSubtitle: 'Qualitative dialogue space for educators-in-training of the Bachelor in Computer Science Education.',
+    modalTopicLabel: 'Research Protocol',
     modalNameLabel: 'What is your name or how should Maya call you?',
-    modalNamePlaceholder: 'Your name or nickname (e.g. Alex)',
-    modalSemesterLabel: 'What semester are you in?',
+    modalNamePlaceholder: 'Your name (e.g. Alex, Maria)',
+    modalSemesterLabel: 'What semester are you currently in?',
     modalSemesterPlaceholder: 'Select your current semester',
     modalSemesterOptionDefault: '-- Select your current semester --',
     modalSemesterCustomOption: 'Other / Enter custom...',
-    modalLocationLabel: 'Location / Campus (optional)',
-    modalLocationPlaceholder: 'e.g. Main Campus, Online...',
+    modalLocationLabel: 'Campus / Tutorial Center (Optional)',
+    modalLocationPlaceholder: 'e.g. Main Campus Montería, Lorica, Planeta Rica...',
     modalRequiredNotice: '* Required fields: Maya will tailor her conversation based on your current semester.',
     modalRequiredWarning: 'Please fill in Name and Semester before starting.',
     modalCancel: 'Cancel',
-    modalStart: 'Start conversation',
+    modalStart: 'Start qualitative dialogue',
 
     // Summary View
     summaryBack: 'Back to chat',
@@ -242,9 +242,9 @@ export const translations = {
 
     // Footer
     footerBadge: 'Academic & reflective initiative',
-    footerContext: 'EduPulse — A reflective dialogue space exploring the impact of Artificial Intelligence on education.',
-    footerInstitutional: 'University of Córdoba • Bachelor of Computer Science & Audiovisual Media',
+    footerContext: 'EduPulse — Qualitative dialogic interaction instrument mediated by AI for educational research.',
+    footerInstitutional: 'University of Córdoba • Faculty of Education and Human Sciences • Bachelor in Computer Science Education',
     footerResearchers: 'Researchers:',
-    footerAboutBtn: 'About the research project',
+    footerAboutBtn: 'View research information',
   },
 };

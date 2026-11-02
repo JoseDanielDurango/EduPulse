@@ -10,20 +10,23 @@
 
 * **Título:** *La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba*
 * **Autores:** José Daniel Durango Caballero & Jefersson Ramírez Oviedo
+* **Director del proyecto:** Juan Carlos Giraldo Cardozo
 * **Institución:** Universidad de Córdoba
 * **Facultad:** Facultad de Educación y Ciencias Humanas
-* **Programa:** Licenciatura en Informática con Énfasis en Medios Audiovisuales
+* **Programa:** Licenciatura en Informática
 * **Línea de investigación:** Estudio de impacto de las tecnologías de la información y comunicación en educación
 * **Sublínea:** Evaluación educativa y TIC
-* **Año:** 2025
+* **Población y Muestra:** ~430 estudiantes activos del programa · Muestra cualitativa intencional: 20 a 40 informantes en formación docente
+* **Marco Legal y Curricular:** Ley No. 2626 del 24 de agosto de 2026 ("Ley de Educación Digital") y Rediseño Curricular por fases (Exploración, Integración e Innovación)
+* **Año:** 2025 – 2026
 
 ---
 
 ## Propósito del Instrumento
 
-Bajo el **paradigma hermenéutico–interpretativo** y un **enfoque cualitativo**, EduPulse reemplaza el formulario rígido tradicional por una experiencia de **entrevista semiestructurada asistida por IA**. 
+Bajo el **paradigma hermenéutico–interpretativo** y un **enfoque cualitativo**, EduPulse constituye la **tercera técnica de recolección de datos** del estudio: la **interacción dialógica mediada por inteligencia artificial**.
 
-El agente conversacional (denominado **Maya**) interactúa con una muestra intencional de 8 a 12 estudiantes en formación docente del programa, adaptando su lenguaje pedagógico, garantizando el rigor ético, y profundizando mediante repreguntas reflexivas (*probing*) neutrales.
+El agente conversacional (**Maya**) interactúa de manera fluida y adaptada con la muestra intencional de 20 a 40 estudiantes de la Licenciatura en Informática. En lugar de un cuestionario cerrado o un número fijo y rígido de preguntas, el diálogo fluye orgánicamente por las dimensiones de investigación (prácticas y autoeficacia, dilemas éticos y autonomía cognitiva, transición hacia ambientes híbridos y propuestas de coaprendizaje), evaluando el nivel de profundidad y determinando con criterio metodológico la **saturación de datos cualitativos**.
 
 ### Matriz de Categorías Cualitativas (Tabla 1 de la Investigación)
 

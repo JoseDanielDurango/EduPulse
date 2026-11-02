@@ -426,8 +426,19 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5 text-xs font-bold font-display">
-                  <span>
-                    {m.sender === 'agent' ? 'Maya (Entrevistadora Cualitativa)' : `${session.participantName} [Cita]`}
+                  <span className="flex items-center gap-1.5">
+                    {m.sender === 'agent' ? (
+                      <>
+                        <img
+                          src="/cereza-avatar.png"
+                          alt="Cereza"
+                          className="h-4 w-4 rounded-md object-contain bg-slate-900 border border-slate-700/60"
+                        />
+                        <span>Cereza (Entrevistadora Cualitativa)</span>
+                      </>
+                    ) : (
+                      `${session.participantName} [Cita]`
+                    )}
                   </span>
                   <span className="text-slate-400 dark:text-slate-500 font-normal text-[10px] font-mono">
                     {new Date(m.timestamp).toLocaleTimeString()}

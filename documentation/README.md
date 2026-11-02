@@ -73,7 +73,7 @@ documentation/
 1. **Capítulo 3 (Diseño Metodológico):**
    * Respaldado por el **Documento 01 (Modelo del Tutor)** y el **Documento 02 (Modelo del Conocimiento)**. Operacionaliza el guion de entrevista semiestructurada, los criterios de neutralidad axiológica, el protocolo de repregunta reflexiva (*probing*) y la ontología de categorías deductivas (Tabla 1 de la tesis).
 2. **Capítulo 4 (Desarrollo Tecnopedagógico e Intervención):**
-   * Respaldado por el **Documento 03 (Modelo del Alumno)**, el **Documento 04 (Modelo del Mundo / DESIGN.md)** y el **Documento 05 (Prompt Maestro ROCAS)**. Describe la adaptación curricular por etapas formativas, la interacción multimodal por voz y la ingeniería de instrucciones que rige a Maya.
+   * Respaldado por el **Documento 03 (Modelo del Alumno)**, el **Documento 04 (Modelo del Mundo / DESIGN.md)** y el **Documento 05 (Prompt Maestro ROCAS)**. Describe la adaptación curricular por etapas formativas, la interacción multimodal por voz y la ingeniería de instrucciones que rige a Cereza.
 3. **Capítulo 5 (Análisis de Resultados y Triangulación):**
    * Respaldado por el **Documento 06 (Arquitectura del Sistema)**. Fundamenta el pipeline de datos en tres capas, la desidentificación ética de los participantes (`E01`...`E12`), la pre-codificación automatizada en `/api/analyze-interview` y la exportación interoperable hacia herramientas CAQDAS (ATLAS.ti y NVivo).
 

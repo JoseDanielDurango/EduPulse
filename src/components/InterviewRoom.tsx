@@ -177,8 +177,8 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       console.error('Initial greeting failed:', err);
       const fallbackText =
         language === 'en'
-          ? `Hi ${session.participantName}! I'm Maya. Welcome to this open space to chat about technology, AI, and your experiences in the Computer Science Education program. To start off, how have you been using tools like ChatGPT or other AI in your university classes or study routines?`
-          : `¡Hola ${session.participantName}! Qué gusto saludarte. Soy Maya. Te doy la bienvenida a este espacio tranquilo para reflexionar juntos sobre la tecnología, la IA y tu formación en la Licenciatura en Informática. Para comenzar, ¿de qué manera has venido usando herramientas de IA en tus clases o en tu preparación docente?`;
+          ? `Hi ${session.participantName}! I'm Cereza. Welcome to this open space to chat about technology, AI, and your experiences in the Computer Science Education program. To start off, how have you been using tools like ChatGPT or other AI in your university classes or study routines?`
+          : `¡Hola ${session.participantName}! Qué gusto saludarte. Soy Cereza. Te doy la bienvenida a este espacio tranquilo para reflexionar juntos sobre la tecnología, la IA y tu formación en la Licenciatura en Informática. Para comenzar, ¿de qué manera has venido usando herramientas de IA en tus clases o en tu preparación docente?`;
 
       const fallbackMsg: ChatMessage = {
         id: `msg-${Date.now()}`,
@@ -373,13 +373,15 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       <div className="elevation-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 mb-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-[#0f172a] dark:bg-slate-800 flex items-center justify-center text-white shrink-0 shadow-xs">
-              <GraduationCap className="h-5 w-5 text-emerald-400" />
-            </div>
+            <img
+              src="/cereza-avatar.png"
+              alt="Cereza Avatar"
+              className="h-10 w-10 rounded-xl object-contain bg-[#0f172a] dark:bg-slate-800 p-1 border border-slate-700/60 shadow-xs shrink-0"
+            />
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="font-display font-bold text-sm sm:text-base text-[#0f172a] dark:text-white">
-                  Diálogo Reflexivo sobre IA
+                  Diálogo Reflexivo con Cereza
                 </h1>
                 {/* Stitch Participant Badge */}
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#ecfdf5] dark:bg-emerald-950/80 border border-[#a7f3d0] dark:border-emerald-800 text-[#065f46] dark:text-emerald-300">
@@ -393,7 +395,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                 )}
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-body">
-                Entrevistadora: <span className="font-semibold text-slate-700 dark:text-slate-200">Maya</span> •
+                Entrevistadora: <span className="font-semibold text-slate-700 dark:text-slate-200">Cereza</span> •
                 Licenciatura en Informática (Universidad de Córdoba)
               </p>
             </div>
@@ -458,9 +460,11 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               className={`flex items-start gap-3 ${isAgent ? 'justify-start' : 'justify-end'}`}
             >
               {isAgent && (
-                <div className="h-8 w-8 rounded-lg bg-[#0f172a] text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-xs">
-                  M
-                </div>
+                <img
+                  src="/cereza-avatar.png"
+                  alt="Cereza"
+                  className="h-8 w-8 rounded-lg object-contain bg-[#0f172a] dark:bg-slate-800 p-0.5 border border-slate-700/60 shadow-xs shrink-0"
+                />
               )}
 
               {/* Message Content Container */}
@@ -474,7 +478,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                 <div className="flex items-center justify-between gap-3 mb-1.5 pb-1 border-b border-slate-200/60 dark:border-slate-700/60">
                   <div className="flex items-center gap-2">
                     <span className="font-display font-bold text-xs text-[#0f172a] dark:text-white">
-                      {isAgent ? 'Maya (Entrevistadora Cualitativa)' : `${session.participantName} [Cita Reflexiva]`}
+                      {isAgent ? 'Cereza (Entrevistadora Cualitativa)' : `${session.participantName} [Cita Reflexiva]`}
                     </span>
                     {message.category && (
                       <span className="hidden sm:inline-flex px-1.5 py-0.2 rounded text-[10px] font-semibold bg-sky-50 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
@@ -509,9 +513,11 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
 
         {isAiResponding && (
           <div className="flex items-start gap-3 justify-start">
-            <div className="h-8 w-8 rounded-lg bg-[#0f172a] dark:bg-slate-800 text-white flex items-center justify-center shrink-0 text-xs font-bold shadow-xs">
-              M
-            </div>
+            <img
+              src="/cereza-avatar.png"
+              alt="Cereza"
+              className="h-8 w-8 rounded-lg object-contain bg-[#0f172a] dark:bg-slate-800 p-0.5 border border-slate-700/60 shadow-xs shrink-0"
+            />
             <div className="bg-[#f1f5f9] dark:bg-slate-800 border border-[#e2e8f0] dark:border-slate-700 rounded-xl p-3.5 shadow-xs">
               <div className="flex items-center gap-2 text-xs font-semibold text-[#059669] dark:text-[#34d399] mb-1">
                 <Sparkles className="h-3.5 w-3.5 animate-spin" />

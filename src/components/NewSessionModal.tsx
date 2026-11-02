@@ -166,8 +166,8 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
           </div>
           <p className="text-[11px] text-emerald-800 dark:text-emerald-300 leading-relaxed font-medium pl-6">
             {language === 'en'
-              ? 'Maya leads an authentic, flowing dialogue that adapts naturally to your semester, with no rigid question count.'
-              : 'Maya conducirá una charla auténtica y fluida adaptada a tu semestre, sin preguntas rígidas, explorando tus experiencias y reflexiones.'}
+              ? 'Cereza leads an authentic, flowing dialogue that adapts naturally to your semester, with no rigid question count.'
+              : 'Cereza conducirá una charla auténtica y fluida adaptada a tu semestre, sin preguntas rígidas, explorando tus experiencias y reflexiones.'}
           </p>
         </div>
 
@@ -215,7 +215,7 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
             {submittedAttempt && !isNameValid && (
               <p className="text-[11px] text-rose-600 dark:text-rose-400 font-medium mt-1 flex items-center gap-1">
                 <AlertCircle className="h-3 w-3 shrink-0" />
-                <span>{language === 'en' ? 'Please enter your name or preferred callsign.' : 'Por favor escribe tu nombre o cómo prefieres que te llame Maya.'}</span>
+                <span>{language === 'en' ? 'Please enter your name or preferred callsign.' : 'Por favor escribe tu nombre o cómo prefieres que te llame Cereza.'}</span>
               </p>
             )}
           </div>

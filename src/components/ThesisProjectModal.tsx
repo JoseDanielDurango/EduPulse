@@ -151,7 +151,7 @@ export const ThesisProjectModal: React.FC<ThesisProjectModalProps> = ({ isOpen, 
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-              <span><strong>3. Interacción dialógica mediada por IA (EduPulse):</strong> Agente inteligente conversacional (Maya) que promueve un diálogo reflexivo, espontáneo y fluido, libre de la rigidez de cuestionarios cerrados, decidiendo la saturación de los temas.</span>
+              <span><strong>3. Interacción dialógica mediada por IA (EduPulse):</strong> Agente inteligente conversacional (Cereza) que promueve un diálogo reflexivo, espontáneo y fluido, libre de la rigidez de cuestionarios cerrados, decidiendo la saturación de los temas.</span>
             </li>
           </ul>
           <p className="text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200 dark:border-slate-700">

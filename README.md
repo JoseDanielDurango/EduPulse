@@ -26,7 +26,7 @@
 
 Bajo el **paradigma hermenéutico–interpretativo** y un **enfoque cualitativo**, EduPulse constituye la **tercera técnica de recolección de datos** del estudio: la **interacción dialógica mediada por inteligencia artificial**.
 
-El agente conversacional (**Maya**) interactúa de manera fluida y adaptada con la muestra intencional de 20 a 40 estudiantes de la Licenciatura en Informática. En lugar de un cuestionario cerrado o un número fijo y rígido de preguntas, el diálogo fluye orgánicamente por las dimensiones de investigación (prácticas y autoeficacia, dilemas éticos y autonomía cognitiva, transición hacia ambientes híbridos y propuestas de coaprendizaje), evaluando el nivel de profundidad y determinando con criterio metodológico la **saturación de datos cualitativos**.
+El agente conversacional (**Cereza**) interactúa de manera fluida y adaptada con la muestra intencional de 20 a 40 estudiantes de la Licenciatura en Informática. En lugar de un cuestionario cerrado o un número fijo y rígido de preguntas, el diálogo fluye orgánicamente por las dimensiones de investigación (prácticas y autoeficacia, dilemas éticos y autonomía cognitiva, transición hacia ambientes híbridos y propuestas de coaprendizaje), evaluando el nivel de profundidad y determinando con criterio metodológico la **saturación de datos cualitativos**.
 
 ### Matriz de Categorías Cualitativas (Tabla 1 de la Investigación)
 
@@ -38,7 +38,7 @@ El agente conversacional (**Maya**) interactúa de manera fluida y adaptada con 
 
 ---
 
-## Características del Agente Conversacional ("Maya")
+## Características del Agente Conversacional ("Cereza")
 
 1. **Adaptabilidad Formativa según Semestre:**
    * **Semestres Iniciales (1° a 3°):** Aborda la experiencia como aprendiz de tecnologías y medios, evitando tecnicismos curriculares o suponer prácticas de aula aún no realizadas.

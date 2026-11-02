@@ -151,7 +151,7 @@ ${stageInstructions}
       stageInstructions = `
 [ETAPA: FUNDAMENTACIÓN / SEMESTRES INICIALES (${semesterStr || '1° a 3° Semestre'})]
 - Nivel de conocimiento pedagógico: Introductorio. El estudiante está asimilando la vida universitaria y cursos iniciales de informática y educación. AÚN NO ha realizado prácticas de aula en colegios ni planeación curricular compleja.
-- ENFOQUE Y COMPORTAMIENTO OBLIGATORIO DE MAYA:
+- ENFOQUE Y COMPORTAMIENTO OBLIGATORIO DE CEREZA:
   * Tono: Muy empático, cálido, conversacional y motivador. CERO tecnicismos intimidantes.
   * Adaptación del diálogo: Enfoca la charla en su vivencia cotidiana como aprendiz (ej. cómo usa la IA para entender conceptos de tecnología, programación, resumir lecturas o resolver dudas).
   * NO preguntes: "¿Qué carrera estudias?", ni "¿Cómo evalúas a tus alumnos escolares cuando usan IA en el aula?" (porque aún no tiene alumnos a cargo).
@@ -160,7 +160,7 @@ ${stageInstructions}
       stageInstructions = `
 [ETAPA: DESARROLLO DIDÁCTICO / SEMESTRES INTERMEDIOS (${semesterStr || '4° a 6° Semestre'})]
 - Nivel de conocimiento pedagógico: En desarrollo. Ya cursa didáctica de la informática, producción de recursos y prepara o realiza sus primeras observaciones escolares y microclases.
-- ENFOQUE Y COMPORTAMIENTO OBLIGATORIO DE MAYA:
+- ENFOQUE Y COMPORTAMIENTO OBLIGATORIO DE CEREZA:
   * Tono: Estimulante, reflexivo, de diálogo constructivo.
   * Adaptación del diálogo: Conecta el aprendizaje técnico con el inicio del diseño didáctico. Pregunta cómo usa la IA para idear dinámicas pedagógicas de informática o preparar secuencias didácticas.
   * Criterio crítico: Indaga sobre cómo verifica si la información o código que da la IA es correcta, cómo evita depender de ella (evitando el "efecto muleta") y qué dilemas éticos o de autoría discuten en el programa.`;
@@ -168,7 +168,7 @@ ${stageInstructions}
       stageInstructions = `
 [ETAPA: FORMACIÓN AVANZADA / PRÁCTICA DOCENTE Y GRADO (${semesterStr || '7° a 10° Semestre'})]
 - Nivel de conocimiento pedagógico: Maduro y consolidado. Cuenta con sólida formación en didáctica de la informática, experiencia directa frente a estudiantes en colegios durante sus prácticas pedagógicas, y conocimiento curricular y evaluativo.
-- ENFOQUE Y COMPORTAMIENTO OBLIGATORIO DE MAYA:
+- ENFOQUE Y COMPORTAMIENTO OBLIGATORIO DE CEREZA:
   * Tono: Trátalo como a un colega docente en formación con criterio profesional.
   * Adaptación del diálogo: Profundiza en transposición didáctica mediada por IA, cómo reacciona cuando sus propios alumnos escolares usan IA para las actividades de informática, dilemas de evaluación formativa, sesgos de las herramientas, autonomía docente y el nuevo modelo curricular en ambientes híbridos.
   * Pídele anécdotas y vivencias reales de su paso por las aulas escolares en sus prácticas.`;
@@ -191,7 +191,7 @@ ${stageInstructions}
   }
 }
 
-// Endpoint: AI Conversational Engine (Maya - Fluid, Autonomous Saturation Decision)
+// Endpoint: AI Conversational Engine (Cereza - Fluid, Autonomous Saturation Decision)
 app.post('/api/chat', async (req: Request, res: Response) => {
   const {
     guide,
@@ -212,11 +212,11 @@ app.post('/api/chat', async (req: Request, res: Response) => {
       : 'Licenciatura en Informática (Universidad de Córdoba)');
     const pedagogicalOrientation = getPedagogicalOrientation(semester, effectiveRole, participantName, centerLocation, isEn);
 
-    // Count participant turns so Maya can track qualitative saturation organically
+    // Count participant turns so Cereza can track qualitative saturation organically
     const participantTurns = messages.filter((m: any) => m.sender === 'participant').length;
 
     const systemInstruction = isEn ? `
-You are Maya, a warm, thoughtful, and empathetic conversational companion on EduPulse.
+You are Cereza, a warm, thoughtful, and empathetic conversational companion on EduPulse.
 You represent the qualitative dialogic data collection instrument for the thesis "La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba".
 You are having an authentic, relaxed, and flowing conversation with "${participantName}", an educator-in-training of the Bachelor in Computer Science Education (Universidad de Córdoba).
 
@@ -265,7 +265,7 @@ OUTPUT FORMAT (JSON ONLY):
   "category": "string (Inteligencia Artificial | Formación Docente | Efectos de la IA)"
 }
 ` : `
-Eres Maya, una compañera de conversación reflexiva, empática y cercana en EduPulse.
+Eres Cereza, una compañera de conversación reflexiva, empática y cercana en EduPulse.
 Representas el instrumento cualitativo de interacción dialógica mediada por IA para el trabajo de grado "La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba".
 Estás teniendo una charla amena, fluida, natural y profunda con "${participantName}", docente en formación de la Licenciatura en Informática de la Universidad de Córdoba.
 
@@ -315,7 +315,7 @@ FORMATO OBLIGATORIO JSON:
 `;
 
     const transcript = messages
-      .map((m: any) => `${m.sender === 'agent' ? 'Maya' : participantName}: ${m.text}`)
+      .map((m: any) => `${m.sender === 'agent' ? 'Cereza' : participantName}: ${m.text}`)
       .join('\n\n');
 
     const prompt =
@@ -324,8 +324,8 @@ FORMATO OBLIGATORIO JSON:
           ? `The conversation has just started. Greet ${participantName} warmly, naturally acknowledging that they are in ${semester} of the Bachelor in Computer Science Education (Universidad de Córdoba). Set a relaxed, judgment-free tone in 1-2 friendly sentences, and kick off the conversation by asking how they are experiencing and incorporating AI tools into their studies or preparation as a future teacher. Do not ask what they study.`
           : `La conversación acaba de iniciar. Saluda calurosamente a ${participantName}, reconociendo con naturalidad que está en ${semester} de la Licenciatura en Informática de la Universidad de Córdoba. Genera un ambiente distendido y de confianza en 1-2 oraciones amables, y da apertura a la charla preguntándole cómo ha vivido y usado herramientas de inteligencia artificial en sus materias o en su preparación como docente. No preguntes qué carrera estudia.`
         : isEn
-        ? `Conversation transcript so far (${participantTurns} participant turns):\n\n${transcript}\n\nBased on ${participantName}'s latest message, keeping in mind they are in ${semester} of Computer Science Education, formulate Maya's next friendly, reflective response in valid JSON. Decide autonomously if saturation has been reached (isInterviewFinished). Never ask what degree they study.`
-        : `Transcripción de la charla hasta ahora (${participantTurns} intervenciones del estudiante):\n\n${transcript}\n\nCon base en el último mensaje de ${participantName}, recordando que cursa ${semester} de la Licenciatura en Informática, formula la siguiente respuesta amable y reflexiva de Maya en formato JSON. Decide con criterio cualitativo si ya se alcanzó la saturación suficiente para cerrar (isInterviewFinished). No preguntes qué carrera estudia.`;
+        ? `Conversation transcript so far (${participantTurns} participant turns):\n\n${transcript}\n\nBased on ${participantName}'s latest message, keeping in mind they are in ${semester} of Computer Science Education, formulate Cereza's next friendly, reflective response in valid JSON. Decide autonomously if saturation has been reached (isInterviewFinished). Never ask what degree they study.`
+        : `Transcripción de la charla hasta ahora (${participantTurns} intervenciones del estudiante):\n\n${transcript}\n\nCon base en el último mensaje de ${participantName}, recordando que cursa ${semester} de la Licenciatura en Informática, formula la siguiente respuesta amable y reflexiva de Cereza en formato JSON. Decide con criterio cualitativo si ya se alcanzó la saturación suficiente para cerrar (isInterviewFinished). No preguntes qué carrera estudia.`;
 
     const response = await generateWithRetry('gemini-3.8-flash', prompt, {
       systemInstruction,
@@ -383,7 +383,7 @@ app.post('/api/analyze-interview', async (req: Request, res: Response) => {
 
     const isEn = language === 'en';
     const transcript = messages
-      .map((m: any) => `${m.sender === 'agent' ? 'Maya' : participantName}: ${m.text}`)
+      .map((m: any) => `${m.sender === 'agent' ? 'Cereza' : participantName}: ${m.text}`)
       .join('\n\n');
 
     const systemInstruction = isEn

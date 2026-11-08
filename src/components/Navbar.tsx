@@ -176,7 +176,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Theme Dropdown Menu */}
               {isThemeMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl aero-glass border border-white/90 dark:border-cyan-500/40 shadow-2xl p-1.5 z-50 text-xs font-medium backdrop-blur-2xl">
+                <div 
+                  className="absolute left-0 top-full mt-2 w-48 rounded-2xl aero-glass border border-white/90 dark:border-cyan-500/40 shadow-2xl p-1.5 z-50 text-xs font-medium backdrop-blur-2xl"
+                  style={{ position: 'absolute' }}
+                >
                   <button
                     onClick={() => {
                       onSelectTheme('light');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Play, MessageCircle, User, GraduationCap, Calendar, ChevronDown, MapPin, AlertCircle, Sparkles } from 'lucide-react';
 import { InterviewGuide, InterviewSession } from '../types';
 import { Language, translations } from '../lib/i18n';
@@ -73,6 +73,16 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
   const [centerLocation, setCenterLocation] = useState('Sede Central Montería');
   const [submittedAttempt, setSubmittedAttempt] = useState(false);
 
+  useEffect(() => {
+    if (isOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen || !singleGuide) return null;
 
   const semesterOptions = language === 'en' ? SEMESTER_OPTIONS_EN : SEMESTER_OPTIONS_ES;
@@ -131,8 +141,19 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 backdrop-blur-md p-4 animate-fade-in overflow-y-auto">
-      <div className="aero-glass rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4 my-8 max-h-[92vh] overflow-y-auto text-slate-900 dark:text-slate-100 border border-white/90 dark:border-cyan-500/40">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-md p-3 sm:p-6 animate-fade-in"
+      onClick={onClose}
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="aero-glass rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4 my-auto max-h-[88vh] overflow-y-auto overscroll-contain text-slate-900 dark:text-slate-100 border border-white/90 dark:border-cyan-500/40"
+        style={{
+          maxHeight: '88vh',
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/60 transition cursor-pointer"

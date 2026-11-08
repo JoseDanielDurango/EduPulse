@@ -81,9 +81,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 aero-glass border-b border-white/80 dark:border-cyan-500/20 shadow-md transition-colors duration-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-3 sm:gap-4 lg:gap-6 h-16">
+    <header className="sticky top-0 z-40 aero-glass overflow-visible border-b border-white/80 dark:border-cyan-500/20 shadow-md transition-colors duration-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
+        <div className="flex items-center justify-between gap-3 sm:gap-4 lg:gap-6 h-16 overflow-visible">
           {/* Institutional Brand: EduPulse & UniCórdoba */}
           <div className="flex items-center gap-3.5 shrink-0">
             <div className="h-10 w-10 rounded-2xl bg-gradient-to-b from-white/90 via-cyan-50/80 to-emerald-100/90 dark:from-slate-900/90 dark:via-cyan-950/80 dark:to-emerald-950/90 p-1 flex items-center justify-center shadow-md ring-2 ring-white/80 dark:ring-cyan-400/50 relative overflow-hidden group cursor-pointer backdrop-blur-xs">
@@ -176,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Theme Dropdown Menu */}
               {isThemeMenuOpen && (
-                <div className="absolute right-0 mt-2 w-44 rounded-2xl aero-glass border border-white/80 dark:border-cyan-500/30 shadow-2xl py-1.5 z-50 text-xs font-medium">
+                <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl aero-glass border border-white/90 dark:border-cyan-500/40 shadow-2xl p-1.5 z-50 text-xs font-medium backdrop-blur-2xl">
                   <button
                     onClick={() => {
                       onSelectTheme('light');

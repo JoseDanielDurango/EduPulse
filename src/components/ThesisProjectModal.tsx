@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, GraduationCap, BookOpen, Target, Users, MapPin, Award, CheckCircle2, ShieldAlert, Cpu } from 'lucide-react';
 import { THESIS_PROJECT_INFO } from '../lib/thesisContext';
 import { Language } from '../lib/i18n';
@@ -10,12 +10,33 @@ interface ThesisProjectModalProps {
 }
 
 export const ThesisProjectModal: React.FC<ThesisProjectModalProps> = ({ isOpen, onClose, language = 'es' }) => {
+  useEffect(() => {
+    if (isOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
   const isEn = language === 'en';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 backdrop-blur-md p-4 animate-fade-in overflow-y-auto">
-      <div className="aero-glass rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto space-y-6 text-slate-900 dark:text-slate-100 border border-white/90 dark:border-cyan-500/40">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-md p-3 sm:p-6 animate-fade-in"
+      onClick={onClose}
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="aero-glass rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[85vh] overflow-y-auto overscroll-contain space-y-6 text-slate-900 dark:text-slate-100 border border-white/90 dark:border-cyan-500/40"
+        style={{
+          maxHeight: '85vh',
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
         <button
           onClick={onClose}
           className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/60 transition cursor-pointer"

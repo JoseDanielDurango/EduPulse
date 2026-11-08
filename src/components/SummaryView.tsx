@@ -432,7 +432,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                         <img
                           src="/cereza-avatar.png"
                           alt="Cereza"
-                          className="h-4 w-4 rounded-md object-contain bg-slate-900 border border-slate-700/60"
+                          className="h-5 w-5 rounded-full object-contain ring-1 ring-cyan-300 dark:ring-cyan-500/50 shadow-xs"
                         />
                         <span>Cereza (Entrevistadora Cualitativa)</span>
                       </>

@@ -373,12 +373,11 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       <div className="aero-glass rounded-3xl p-4 sm:p-5 mb-4 shadow-lg border border-white/90 dark:border-cyan-500/30">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/60 dark:border-cyan-800/40">
           <div className="flex items-center gap-3">
-            <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-emerald-300 to-teal-800 p-1 ring-2 ring-white/80 shadow-md shrink-0 relative overflow-hidden flex items-center justify-center">
-              <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+            <div className="h-12 w-12 rounded-full p-0.5 bg-gradient-to-tr from-cyan-400/40 via-white/80 to-emerald-400/40 shadow-lg ring-2 ring-white/90 dark:ring-cyan-400/60 shrink-0 relative flex items-center justify-center">
               <img
                 src="/cereza-avatar.png"
                 alt="Cereza Avatar"
-                className="h-full w-full object-contain relative z-10"
+                className="h-full w-full object-contain rounded-full drop-shadow-sm"
               />
             </div>
             <div>
@@ -463,12 +462,11 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               className={`flex items-start gap-3 ${isAgent ? 'justify-start' : 'justify-end'}`}
             >
               {isAgent && (
-                <div className="h-9 w-9 rounded-2xl bg-gradient-to-b from-emerald-300 to-teal-800 p-0.5 ring-2 ring-white/80 shadow-md shrink-0 relative overflow-hidden flex items-center justify-center">
-                  <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+                <div className="h-9 w-9 rounded-full ring-2 ring-white/90 dark:ring-cyan-400/60 shadow-md shrink-0 flex items-center justify-center bg-cyan-50/50 dark:bg-cyan-950/50 p-0.5">
                   <img
                     src="/cereza-avatar.png"
                     alt="Cereza"
-                    className="h-full w-full object-contain relative z-10"
+                    className="h-full w-full object-contain rounded-full"
                   />
                 </div>
               )}
@@ -520,12 +518,11 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
 
         {isAiResponding && (
           <div className="flex items-start gap-3 justify-start">
-            <div className="h-9 w-9 rounded-2xl bg-gradient-to-b from-emerald-300 to-teal-800 p-0.5 ring-2 ring-white/80 shadow-md shrink-0 relative overflow-hidden flex items-center justify-center">
-              <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+            <div className="h-9 w-9 rounded-full ring-2 ring-white/90 dark:ring-cyan-400/60 shadow-md shrink-0 flex items-center justify-center bg-cyan-50/50 dark:bg-cyan-950/50 p-0.5">
               <img
                 src="/cereza-avatar.png"
                 alt="Cereza"
-                className="h-full w-full object-contain relative z-10"
+                className="h-full w-full object-contain rounded-full"
               />
             </div>
             <div className="aero-glass rounded-3xl p-4 shadow-sm border border-emerald-200/60 dark:border-cyan-500/30">

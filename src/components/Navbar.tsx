@@ -12,6 +12,7 @@ import {
   Moon,
   Monitor,
   Check,
+  ClipboardList,
 } from 'lucide-react';
 import { User } from 'firebase/auth';
 import { loginWithGoogle, logout } from '../lib/firebase';
@@ -19,8 +20,8 @@ import { Language, translations } from '../lib/i18n';
 import { ThemeMode } from '../types';
 
 interface NavbarProps {
-  currentTab: 'interview' | 'dashboard';
-  onSelectTab: (tab: 'interview' | 'dashboard') => void;
+  currentTab: 'interview' | 'dashboard' | 'instruments';
+  onSelectTab: (tab: 'interview' | 'dashboard' | 'instruments') => void;
   currentUser: User | null;
   onNewSession: () => void;
   onOpenThesisModal: () => void;
@@ -134,6 +135,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <LayoutDashboard className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
               <span>{t.navDashboard}</span>
+            </button>
+
+            <button
+              onClick={() => onSelectTab('instruments')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                currentTab === 'instruments'
+                  ? 'bg-emerald-50 dark:bg-slate-800 text-emerald-800 dark:text-white border border-emerald-200 dark:border-slate-700 shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+              }`}
+            >
+              <ClipboardList className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+              <span>{t.navInstruments || (language === 'en' ? 'Questionnaires' : 'Cuestionarios')}</span>
             </button>
           </nav>
 

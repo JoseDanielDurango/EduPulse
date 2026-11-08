@@ -11,15 +11,18 @@ import { SummaryView } from './components/SummaryView';
 import { SessionsDashboard } from './components/SessionsDashboard';
 import { NewSessionModal } from './components/NewSessionModal';
 import { ThesisProjectModal } from './components/ThesisProjectModal';
+import { InstrumentsView } from './components/instruments/InstrumentsView';
 import {
   observeAuth,
   subscribeToSessions,
   subscribeToGuides,
   saveSession,
+  subscribeToInstrumentResponses,
 } from './lib/firebase';
 import { DEFAULT_GUIDES } from './lib/defaultGuides';
 import { THESIS_PROJECT_INFO } from './lib/thesisContext';
 import { InterviewGuide, InterviewSession, ThemeMode } from './types';
+import { InstrumentResponse } from './types/instruments';
 import { Language, translations } from './lib/i18n';
 import {
   Play,
@@ -35,13 +38,15 @@ import {
   Info,
   ChevronRight,
   Clock,
+  ClipboardList,
 } from 'lucide-react';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [currentTab, setCurrentTab] = useState<'interview' | 'dashboard'>('interview');
+  const [currentTab, setCurrentTab] = useState<'interview' | 'dashboard' | 'instruments'>('interview');
   const [sessions, setSessions] = useState<InterviewSession[]>([]);
   const [guides, setGuides] = useState<InterviewGuide[]>(DEFAULT_GUIDES);
+  const [instrumentResponses, setInstrumentResponses] = useState<InstrumentResponse[]>([]);
   const [activeSession, setActiveSession] = useState<InterviewSession | null>(null);
   const [viewingSummarySession, setViewingSummarySession] = useState<InterviewSession | null>(null);
   const [isNewSessionModalOpen, setIsNewSessionModalOpen] = useState(false);
@@ -122,6 +127,14 @@ export default function App() {
       }
     });
     return () => unsubscribeGuides();
+  }, []);
+
+  // Subscribe to Firestore & Offline Instrument Responses
+  useEffect(() => {
+    const unsubscribeResponses = subscribeToInstrumentResponses((updatedResponses) => {
+      setInstrumentResponses(updatedResponses);
+    });
+    return () => unsubscribeResponses();
   }, []);
 
   // Load last active session from localStorage
@@ -247,6 +260,14 @@ export default function App() {
                   >
                     <MessageCircle className="h-5 w-5" />
                     <span>{t.heroStartBtn}</span>
+                  </button>
+
+                  <button
+                    onClick={() => setCurrentTab('instruments')}
+                    className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs transition cursor-pointer"
+                  >
+                    <ClipboardList className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                    <span>{language === 'en' ? 'Questionnaires & Diagnostic' : 'Cuestionarios y Diagnóstico'}</span>
                   </button>
 
                   <button
@@ -388,6 +409,14 @@ export default function App() {
               setIsNewSessionModalOpen(true);
             }}
             language={language}
+          />
+        )}
+
+        {currentTab === 'instruments' && (
+          <InstrumentsView
+            responses={instrumentResponses}
+            language={language}
+            onOpenThesisModal={() => setIsThesisModalOpen(true)}
           />
         )}
       </main>

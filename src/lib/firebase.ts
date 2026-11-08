@@ -22,6 +22,7 @@ import {
 } from 'firebase/auth';
 import firebaseConfig from '../../firebase-applet-config.json';
 import { InterviewGuide, InterviewSession } from '../types';
+import { InstrumentResponse } from '../types/instruments';
 import { DEFAULT_GUIDES } from './defaultGuides';
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
@@ -208,5 +209,129 @@ export const saveGuide = async (guide: InterviewGuide) => {
     });
   } catch (err) {
     console.error('Failed to save guide to Firestore:', err);
+  }
+};
+
+// ==========================================
+// Instrument Responses Operations (Surveys & Diagnostic)
+// ==========================================
+
+export const subscribeToInstrumentResponses = (callback: (responses: InstrumentResponse[]) => void) => {
+  try {
+    const responsesCol = collection(db, 'instrument_responses');
+    const q = query(responsesCol, orderBy('submittedAt', 'desc'));
+
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const list: InstrumentResponse[] = [];
+        snapshot.forEach((docSnap) => {
+          list.push({ id: docSnap.id, ...(docSnap.data() as any) });
+        });
+
+        // Also check if there are local offline responses that aren't yet in Firestore
+        const localList: InstrumentResponse[] = JSON.parse(
+          localStorage.getItem('local_instrument_responses') || '[]'
+        );
+        const remoteIds = new Set(list.map((r) => r.id));
+        const merged = [...list, ...localList.filter((l) => !remoteIds.has(l.id))];
+
+        callback(merged);
+      },
+      (error) => {
+        console.warn('Using local fallback for instrument responses:', error.message);
+        const localList: InstrumentResponse[] = JSON.parse(
+          localStorage.getItem('local_instrument_responses') || '[]'
+        );
+        callback(localList);
+      }
+    );
+  } catch (err) {
+    console.error('Failed to subscribe to instrument responses:', err);
+    const localList: InstrumentResponse[] = JSON.parse(
+      localStorage.getItem('local_instrument_responses') || '[]'
+    );
+    callback(localList);
+    return () => {};
+  }
+};
+
+export const saveInstrumentResponse = async (response: InstrumentResponse): Promise<void> => {
+  // Always update localStorage first for instantaneous offline persistence
+  try {
+    const localList: InstrumentResponse[] = JSON.parse(
+      localStorage.getItem('local_instrument_responses') || '[]'
+    );
+    const existingIndex = localList.findIndex((r) => r.id === response.id);
+    if (existingIndex >= 0) {
+      localList[existingIndex] = response;
+    } else {
+      localList.unshift(response);
+    }
+    localStorage.setItem('local_instrument_responses', JSON.stringify(localList));
+  } catch (e) {
+    console.warn('Could not save instrument response to localStorage:', e);
+  }
+
+  // Push to Firestore
+  try {
+    const docRef = doc(db, 'instrument_responses', response.id);
+    await setDoc(docRef, {
+      ...response,
+      updatedAt: new Date().toISOString(),
+    }, { merge: true });
+  } catch (err) {
+    console.warn('Failed to save instrument response to Firestore (offline fallback maintained):', err);
+  }
+};
+
+export const removeInstrumentResponse = async (responseId: string): Promise<void> => {
+  // Remove from localStorage
+  try {
+    const localList: InstrumentResponse[] = JSON.parse(
+      localStorage.getItem('local_instrument_responses') || '[]'
+    );
+    const filtered = localList.filter((r) => r.id !== responseId);
+    localStorage.setItem('local_instrument_responses', JSON.stringify(filtered));
+  } catch (e) {
+    console.warn('Failed to remove response from localStorage:', e);
+  }
+
+  // Remove from Firestore
+  try {
+    const docRef = doc(db, 'instrument_responses', responseId);
+    await deleteDoc(docRef);
+  } catch (err) {
+    console.error('Failed to delete instrument response from Firestore:', err);
+  }
+};
+
+// Draft auto-save helpers for students filling out instruments
+export const saveInstrumentDraft = (instrumentId: string, draftData: any): void => {
+  try {
+    localStorage.setItem(`edupulse_draft_${instrumentId}`, JSON.stringify({
+      data: draftData,
+      savedAt: new Date().toISOString(),
+    }));
+  } catch (e) {
+    console.warn('Failed to save draft:', e);
+  }
+};
+
+export const loadInstrumentDraft = (instrumentId: string): { data: any; savedAt: string } | null => {
+  try {
+    const raw = localStorage.getItem(`edupulse_draft_${instrumentId}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.warn('Failed to load draft:', e);
+    return null;
+  }
+};
+
+export const clearInstrumentDraft = (instrumentId: string): void => {
+  try {
+    localStorage.removeItem(`edupulse_draft_${instrumentId}`);
+  } catch (e) {
+    console.warn('Failed to clear draft:', e);
   }
 };

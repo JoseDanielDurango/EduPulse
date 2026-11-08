@@ -22,7 +22,20 @@ import {
 } from 'lucide-react';
 import { InstrumentDefinition, InstrumentQuestion, InstrumentResponse } from '../../types/instruments';
 import { removeInstrumentResponse } from '../../lib/firebase';
+import { isOptionMatch, getLocalizedOptionLabel } from '../../lib/defaultInstruments';
 import { Language } from '../../lib/i18n';
+
+const formatCampusLabel = (campus: string, lang: Language) => {
+  if (lang !== 'en') return campus;
+  if (campus.includes('Central')) return 'Montería Central Campus';
+  if (campus.includes('Berástegui')) return 'Berástegui Campus (Ciénaga de Oro)';
+  if (campus.includes('Lorica')) return 'Lorica Campus';
+  if (campus.includes('Sahagún')) return 'Sahagún Campus';
+  if (campus.includes('Montelíbano')) return 'Montelíbano Campus';
+  if (campus.includes('Planeta Rica')) return 'Planeta Rica Campus';
+  if (campus.includes('Distancia')) return 'Distance Learning / Other';
+  return campus;
+};
 
 interface InstrumentResponsesViewerProps {
   instrument: InstrumentDefinition;
@@ -262,7 +275,13 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                 {stats.total}
               </span>
               <span className="text-xs text-emerald-600 font-semibold">
-                {stats.total === 1 ? 'estudiante' : 'estudiantes'}
+                {stats.total === 1
+                  ? language === 'en'
+                    ? 'student'
+                    : 'estudiante'
+                  : language === 'en'
+                  ? 'students'
+                  : 'estudiantes'}
               </span>
             </div>
           </div>
@@ -275,7 +294,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
               <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
                 {stats.avgAge || '--'}
               </span>
-              <span className="text-xs text-slate-400 font-medium">años</span>
+              <span className="text-xs text-slate-400 font-medium">
+                {language === 'en' ? 'years' : 'años'}
+              </span>
             </div>
           </div>
 
@@ -287,7 +308,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
               <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
                 {Object.keys(stats.campuses).length}
               </span>
-              <span className="text-xs text-slate-400 font-medium">sedes</span>
+              <span className="text-xs text-slate-400 font-medium">
+                {language === 'en' ? 'campuses' : 'sedes'}
+              </span>
             </div>
           </div>
 
@@ -299,7 +322,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
               <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
                 {Object.keys(stats.semesters).length}
               </span>
-              <span className="text-xs text-slate-400 font-medium">cohortes</span>
+              <span className="text-xs text-slate-400 font-medium">
+                {language === 'en' ? 'cohorts' : 'cohortes'}
+              </span>
             </div>
           </div>
         </div>
@@ -467,10 +492,11 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                     .sort((a, b) => b[1] - a[1])
                     .map(([campus, count]) => {
                       const pct = Math.round((count / instrumentResponses.length) * 100);
+                      const displayCampus = formatCampusLabel(campus, language);
                       return (
                         <div key={campus} className="space-y-1">
                           <div className="flex justify-between text-xs">
-                            <span className="font-semibold text-slate-800 dark:text-slate-200">{campus}</span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200">{displayCampus}</span>
                             <span className="text-slate-500 font-mono">
                               {count} ({pct}%)
                             </span>
@@ -532,7 +558,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                     {q.type === 'single_choice' && (
                       <div className="space-y-3">
                         {q.options?.map((opt) => {
-                          const count = instrumentResponses.filter((r) => r.answers[q.id] === opt).length;
+                          const count = instrumentResponses.filter((r) =>
+                            isOptionMatch(q.id, opt, r.answers[q.id])
+                          ).length;
                           const pct = instrumentResponses.length > 0
                             ? Math.round((count / instrumentResponses.length) * 100)
                             : 0;
@@ -565,7 +593,10 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                         {q.options?.map((opt) => {
                           const count = instrumentResponses.filter((r) => {
                             const val = r.answers[q.id];
-                            return Array.isArray(val) && val.includes(opt);
+                            return (
+                              Array.isArray(val) &&
+                              val.some((item) => isOptionMatch(q.id, opt, String(item)))
+                            );
                           }).length;
                           const pct = instrumentResponses.length > 0
                             ? Math.round((count / instrumentResponses.length) * 100)
@@ -668,7 +699,7 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                                     {r.participantName}
                                   </span>
                                   <span>
-                                    {r.semester}° Sem • {r.centerLocation?.split(' ')[0]}
+                                    {r.semester}° {language === 'en' ? 'Sem' : 'Sem'} • {formatCampusLabel(r.centerLocation || '', language).split(' ')[0]}
                                   </span>
                                 </div>
                                 <p className="text-xs text-slate-700 dark:text-slate-300 italic font-body leading-relaxed">
@@ -758,11 +789,11 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                   {activeIndividualResponse.participantName}
                 </h3>
                 <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-                  <span>{activeIndividualResponse.semester}° Semestre</span>
+                  <span>{activeIndividualResponse.semester}° {language === 'en' ? 'Semester' : 'Semestre'}</span>
                   <span>•</span>
-                  <span>{activeIndividualResponse.age} años</span>
+                  <span>{activeIndividualResponse.age} {language === 'en' ? 'years old' : 'años'}</span>
                   <span>•</span>
-                  <span>{activeIndividualResponse.centerLocation}</span>
+                  <span>{formatCampusLabel(activeIndividualResponse.centerLocation || '', language)}</span>
                   {activeIndividualResponse.studentCode && (
                     <>
                       <span>•</span>
@@ -831,13 +862,13 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                                 key={item}
                                 className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
                               >
-                                {item}
+                                {getLocalizedOptionLabel(q.id, String(item), language)}
                               </span>
                             ))}
                           </div>
                         ) : (
                           <div className="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 font-normal leading-relaxed">
-                            {String(ans)}
+                            {getLocalizedOptionLabel(q.id, String(ans), language)}
                           </div>
                         )}
                       </div>

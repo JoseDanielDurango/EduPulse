@@ -388,7 +388,11 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
             <GraduationCap className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>Universidad de Córdoba • Licenciatura en Informática</span>
+            <span>
+              {language === 'en'
+                ? 'University of Córdoba • Bachelor in Computer Science'
+                : 'Universidad de Córdoba • Licenciatura en Informática'}
+            </span>
           </div>
 
           {/* Draft Auto-save Indicator */}
@@ -674,13 +678,27 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                 onChange={(e) => setCenterLocation(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
               >
-                <option value="Sede Central Montería">Sede Central Montería</option>
-                <option value="Sede Berástegui (Ciénaga de Oro)">Sede Berástegui (Ciénaga de Oro)</option>
-                <option value="Sede Lorica">Sede Lorica</option>
-                <option value="Sede Sahagún">Sede Sahagún</option>
-                <option value="Sede Montelíbano">Sede Montelíbano</option>
-                <option value="Sede Planeta Rica">Sede Planeta Rica</option>
-                <option value="Modalidad a Distancia / Otro">Modalidad a Distancia / Otro</option>
+                <option value="Sede Central Montería">
+                  {language === 'en' ? 'Montería Central Campus' : 'Sede Central Montería'}
+                </option>
+                <option value="Sede Berástegui (Ciénaga de Oro)">
+                  {language === 'en' ? 'Berástegui Campus (Ciénaga de Oro)' : 'Sede Berástegui (Ciénaga de Oro)'}
+                </option>
+                <option value="Sede Lorica">
+                  {language === 'en' ? 'Lorica Campus' : 'Sede Lorica'}
+                </option>
+                <option value="Sede Sahagún">
+                  {language === 'en' ? 'Sahagún Campus' : 'Sede Sahagún'}
+                </option>
+                <option value="Sede Montelíbano">
+                  {language === 'en' ? 'Montelíbano Campus' : 'Sede Montelíbano'}
+                </option>
+                <option value="Sede Planeta Rica">
+                  {language === 'en' ? 'Planeta Rica Campus' : 'Sede Planeta Rica'}
+                </option>
+                <option value="Modalidad a Distancia / Otro">
+                  {language === 'en' ? 'Distance Learning / Other' : 'Modalidad a Distancia / Otro'}
+                </option>
               </select>
             </div>
           </div>
@@ -692,7 +710,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                 {language === 'en' ? 'Current Semester (1 to 10) *' : 'Semestre Actual en Curso (1 al 10) *'}
               </label>
               <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                {semester}° Semestre
+                {semester}° {language === 'en' ? 'Semester' : 'Semestre'}
               </span>
             </div>
             <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5 sm:gap-2">
@@ -710,7 +728,9 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                     }`}
                   >
                     <span>{sem}°</span>
-                    <span className="text-[9px] opacity-75 font-normal">Sem</span>
+                    <span className="text-[9px] opacity-75 font-normal">
+                      {language === 'en' ? 'Sem' : 'Sem'}
+                    </span>
                   </button>
                 );
               })}
@@ -791,9 +811,15 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                         />
                         <div className="flex justify-between text-[11px] text-slate-400">
                           <span>
-                            {value ? `${value.trim().split(/\s+/).filter(Boolean).length} palabras` : '0 palabras'}
+                            {value
+                              ? `${value.trim().split(/\s+/).filter(Boolean).length} ${language === 'en' ? 'words' : 'palabras'}`
+                              : `0 ${language === 'en' ? 'words' : 'palabras'}`}
                           </span>
-                          <span>{value ? `${value.length} caracteres` : '0 caracteres'}</span>
+                          <span>
+                            {value
+                              ? `${value.length} ${language === 'en' ? 'characters' : 'caracteres'}`
+                              : `0 ${language === 'en' ? 'characters' : 'caracteres'}`}
+                          </span>
                         </div>
                       </div>
                     )}

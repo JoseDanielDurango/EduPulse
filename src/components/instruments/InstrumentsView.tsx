@@ -10,7 +10,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { InstrumentDefinition, InstrumentResponse } from '../../types/instruments';
-import { DEFAULT_INSTRUMENTS } from '../../lib/defaultInstruments';
+import { getInstruments } from '../../lib/defaultInstruments';
 import { InstrumentForm } from './InstrumentForm';
 import { InstrumentResponsesViewer } from './InstrumentResponsesViewer';
 import { Language } from '../../lib/i18n';
@@ -26,7 +26,7 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
   language,
   onOpenThesisModal,
 }) => {
-  const instruments = DEFAULT_INSTRUMENTS;
+  const instruments = getInstruments(language);
   const [selectedInstrumentId, setSelectedInstrumentId] = useState<string>(instruments[0].id);
   const [viewMode, setViewMode] = useState<'form' | 'analytics'>('form');
 

@@ -84,9 +84,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a] text-slate-900 dark:text-white border-b border-slate-200/90 dark:border-slate-800 shadow-2xs dark:shadow-md backdrop-blur transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between gap-3 sm:gap-4 lg:gap-6 h-16">
           {/* Institutional Brand: EduPulse & UniCórdoba */}
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-3.5 shrink-0">
             <div className="h-10 w-10 rounded-xl bg-[#059669] flex items-center justify-center text-white shadow-sm ring-1 ring-emerald-400/30">
               <GraduationCap className="h-5 w-5" />
             </div>
@@ -100,17 +100,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Universidad de Córdoba
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-body">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden xl:block font-body">
                 Licenciatura en Informática • Interacción Dialógica Mediada por IA
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs (Only Conversación & Historial) */}
-          <nav className="flex items-center gap-1 sm:gap-2">
+          {/* Navigation Tabs (Conversación, Historial, Cuestionarios) */}
+          <nav className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
             <button
               onClick={() => onSelectTab('interview')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 currentTab === 'interview'
                   ? 'bg-emerald-50 dark:bg-slate-800 text-emerald-800 dark:text-white border border-emerald-200 dark:border-slate-700 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
@@ -127,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onSelectTab('dashboard')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 currentTab === 'dashboard'
                   ? 'bg-emerald-50 dark:bg-slate-800 text-emerald-800 dark:text-white border border-emerald-200 dark:border-slate-700 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
@@ -139,19 +139,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onSelectTab('instruments')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 currentTab === 'instruments'
                   ? 'bg-emerald-50 dark:bg-slate-800 text-emerald-800 dark:text-white border border-emerald-200 dark:border-slate-700 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
               }`}
             >
               <ClipboardList className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-              <span>{t.navInstruments || (language === 'en' ? 'Questionnaires' : 'Cuestionarios')}</span>
+              <span>{t.navInstruments}</span>
             </button>
           </nav>
 
           {/* Controls: Theme Switcher, Language, Thesis Info, New Session, Auth */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 shrink-0 pl-2 sm:pl-3 lg:pl-4 border-l border-slate-200 dark:border-slate-800">
             {/* Theme Switcher */}
             <div className="relative" ref={themeMenuRef}>
               <button

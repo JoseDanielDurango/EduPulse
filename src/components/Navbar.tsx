@@ -7,7 +7,6 @@ import {
   Radio,
   Globe,
   Info,
-  GraduationCap,
   Sun,
   Moon,
   Monitor,
@@ -87,9 +86,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between gap-3 sm:gap-4 lg:gap-6 h-16">
           {/* Institutional Brand: EduPulse & UniCórdoba */}
           <div className="flex items-center gap-3.5 shrink-0">
-            <div className="h-10 w-10 rounded-2xl bg-gradient-to-b from-emerald-300 via-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-md ring-2 ring-white/60 dark:ring-emerald-400/40 relative overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent rounded-t-2xl pointer-events-none" />
-              <GraduationCap className="h-5 w-5 drop-shadow-sm" />
+            <div className="h-10 w-10 rounded-2xl bg-gradient-to-b from-white/90 via-cyan-50/80 to-emerald-100/90 dark:from-slate-900/90 dark:via-cyan-950/80 dark:to-emerald-950/90 p-1 flex items-center justify-center shadow-md ring-2 ring-white/80 dark:ring-cyan-400/50 relative overflow-hidden group cursor-pointer backdrop-blur-xs">
+              <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+              <img
+                src="/umbran-watch-icon.png"
+                alt="Umbran Watch Symbol"
+                className="h-full w-full object-contain relative z-10 transition-transform duration-300 group-hover:scale-110 drop-shadow-xs"
+              />
             </div>
             <div>
               <div className="flex items-center gap-2">

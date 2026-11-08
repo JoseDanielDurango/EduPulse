@@ -380,10 +380,10 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-      {/* Questionnaire Academic Header */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-4 relative overflow-hidden">
+      {/* Questionnaire Academic Header with Frutiger Aero Glass */}
+      <div className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 shadow-lg p-6 sm:p-8 space-y-4 relative overflow-hidden">
         {/* Decorative Top Accent Bar */}
-        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600" />
+        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 shadow-sm" />
 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
@@ -505,10 +505,10 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
         {/* Section 0: Informed Consent & Research Ethics */}
         <div
           id="field-informedConsent"
-          className={`bg-white dark:bg-slate-900 rounded-3xl border p-6 sm:p-7 space-y-4 shadow-2xs transition ${
+          className={`aero-glass rounded-3xl border p-6 sm:p-7 space-y-4 shadow-md transition ${
             validationErrors.informedConsent
               ? 'border-red-400 dark:border-red-600 ring-2 ring-red-400/20'
-              : 'border-slate-200/90 dark:border-slate-800'
+              : 'border-white/80 dark:border-cyan-500/20'
           }`}
         >
           <div className="flex items-center gap-2.5">
@@ -570,7 +570,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
         </div>
 
         {/* Section 1: Participant Demographics */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 space-y-5 shadow-2xs">
+        <div className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 p-6 sm:p-7 space-y-5 shadow-md">
           <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
             <div className="h-8 w-8 rounded-xl bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-400 flex items-center justify-center font-bold">
               <User className="h-4 w-4" />
@@ -721,10 +721,10 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                     key={sem}
                     type="button"
                     onClick={() => setSemester(sem)}
-                    className={`py-2 rounded-xl text-xs font-bold border transition cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                    className={`py-2 rounded-2xl text-xs font-bold border transition cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
                       isSelected
-                        ? 'bg-[#059669] text-white border-emerald-600 shadow-xs'
-                        : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                        ? 'btn-aero-green text-white shadow-md'
+                        : 'btn-aero-glass text-slate-700 dark:text-slate-300'
                     }`}
                   >
                     <span>{sem}°</span>
@@ -751,10 +751,10 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                 <div
                   key={q.id}
                   id={`field-${q.id}`}
-                  className={`bg-white dark:bg-slate-900 rounded-3xl border p-6 sm:p-7 space-y-4 shadow-2xs transition ${
+                  className={`aero-glass rounded-3xl border p-6 sm:p-7 space-y-4 shadow-sm transition ${
                     hasError
                       ? 'border-red-400 dark:border-red-600 ring-2 ring-red-400/20'
-                      : 'border-slate-200/90 dark:border-slate-800'
+                      : 'border-white/80 dark:border-cyan-500/20'
                   }`}
                 >
                   {/* Category and Index Bar */}
@@ -1055,10 +1055,10 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
             })}
         </div>
 
-        {/* Submit Actions Bar */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 flex flex-wrap items-center justify-between gap-4 shadow-sm">
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-            <Save className="h-4 w-4 text-emerald-600" />
+        {/* Submit Actions Bar with Frutiger Aero Gloss */}
+        <div className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 p-6 flex flex-wrap items-center justify-between gap-4 shadow-lg">
+          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-cyan-200/80">
+            <Save className="h-4 w-4 text-emerald-600 dark:text-cyan-400" />
             <span>
               {language === 'en'
                 ? 'Your responses will be securely stored in the research database.'
@@ -1070,7 +1070,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
             <button
               type="button"
               onClick={handleClearDraft}
-              className="px-4 py-2.5 rounded-xl font-bold text-xs text-slate-600 dark:text-slate-300 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+              className="btn-aero-glass px-5 py-2.5 rounded-full font-bold text-xs cursor-pointer"
             >
               {language === 'en' ? 'Reset form' : 'Reiniciar formulario'}
             </button>
@@ -1078,7 +1078,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm bg-[#059669] hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="btn-aero-green inline-flex items-center gap-2 px-8 py-3 rounded-full font-bold text-sm shadow-xl transition active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               <Send className="h-4 w-4" />
               <span>

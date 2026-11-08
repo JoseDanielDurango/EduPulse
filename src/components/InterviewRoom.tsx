@@ -369,33 +369,36 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
         </div>
       </div>
 
-      {/* Header & Participant Badge (Fluid Qualitative Conversation) */}
-      <div className="elevation-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 mb-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+      {/* Header & Participant Badge (Fluid Qualitative Conversation) with Frutiger Aero Glass */}
+      <div className="aero-glass rounded-3xl p-4 sm:p-5 mb-4 shadow-lg border border-white/90 dark:border-cyan-500/30">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/60 dark:border-cyan-800/40">
           <div className="flex items-center gap-3">
-            <img
-              src="/cereza-avatar.png"
-              alt="Cereza Avatar"
-              className="h-10 w-10 rounded-xl object-contain bg-[#0f172a] dark:bg-slate-800 p-1 border border-slate-700/60 shadow-xs shrink-0"
-            />
+            <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-emerald-300 to-teal-800 p-1 ring-2 ring-white/80 shadow-md shrink-0 relative overflow-hidden flex items-center justify-center">
+              <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+              <img
+                src="/cereza-avatar.png"
+                alt="Cereza Avatar"
+                className="h-full w-full object-contain relative z-10"
+              />
+            </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="font-display font-bold text-sm sm:text-base text-[#0f172a] dark:text-white">
+                <h1 className="font-display font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
                   Diálogo Reflexivo con Cereza
                 </h1>
-                {/* Stitch Participant Badge */}
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#ecfdf5] dark:bg-emerald-950/80 border border-[#a7f3d0] dark:border-emerald-800 text-[#065f46] dark:text-emerald-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#059669] animate-pulse"></span>
+                {/* Participant Badge */}
+                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold bg-white/70 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200 shadow-2xs">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-sm"></span>
                   {participantCode} • {session.semester || 'Licenciatura'}
                 </span>
                 {session.centerLocation && (
-                  <span className="hidden md:inline-flex text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium">
+                  <span className="hidden md:inline-flex text-[11px] px-2.5 py-0.5 rounded-full bg-cyan-100/70 dark:bg-cyan-950/70 text-cyan-900 dark:text-cyan-200 font-semibold border border-cyan-200/60 dark:border-cyan-800/60">
                     {session.centerLocation}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-body">
-                Entrevistadora: <span className="font-semibold text-slate-700 dark:text-slate-200">Cereza</span> •
+              <p className="text-xs text-slate-500 dark:text-cyan-200/70 font-body">
+                Entrevistadora: <span className="font-bold text-slate-700 dark:text-slate-200">Cereza</span> •
                 Licenciatura en Informática (Universidad de Córdoba)
               </p>
             </div>
@@ -406,10 +409,10 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             <button
               onClick={() => setAutoSpeechSynthesis(!autoSpeechSynthesis)}
               title={autoSpeechSynthesis ? t.voiceToggleOn : t.voiceToggleOff}
-              className={`p-2 rounded-lg text-xs font-medium border transition flex items-center gap-1.5 cursor-pointer ${
+              className={`p-2 rounded-full text-xs font-medium border transition flex items-center gap-1.5 cursor-pointer shadow-xs ${
                 autoSpeechSynthesis
-                  ? 'bg-emerald-50 dark:bg-emerald-950 border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200'
-                  : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
+                  ? 'btn-aero-green text-white'
+                  : 'btn-aero-glass text-slate-600 dark:text-slate-300'
               }`}
             >
               {autoSpeechSynthesis ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
@@ -419,7 +422,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             <button
               onClick={() => handleTriggerFullSynthesis(session)}
               disabled={isAiResponding || session.messages.length < 2}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#059669] hover:bg-emerald-700 text-white transition disabled:opacity-50 shadow-xs cursor-pointer"
+              className="btn-aero-green inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition disabled:opacity-50 shadow-md cursor-pointer"
             >
               <FileCheck2 className="h-3.5 w-3.5" />
               <span>{session.status === 'completed' ? t.viewSummary : t.finishChat}</span>
@@ -427,20 +430,20 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
           </div>
         </div>
 
-        {/* Fluid Qualitative Tracker (No rigid question counters) */}
+        {/* Fluid Qualitative Tracker */}
         <div className="pt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-body">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <Layers className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <Layers className="h-3.5 w-3.5 text-emerald-600 dark:text-cyan-400" />
               <span>Dimensión Actual:</span>
             </span>
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+            <span className="px-3 py-0.5 rounded-full text-[11px] font-bold bg-white/70 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
               {session.currentDimension || 'Prácticas y Autoeficacia Didáctica'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-            <span className="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium">
+          <div className="flex items-center gap-2 text-slate-500 dark:text-cyan-200/70">
+            <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 font-semibold border border-slate-200/60 dark:border-slate-700/60">
               Fase: {session.qualitativePhase || 'Exploración Inicial'}
             </span>
             <span className="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
@@ -450,7 +453,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
         </div>
       </div>
 
-      {/* Messages Scroll Area - Stitch Reflexive Dialogue Bubbles */}
+      {/* Messages Scroll Area - Stitch Reflexive Dialogue Bubbles with Frutiger Aero Styling */}
       <div className="flex-1 overflow-y-auto px-1 py-2 space-y-4 font-body">
         {session.messages.map((message) => {
           const isAgent = message.sender === 'agent';
@@ -460,33 +463,36 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               className={`flex items-start gap-3 ${isAgent ? 'justify-start' : 'justify-end'}`}
             >
               {isAgent && (
-                <img
-                  src="/cereza-avatar.png"
-                  alt="Cereza"
-                  className="h-8 w-8 rounded-lg object-contain bg-[#0f172a] dark:bg-slate-800 p-0.5 border border-slate-700/60 shadow-xs shrink-0"
-                />
+                <div className="h-9 w-9 rounded-2xl bg-gradient-to-b from-emerald-300 to-teal-800 p-0.5 ring-2 ring-white/80 shadow-md shrink-0 relative overflow-hidden flex items-center justify-center">
+                  <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+                  <img
+                    src="/cereza-avatar.png"
+                    alt="Cereza"
+                    className="h-full w-full object-contain relative z-10"
+                  />
+                </div>
               )}
 
               {/* Message Content Container */}
               <div
-                className={`max-w-[88%] sm:max-w-[78%] rounded-xl p-4 leading-relaxed text-sm ${
+                className={`max-w-[88%] sm:max-w-[78%] rounded-3xl p-4 sm:p-5 leading-relaxed text-sm ${
                   isAgent
-                    ? 'bg-[#f1f5f9] dark:bg-slate-800/90 border border-[#e2e8f0] dark:border-slate-700 text-[#1e293b] dark:text-slate-100'
-                    : 'bg-white dark:bg-slate-900 border border-[#e2e8f0] dark:border-slate-800 border-l-4 border-l-[#0284c7] text-[#0f172a] dark:text-slate-100 shadow-xs'
+                    ? 'aero-glass border border-emerald-200/60 dark:border-cyan-500/30 text-slate-900 dark:text-slate-100 shadow-sm'
+                    : 'aero-card border-l-4 border-l-cyan-500 border-white/90 dark:border-cyan-500/40 text-slate-900 dark:text-slate-100 shadow-md'
                 }`}
               >
-                <div className="flex items-center justify-between gap-3 mb-1.5 pb-1 border-b border-slate-200/60 dark:border-slate-700/60">
+                <div className="flex items-center justify-between gap-3 mb-2 pb-1.5 border-b border-slate-200/50 dark:border-cyan-800/40">
                   <div className="flex items-center gap-2">
-                    <span className="font-display font-bold text-xs text-[#0f172a] dark:text-white">
+                    <span className="font-display font-bold text-xs text-slate-900 dark:text-cyan-200">
                       {isAgent ? 'Cereza (Entrevistadora Cualitativa)' : `${session.participantName} [Cita Reflexiva]`}
                     </span>
                     {message.category && (
-                      <span className="hidden sm:inline-flex px-1.5 py-0.2 rounded text-[10px] font-semibold bg-sky-50 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+                      <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-100/70 dark:bg-cyan-950/70 text-cyan-900 dark:text-cyan-300 border border-cyan-200/60 dark:border-cyan-800/60">
                         {message.category}
                       </span>
                     )}
                   </div>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+                  <span className="text-[10px] text-slate-400 dark:text-cyan-300/60 font-mono">
                     {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
@@ -494,8 +500,8 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                 <div
                   className={
                     isAgent
-                      ? 'whitespace-pre-wrap text-slate-800 dark:text-slate-200'
-                      : 'quote-reflexive whitespace-pre-wrap text-slate-900 dark:text-slate-100'
+                      ? 'whitespace-pre-wrap text-slate-800 dark:text-slate-200 leading-relaxed'
+                      : 'quote-reflexive whitespace-pre-wrap text-slate-900 dark:text-slate-100 leading-relaxed font-medium'
                   }
                 >
                   {message.text}
@@ -503,8 +509,9 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               </div>
 
               {!isAgent && (
-                <div className="h-8 w-8 rounded-lg bg-sky-100 dark:bg-sky-950 text-sky-900 dark:text-sky-200 border border-sky-300 dark:border-sky-800 flex items-center justify-center shrink-0 font-bold text-xs shadow-xs">
-                  {(session.participantName || 'E')[0].toUpperCase()}
+                <div className="h-9 w-9 rounded-2xl bg-gradient-to-b from-sky-400 to-blue-700 text-white border border-white/80 shadow-md flex items-center justify-center shrink-0 font-extrabold text-xs relative overflow-hidden">
+                  <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
+                  <span className="relative z-10">{(session.participantName || 'E')[0].toUpperCase()}</span>
                 </div>
               )}
             </div>
@@ -513,20 +520,23 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
 
         {isAiResponding && (
           <div className="flex items-start gap-3 justify-start">
-            <img
-              src="/cereza-avatar.png"
-              alt="Cereza"
-              className="h-8 w-8 rounded-lg object-contain bg-[#0f172a] dark:bg-slate-800 p-0.5 border border-slate-700/60 shadow-xs shrink-0"
-            />
-            <div className="bg-[#f1f5f9] dark:bg-slate-800 border border-[#e2e8f0] dark:border-slate-700 rounded-xl p-3.5 shadow-xs">
-              <div className="flex items-center gap-2 text-xs font-semibold text-[#059669] dark:text-[#34d399] mb-1">
-                <Sparkles className="h-3.5 w-3.5 animate-spin" />
+            <div className="h-9 w-9 rounded-2xl bg-gradient-to-b from-emerald-300 to-teal-800 p-0.5 ring-2 ring-white/80 shadow-md shrink-0 relative overflow-hidden flex items-center justify-center">
+              <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+              <img
+                src="/cereza-avatar.png"
+                alt="Cereza"
+                className="h-full w-full object-contain relative z-10"
+              />
+            </div>
+            <div className="aero-glass rounded-3xl p-4 shadow-sm border border-emerald-200/60 dark:border-cyan-500/30">
+              <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1.5">
+                <Sparkles className="h-3.5 w-3.5 animate-spin text-cyan-500" />
                 <span>{t.mayaThinking}</span>
               </div>
-              <div className="flex items-center gap-1.5 py-1">
-                <div className="h-1.5 w-1.5 rounded-full bg-[#059669] dark:bg-[#34d399] animate-bounce [animation-delay:-0.3s]" />
-                <div className="h-1.5 w-1.5 rounded-full bg-[#059669] dark:bg-[#34d399] animate-bounce [animation-delay:-0.15s]" />
-                <div className="h-1.5 w-1.5 rounded-full bg-[#059669] dark:bg-[#34d399] animate-bounce" />
+              <div className="flex items-center gap-2 py-1">
+                <div className="h-2 w-2 rounded-full bg-gradient-to-b from-emerald-400 to-teal-600 shadow-xs animate-bounce [animation-delay:-0.3s]" />
+                <div className="h-2 w-2 rounded-full bg-gradient-to-b from-cyan-400 to-blue-600 shadow-xs animate-bounce [animation-delay:-0.15s]" />
+                <div className="h-2 w-2 rounded-full bg-gradient-to-b from-teal-400 to-emerald-600 shadow-xs animate-bounce" />
               </div>
             </div>
           </div>
@@ -536,14 +546,14 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       </div>
 
       {speechError && (
-        <div className="text-xs text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 px-3 py-1.5 rounded-lg mb-2 flex items-center gap-1.5 font-body">
-          <AlertCircle className="h-3.5 w-3.5" />
+        <div className="text-xs text-rose-800 dark:text-rose-200 bg-rose-50/90 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 px-3.5 py-2 rounded-2xl mb-2 flex items-center gap-2 font-body shadow-xs">
+          <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
           <span>{speechError}</span>
         </div>
       )}
 
-      {/* Input Console */}
-      <div className="mt-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl p-3 shadow-xs">
+      {/* Input Console - Aero Glass Container with Glossy Controls */}
+      <div className="mt-2 aero-glass rounded-3xl p-3 sm:p-4 shadow-xl border border-white/90 dark:border-cyan-500/30">
         <form onSubmit={handleSendMessage} className="flex flex-col gap-2.5">
           <div className="relative">
             <textarea
@@ -554,37 +564,37 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               disabled={isAiResponding || session.status === 'completed'}
               placeholder={session.status === 'completed' ? t.inputCompleted : t.inputPlaceholder}
               rows={2}
-              className="w-full resize-none rounded-lg border border-slate-200 dark:border-slate-700 bg-[#f8fafc] dark:bg-slate-800 px-3.5 py-2.5 text-sm text-[#0f172a] dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:outline-hidden focus:border-[#0284c7] focus:ring-3 focus:ring-sky-500/15 disabled:opacity-50 transition font-body"
+              className="w-full resize-none rounded-2xl border border-cyan-200/80 dark:border-cyan-800/80 bg-white/70 dark:bg-slate-900/60 backdrop-blur-md px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-cyan-200/40 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden focus:border-cyan-500 focus:ring-4 focus:ring-cyan-400/20 disabled:opacity-50 transition font-body shadow-inner"
             />
           </div>
 
-          <div className="flex items-center justify-between px-0.5">
+          <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
               {speechSupported && (
                 <button
                   type="button"
                   onClick={toggleSpeechRecognition}
                   disabled={session.status === 'completed' || isAiResponding}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition border cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-bold text-xs transition border cursor-pointer shadow-xs ${
                     isListening
-                      ? 'bg-rose-50 dark:bg-rose-950 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300 ring-2 ring-rose-200 animate-pulse'
-                      : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200'
+                      ? 'bg-rose-500 text-white border-rose-400 ring-2 ring-rose-300 animate-pulse'
+                      : 'btn-aero-glass text-slate-700 dark:text-slate-200'
                   }`}
                 >
-                  {isListening ? <MicOff className="h-3.5 w-3.5 text-rose-600" /> : <Mic className="h-3.5 w-3.5" />}
+                  {isListening ? <MicOff className="h-3.5 w-3.5 text-white" /> : <Mic className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />}
                   <span>{isListening ? t.listeningBtn : t.dictateBtn}</span>
                 </button>
               )}
-              <span className="hidden sm:inline text-slate-400 dark:text-slate-500 font-body">
+              <span className="hidden sm:inline text-slate-500 dark:text-cyan-200/60 font-body text-[11px]">
                 {t.tipMessage}
               </span>
             </div>
 
-            {/* Primary Action Button (Stitch Deep Navy) */}
+            {/* Primary Action Button (Glossy Cyan Frutiger Aero) */}
             <button
               type="submit"
               disabled={!inputText.trim() || isAiResponding || session.status === 'completed'}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold text-xs active:scale-95 transition shadow-xs disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+              className="btn-aero-cyan inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-extrabold text-xs active:scale-95 transition shadow-md disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
             >
               <span>{t.sendBtn}</span>
               <Send className="h-3.5 w-3.5" />

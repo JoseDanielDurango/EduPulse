@@ -234,22 +234,22 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-      {/* Top Academic Header */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-5">
+      {/* Top Academic Header with Frutiger Aero Glass */}
+      <div className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 shadow-lg p-6 sm:p-8 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
                 {instrument.code}
               </span>
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <span className="text-xs font-bold text-slate-500 dark:text-cyan-300 uppercase tracking-wider">
                 {language === 'en' ? 'Research Responses' : 'Panel de Respuestas y Métricas'}
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
               {instrument.title}
             </h1>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-cyan-200/80">
               {instrument.phase} • Universidad de Córdoba
             </p>
           </div>
@@ -257,24 +257,24 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
           {/* Quick Action: Fill questionnaire */}
           <button
             onClick={onFillInstrument}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-2xs transition cursor-pointer"
+            className="btn-aero-cyan inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold shadow-md transition cursor-pointer"
           >
-            <FileText className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <FileText className="h-4 w-4" />
             <span>{language === 'en' ? 'Answer Questionnaire' : 'Responder Cuestionario'}</span>
           </button>
         </div>
 
         {/* Aggregate KPI Strip */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200/70 dark:border-slate-700/60">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block">
+          <div className="aero-card p-4 rounded-2xl">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-cyan-200/80 block">
               {language === 'en' ? 'Total Responses' : 'Total de Respuestas'}
             </span>
             <div className="flex items-baseline gap-1 mt-1">
               <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
                 {stats.total}
               </span>
-              <span className="text-xs text-emerald-600 font-semibold">
+              <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
                 {stats.total === 1
                   ? language === 'en'
                     ? 'student'
@@ -286,8 +286,8 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
             </div>
           </div>
 
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200/70 dark:border-slate-700/60">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block">
+          <div className="aero-card p-4 rounded-2xl">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-cyan-200/80 block">
               {language === 'en' ? 'Average Age' : 'Edad Promedio'}
             </span>
             <div className="flex items-baseline gap-1 mt-1">
@@ -300,8 +300,8 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
             </div>
           </div>
 
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200/70 dark:border-slate-700/60">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block">
+          <div className="aero-card p-4 rounded-2xl">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-cyan-200/80 block">
               {language === 'en' ? 'Campuses' : 'Sedes Representadas'}
             </span>
             <div className="flex items-baseline gap-1 mt-1">
@@ -314,8 +314,8 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
             </div>
           </div>
 
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200/70 dark:border-slate-700/60">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block">
+          <div className="aero-card p-4 rounded-2xl">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-cyan-200/80 block">
               {language === 'en' ? 'Semesters' : 'Semestres de Muestra'}
             </span>
             <div className="flex items-baseline gap-1 mt-1">
@@ -330,20 +330,20 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
         </div>
 
         {/* Toolbar: Sub-tabs (Resumen / Individual) & Export Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200/60 dark:border-cyan-800/40">
           {/* Subtabs */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-slate-800">
+          <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/40 dark:bg-slate-900/40 border border-white/60 dark:border-cyan-500/20">
             <button
               onClick={() => setActiveTab('summary')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
                 activeTab === 'summary'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  ? 'btn-aero-cyan text-white shadow-xs'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700'
               }`}
             >
-              <BarChart3 className="h-3.5 w-3.5 text-emerald-600" />
+              <BarChart3 className="h-3.5 w-3.5" />
               <span>{language === 'en' ? 'Aggregated Summary' : 'Resumen Agregado'}</span>
-              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white/30 text-white">
                 {instrumentResponses.length}
               </span>
             </button>
@@ -351,26 +351,26 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
             <button
               onClick={() => setActiveTab('individual')}
               disabled={instrumentResponses.length === 0}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer disabled:opacity-40 ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer disabled:opacity-40 ${
                 activeTab === 'individual'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  ? 'btn-aero-cyan text-white shadow-xs'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700'
               }`}
             >
-              <Users className="h-3.5 w-3.5 text-teal-600" />
+              <Users className="h-3.5 w-3.5" />
               <span>{language === 'en' ? 'Individual Responses' : 'Respuestas Individuales'}</span>
             </button>
           </div>
 
-          {/* Export Actions */}
+          {/* Export Actions (Aero Glass Buttons) */}
           <div className="flex items-center gap-2">
             <button
               onClick={handleExportCSV}
               disabled={instrumentResponses.length === 0}
               title={language === 'en' ? 'Download CSV file' : 'Descargar archivo CSV'}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition cursor-pointer disabled:opacity-40 shadow-2xs"
+              className="btn-aero-glass inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition cursor-pointer disabled:opacity-40 shadow-xs"
             >
-              <Download className="h-3.5 w-3.5 text-emerald-600" />
+              <Download className="h-3.5 w-3.5 text-emerald-600 dark:text-cyan-400" />
               <span>CSV</span>
             </button>
 
@@ -378,9 +378,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
               onClick={handleExportJSON}
               disabled={instrumentResponses.length === 0}
               title={language === 'en' ? 'Download JSON format' : 'Descargar en formato JSON'}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition cursor-pointer disabled:opacity-40 shadow-2xs"
+              className="btn-aero-glass inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition cursor-pointer disabled:opacity-40 shadow-xs"
             >
-              <Download className="h-3.5 w-3.5 text-indigo-600" />
+              <Download className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
               <span>JSON</span>
             </button>
 
@@ -388,18 +388,18 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
               onClick={handleCopyTSV}
               disabled={instrumentResponses.length === 0}
               title={language === 'en' ? 'Copy for Google Sheets / Excel' : 'Copiar datos para Google Sheets o Excel'}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition cursor-pointer disabled:opacity-40 shadow-2xs"
+              className="btn-aero-glass inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition cursor-pointer disabled:opacity-40 shadow-xs"
             >
               {copiedData ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-emerald-600" />
-                  <span className="text-emerald-700 dark:text-emerald-400 font-bold">
+                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-700 dark:text-emerald-300 font-bold">
                     {language === 'en' ? 'Copied!' : '¡Copiado!'}
                   </span>
                 </>
               ) : (
                 <>
-                  <Copy className="h-3.5 w-3.5 text-teal-600" />
+                  <Copy className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
                   <span>{language === 'en' ? 'Copy Table' : 'Copiar Tabla'}</span>
                 </>
               )}
@@ -470,9 +470,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                               {count} ({pct}%)
                             </span>
                           </div>
-                          <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                          <div className="h-2.5 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
                             <div
-                              className="h-full bg-emerald-600 rounded-full transition-all duration-500"
+                              className="h-full aero-progress-bar rounded-full transition-all duration-500"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -501,9 +501,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                               {count} ({pct}%)
                             </span>
                           </div>
-                          <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                          <div className="h-2.5 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
                             <div
-                              className="h-full bg-teal-600 rounded-full transition-all duration-500"
+                              className="h-full aero-progress-bar rounded-full transition-all duration-500"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -522,7 +522,7 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
               return (
                 <div
                   key={q.id}
-                  className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 space-y-4 shadow-2xs"
+                  className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 p-6 sm:p-7 space-y-4 shadow-sm"
                 >
                   {/* Question Title & Meta */}
                   <div className="flex flex-wrap items-start justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
@@ -575,9 +575,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                                   {count} <span className="font-normal text-slate-400">({pct}%)</span>
                                 </span>
                               </div>
-                              <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                              <div className="h-3 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
                                 <div
-                                  className="h-full bg-emerald-600 rounded-full transition-all duration-500"
+                                  className="h-full aero-progress-bar rounded-full transition-all duration-500"
                                   style={{ width: `${pct}%` }}
                                 />
                               </div>
@@ -612,9 +612,9 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                                   {count} <span className="font-normal text-slate-400">({pct}%)</span>
                                 </span>
                               </div>
-                              <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                              <div className="h-3 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
                                 <div
-                                  className="h-full bg-teal-600 rounded-full transition-all duration-500"
+                                  className="h-full aero-progress-bar rounded-full transition-all duration-500"
                                   style={{ width: `${pct}%` }}
                                 />
                               </div>
@@ -777,8 +777,8 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
             </div>
           </div>
 
-          {/* Full Individual Response Sheet */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-8 space-y-6 shadow-sm">
+          {/* Full Individual Response Sheet with Aero Glass */}
+          <div className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 p-6 sm:p-8 space-y-6 shadow-lg">
             {/* Participant Profile Banner */}
             <div className="p-5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 flex flex-wrap items-center justify-between gap-4">
               <div className="space-y-1">

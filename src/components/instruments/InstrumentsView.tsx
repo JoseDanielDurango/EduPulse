@@ -38,10 +38,10 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
   };
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-[#0b1120] min-h-screen py-6 sm:py-10 transition-colors duration-200">
+    <div className="w-full min-h-screen py-6 sm:py-10 transition-colors duration-200">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-6">
-        {/* Navigation / Switcher Bar */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-xs flex flex-wrap items-center justify-between gap-4">
+        {/* Navigation / Switcher Bar in Aero Glass */}
+        <div className="aero-glass rounded-3xl p-4 sm:p-5 shadow-md flex flex-wrap items-center justify-between gap-4">
           {/* Instrument Selector Pills */}
           <div className="flex flex-wrap items-center gap-2">
             {instruments.map((inst) => {
@@ -52,10 +52,10 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
                 <button
                   key={inst.id}
                   onClick={() => setSelectedInstrumentId(inst.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold transition cursor-pointer ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition cursor-pointer ${
                     isSelected
-                      ? 'bg-[#059669] text-white shadow-sm'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      ? 'btn-aero-green shadow-md'
+                      : 'btn-aero-glass text-slate-700 dark:text-slate-200'
                   }`}
                 >
                   <span className="font-mono">{inst.code}</span>
@@ -63,8 +63,8 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
                   <span
                     className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
                       isSelected
-                        ? 'bg-emerald-800 text-emerald-100'
-                        : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                        ? 'bg-white/30 text-white'
+                        : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
                     }`}
                   >
                     {count}
@@ -75,13 +75,13 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
           </div>
 
           {/* Mode Switcher: Form vs Analytics */}
-          <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800">
+          <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/40 dark:bg-slate-900/40 border border-white/60 dark:border-cyan-500/20">
             <button
               onClick={() => setViewMode('form')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
                 viewMode === 'form'
-                  ? 'bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-300 shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  ? 'btn-aero-cyan text-white shadow-xs'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300'
               }`}
             >
               <FileText className="h-3.5 w-3.5" />
@@ -90,15 +90,15 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
 
             <button
               onClick={() => setViewMode('analytics')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
                 viewMode === 'analytics'
-                  ? 'bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-300 shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  ? 'btn-aero-cyan text-white shadow-xs'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300'
               }`}
             >
               <BarChart3 className="h-3.5 w-3.5" />
               <span>{language === 'en' ? 'Responses & Charts' : 'Ver Respuestas'}</span>
-              <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+              <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] bg-white/30 text-white">
                 {countResponses(selectedInstrument.id)}
               </span>
             </button>

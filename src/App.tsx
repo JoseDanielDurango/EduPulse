@@ -228,11 +228,25 @@ export default function App() {
                 language={language}
               />
             ) : (
-              /* Friendly, Modern Conversational Landing */
-              <div className="max-w-4xl mx-auto px-4 py-10 sm:py-16 text-center space-y-12">
+              /* Friendly, Modern Conversational Landing with Frutiger Aero Aesthetic */
+              <div className="max-w-4xl mx-auto px-4 py-10 sm:py-16 text-center space-y-12 relative">
+                {/* Decorative Ambient Floating Aero Bubbles */}
+                <div
+                  className="aero-bubble w-20 h-20 -top-6 -left-10 opacity-70 hidden md:block"
+                  style={{ animationDelay: '0s', animationDuration: '7s' }}
+                />
+                <div
+                  className="aero-bubble w-12 h-12 top-24 -right-8 opacity-60 hidden md:block"
+                  style={{ animationDelay: '1.5s', animationDuration: '5.5s' }}
+                />
+                <div
+                  className="aero-bubble w-8 h-8 bottom-32 -left-6 opacity-50 hidden md:block"
+                  style={{ animationDelay: '2.5s', animationDuration: '6.5s' }}
+                />
+
                 {/* Hero Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-100/90 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white/80 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-white/90 dark:border-emerald-600/40 shadow-sm backdrop-blur-md">
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-500 dark:text-cyan-400 animate-pulse" />
                   <span>{t.heroBadge}</span>
                 </div>
 
@@ -240,23 +254,23 @@ export default function App() {
                 <div className="space-y-4 max-w-3xl mx-auto">
                   <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
                     {t.heroTitlePrefix}{' '}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#059669] via-teal-600 to-indigo-600 dark:from-emerald-400 dark:via-teal-400 dark:to-indigo-400">
+                    <span className="aero-gradient-text drop-shadow-xs">
                       {t.heroTitleGradient}
                     </span>
                   </h1>
 
-                  <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                  <p className="text-base sm:text-lg text-slate-600 dark:text-cyan-100/80 max-w-2xl mx-auto leading-relaxed font-body">
                     {t.heroSubtitle}
                   </p>
                 </div>
 
-                {/* Primary Action Buttons */}
+                {/* Primary Action Buttons (Glossy Frutiger Aero Pills) */}
                 <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
                   <button
                     onClick={() => {
                       setIsNewSessionModalOpen(true);
                     }}
-                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold text-sm bg-[#059669] hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition active:scale-95 cursor-pointer"
+                    className="btn-aero-green inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-sm shadow-md transition active:scale-95 cursor-pointer"
                   >
                     <MessageCircle className="h-5 w-5" />
                     <span>{t.heroStartBtn}</span>
@@ -264,55 +278,58 @@ export default function App() {
 
                   <button
                     onClick={() => setCurrentTab('instruments')}
-                    className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs transition cursor-pointer"
+                    className="btn-aero-cyan inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm shadow-md transition active:scale-95 cursor-pointer"
                   >
-                    <ClipboardList className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                    <ClipboardList className="h-4 w-4" />
                     <span>{language === 'en' ? 'Questionnaires & Diagnostic' : 'Cuestionarios y Diagnóstico'}</span>
                   </button>
 
                   <button
                     onClick={() => setIsThesisModalOpen(true)}
-                    className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-semibold text-sm bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs transition cursor-pointer"
+                    className="btn-aero-glass inline-flex items-center gap-2 px-5 py-3.5 rounded-full font-bold text-sm shadow-xs transition cursor-pointer"
                   >
-                    <BookOpen className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                    <BookOpen className="h-4 w-4 text-emerald-600 dark:text-cyan-400" />
                     <span>{language === 'en' ? 'Research Project Info' : 'Ficha de Investigación'}</span>
                   </button>
                 </div>
 
-                {/* 3 Friendly Value Pillars */}
+                {/* 3 Friendly Value Pillars in Aero Glass Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left pt-6">
-                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-2xs space-y-3 hover:border-emerald-200 dark:hover:border-emerald-800 transition">
-                    <div className="h-10 w-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold">
-                      <MessageCircle className="h-5 w-5" />
+                  <div className="aero-card p-6 rounded-3xl space-y-3">
+                    <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-emerald-300 via-emerald-500 to-teal-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
+                      <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+                      <MessageCircle className="h-5 w-5 drop-shadow-xs" />
                     </div>
                     <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop1Title}
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-cyan-100/70 leading-relaxed font-body">
                       {t.prop1Desc}
                     </p>
                   </div>
 
-                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-2xs space-y-3 hover:border-emerald-200 dark:hover:border-emerald-800 transition">
-                    <div className="h-10 w-10 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-400 flex items-center justify-center font-bold">
-                      <FileSpreadsheet className="h-5 w-5" />
+                  <div className="aero-card p-6 rounded-3xl space-y-3">
+                    <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-cyan-300 via-sky-500 to-blue-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
+                      <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+                      <FileSpreadsheet className="h-5 w-5 drop-shadow-xs" />
                     </div>
                     <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop2Title}
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-cyan-100/70 leading-relaxed font-body">
                       {t.prop2Desc}
                     </p>
                   </div>
 
-                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-2xs space-y-3 hover:border-emerald-200 dark:hover:border-emerald-800 transition">
-                    <div className="h-10 w-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold">
-                      <ShieldCheck className="h-5 w-5" />
+                  <div className="aero-card p-6 rounded-3xl space-y-3">
+                    <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-teal-300 via-emerald-500 to-indigo-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
+                      <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
+                      <ShieldCheck className="h-5 w-5 drop-shadow-xs" />
                     </div>
                     <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop3Title}
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-cyan-100/70 leading-relaxed font-body">
                       {t.prop3Desc}
                     </p>
                   </div>
@@ -320,24 +337,24 @@ export default function App() {
 
                 {/* Recent Dialogues (if any exist) */}
                 {sessions.length > 0 && (
-                  <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-2xs">
+                  <div className="aero-card p-6 rounded-3xl text-left">
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500 dark:text-cyan-300/80">
                           {t.heroRecentChats}
                         </h4>
-                        <p className="text-xs text-slate-400 dark:text-slate-500">
+                        <p className="text-xs text-slate-500 dark:text-cyan-100/70">
                           {sessions.length} {language === 'en' ? 'recorded dialogues' : 'conversaciones registradas'}
                         </p>
                       </div>
                       <button
                         onClick={() => setCurrentTab('dashboard')}
-                        className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition cursor-pointer"
+                        className="text-xs font-bold text-emerald-700 dark:text-cyan-300 hover:underline transition cursor-pointer"
                       >
                         {t.heroViewAll} →
                       </button>
                     </div>
-                    <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                    <div className="divide-y divide-slate-200/60 dark:divide-slate-700/60">
                       {sessions.slice(0, 4).map((s) => (
                         <div
                           key={s.id}
@@ -346,22 +363,22 @@ export default function App() {
                               ? handleViewSummary(s)
                               : handleOpenExistingSession(s)
                           }
-                          className="py-3 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/60 px-2 rounded-xl cursor-pointer transition"
+                          className="py-3 flex items-center justify-between hover:bg-white/60 dark:hover:bg-slate-800/60 px-3 rounded-2xl cursor-pointer transition"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-xs border border-emerald-200 dark:border-emerald-800">
+                            <div className="h-8 w-8 rounded-full bg-gradient-to-b from-emerald-300 to-teal-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
                               {(s.participantName || 'A')[0].toUpperCase()}
                             </div>
                             <div>
                               <span className="font-bold text-xs text-slate-900 dark:text-white">
                                 {s.participantName}
                               </span>
-                              <span className="text-xs text-slate-400 dark:text-slate-500 ml-2">
+                              <span className="text-xs text-slate-500 dark:text-cyan-200/70 ml-2">
                                 • {s.studentCode || 'EST'} ({s.semester || 'Licenciatura'})
                               </span>
                             </div>
                           </div>
-                          <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 inline-flex items-center gap-1">
+                          <span className="text-xs font-bold text-emerald-700 dark:text-cyan-300 inline-flex items-center gap-1">
                             <span>
                               {s.status === 'completed'
                                 ? language === 'en'

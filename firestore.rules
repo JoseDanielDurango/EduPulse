@@ -22,5 +22,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+
+    // Instrument Responses (Diagnostic Questionnaires and Surveys)
+    match /instrument_responses/{responseId} {
+      allow read, write: if true;
+    }
   }
 }

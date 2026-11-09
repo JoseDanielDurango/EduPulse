@@ -14,12 +14,25 @@ const PORT = Number(process.env.PORT || 3000);
 
 app.use(express.json({ limit: '10mb' }));
 
-const ai = new GoogleGenAI();
+const apiKey = process.env.GEMINI_API_KEY || '';
+if (!apiKey) {
+  console.warn('⚠️ GEMINI_API_KEY is not defined in environment variables!');
+}
+const ai = new GoogleGenAI({ apiKey });
 
-async function generateWithRetry(model: string, contents: any, config: any, retries = 3): Promise<any> {
-  let currentModel = model;
-  let lastError;
-  for (let attempt = 0; attempt < retries; attempt++) {
+// Candidate models in priority order: ultra-fast flash-lite first, then standard flash fallbacks
+const CANDIDATE_MODELS = [
+  'gemini-3.5-flash-lite',
+  'gemini-3.5-flash',
+  'gemini-3.8-flash',
+  'gemini-3.6-flash',
+];
+
+async function generateWithRetry(primaryModel: string, contents: any, config: any): Promise<any> {
+  const modelsToTry = [primaryModel, ...CANDIDATE_MODELS.filter((m) => m !== primaryModel)];
+  let lastError: any;
+
+  for (const currentModel of modelsToTry) {
     try {
       const response = await ai.models.generateContent({
         model: currentModel,
@@ -30,38 +43,10 @@ async function generateWithRetry(model: string, contents: any, config: any, retr
     } catch (err: any) {
       lastError = err;
       const errStr = String(err?.message || err || '');
-
-      // Resilient fallback: if preview model fails, fallback to flash
-      if (
-        currentModel === 'gemini-3.1-pro-preview' &&
-        (errStr.includes('key') ||
-          errStr.includes('403') ||
-          errStr.includes('404') ||
-          errStr.includes('NOT_FOUND') ||
-          errStr.includes('PERMISSION_DENIED'))
-      ) {
-        console.warn('Fallback from gemini-3.1-pro-preview to gemini-3.5-flash...');
-        currentModel = 'gemini-3.5-flash';
-        continue;
-      }
-
-      const isTransient =
-        errStr.includes('503') ||
-        errStr.includes('429') ||
-        errStr.includes('UNAVAILABLE') ||
-        errStr.includes('high demand') ||
-        err.status === 503 ||
-        err.status === 429;
-
-      if (isTransient && attempt < retries - 1) {
-        const delay = (attempt + 1) * 1000;
-        console.warn(`Gemini API intento ${attempt + 1} (${currentModel}) error transitorio, reintentando en ${delay}ms...`);
-        await new Promise((r) => setTimeout(r, delay));
-        continue;
-      }
-      throw err;
+      console.warn(`[Gemini Engine] Model ${currentModel} error (${errStr.slice(0, 100)}). Trying fallback model...`);
     }
   }
+
   throw lastError;
 }
 
@@ -327,7 +312,7 @@ FORMATO OBLIGATORIO JSON:
         ? `Conversation transcript so far (${participantTurns} participant turns):\n\n${transcript}\n\nBased on ${participantName}'s latest message, keeping in mind they are in ${semester} of Computer Science Education, formulate Cereza's next friendly, reflective response in valid JSON. Decide autonomously if saturation has been reached (isInterviewFinished). Never ask what degree they study.`
         : `Transcripción de la charla hasta ahora (${participantTurns} intervenciones del estudiante):\n\n${transcript}\n\nCon base en el último mensaje de ${participantName}, recordando que cursa ${semester} de la Licenciatura en Informática, formula la siguiente respuesta amable y reflexiva de Cereza en formato JSON. Decide con criterio cualitativo si ya se alcanzó la saturación suficiente para cerrar (isInterviewFinished). No preguntes qué carrera estudia.`;
 
-    const response = await generateWithRetry('gemini-3.8-flash', prompt, {
+    const response = await generateWithRetry('gemini-3.5-flash-lite', prompt, {
       systemInstruction,
       responseMimeType: 'application/json',
       temperature: 0.45,
@@ -360,7 +345,17 @@ FORMATO OBLIGATORIO JSON:
       });
     }
 
-    return res.status(500).json({ error: error.message || 'Error en la conversación' });
+    // Graceful conversational recovery instead of dropping the chat
+    return res.json({
+      reply: isEn
+        ? `I apologize ${participantName}, I had a momentary connection hiccup while reflecting on your thoughts. Could you share a bit more about what you just described?`
+        : `Disculpa ${participantName}, tuve un breve parpadeo de conexión mientras procesaba tu respuesta. ¿Podrías contarme un poquito más sobre esa experiencia?`,
+      isInterviewFinished: false,
+      currentDimension: 'Prácticas y Autoeficacia Didáctica',
+      qualitativePhase: 'Profundización',
+      extractedInsight: 'Continuación tras reintento de conexión',
+      category: 'Formación Docente',
+    });
   }
 });
 
@@ -471,7 +466,7 @@ ${transcript}
 Genera el análisis cualitativo estructurado en formato JSON válido.
 `;
 
-    const response = await generateWithRetry('gemini-3.8-flash', prompt, {
+    const response = await generateWithRetry('gemini-3.5-flash-lite', prompt, {
       systemInstruction,
       responseMimeType: 'application/json',
       temperature: 0.3,

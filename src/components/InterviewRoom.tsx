@@ -40,6 +40,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [speechError, setSpeechError] = useState<string | null>(null);
+  const [chatError, setChatError] = useState<string | null>(null);
   const [autoSpeechSynthesis, setAutoSpeechSynthesis] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -232,6 +233,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
 
     // Call Maya
     setIsAiResponding(true);
+    setChatError(null);
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -281,8 +283,13 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       if (isFinished) {
         handleTriggerFullSynthesis(updatedSession);
       }
-    } catch (err) {
-      console.error('Error in Maya turn:', err);
+    } catch (err: any) {
+      console.error('Error in Cereza turn:', err);
+      setChatError(
+        language === 'en'
+          ? 'Cereza had a connection issue. Please send your message again.'
+          : 'Cereza tuvo un pequeño problema de conexión. Por favor envía tu mensaje de nuevo.'
+      );
     } finally {
       setIsAiResponding(false);
       setTimeout(() => textareaRef.current?.focus(), 100);
@@ -541,6 +548,22 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
 
         <div ref={messagesEndRef} />
       </div>
+
+      {chatError && (
+        <div className="text-xs text-rose-800 dark:text-rose-200 bg-rose-50/90 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 px-3.5 py-2.5 rounded-2xl mb-2 flex items-center justify-between gap-2 font-body shadow-xs">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
+            <span>{chatError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setChatError(null)}
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xs font-bold px-1.5"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {speechError && (
         <div className="text-xs text-rose-800 dark:text-rose-200 bg-rose-50/90 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 px-3.5 py-2 rounded-2xl mb-2 flex items-center gap-2 font-body shadow-xs">

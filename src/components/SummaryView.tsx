@@ -30,6 +30,7 @@ interface SummaryViewProps {
   onBackToInterview: () => void;
   onUpdateSession: (session: InterviewSession) => void;
   language: Language;
+  isAdmin?: boolean;
 }
 
 export const SummaryView: React.FC<SummaryViewProps> = ({
@@ -37,6 +38,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
   onBackToInterview,
   onUpdateSession,
   language,
+  isAdmin = false,
 }) => {
   const t = translations[language];
   const [activeTab, setActiveTab] = useState<'table' | 'json' | 'transcript'>('table');
@@ -127,33 +129,35 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
           </p>
         </div>
 
-        {/* Frutiger Aero Export Actions Toolbar */}
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={handleExportGoogleSheets}
-            disabled={isExporting}
-            className="btn-aero-green inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm text-white shadow-md transition active:scale-95 disabled:opacity-50 cursor-pointer"
-          >
-            <FileSpreadsheet className="h-4 w-4" />
-            <span>{isExporting ? t.summaryExporting : t.summaryExportSheets}</span>
-          </button>
+        {/* Frutiger Aero Export Actions Toolbar (Strictly for Authorized Researchers) */}
+        {isAdmin && (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportGoogleSheets}
+              disabled={isExporting}
+              className="btn-aero-green inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm text-white shadow-md transition active:scale-95 disabled:opacity-50 cursor-pointer"
+            >
+              <FileSpreadsheet className="h-4 w-4" />
+              <span>{isExporting ? t.summaryExporting : t.summaryExportSheets}</span>
+            </button>
 
-          <button
-            onClick={() => downloadSessionAsCSV(session)}
-            className="btn-aero-glass inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
-          >
-            <Download className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span>{t.summaryDownloadCSV}</span>
-          </button>
+            <button
+              onClick={() => downloadSessionAsCSV(session)}
+              className="btn-aero-glass inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
+            >
+              <Download className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+              <span>{t.summaryDownloadCSV}</span>
+            </button>
 
-          <button
-            onClick={() => downloadSessionAsJSON(session)}
-            className="btn-aero-glass inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
-          >
-            <Code2 className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span>{t.summaryDownloadJSON}</span>
-          </button>
-        </div>
+            <button
+              onClick={() => downloadSessionAsJSON(session)}
+              className="btn-aero-glass inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
+            >
+              <Code2 className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+              <span>{t.summaryDownloadJSON}</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Export Notice / Direct Google Sheet Link Banner */}

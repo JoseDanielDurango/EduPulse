@@ -12,9 +12,12 @@ import {
   Monitor,
   Check,
   ClipboardList,
+  ShieldCheck,
+  Lock,
 } from 'lucide-react';
 import { User } from 'firebase/auth';
 import { loginWithGoogle, logout } from '../lib/firebase';
+import { lockResearcherPin } from '../lib/adminAuth';
 import { Language, translations } from '../lib/i18n';
 import { ThemeMode } from '../types';
 
@@ -22,6 +25,9 @@ interface NavbarProps {
   currentTab: 'interview' | 'dashboard' | 'instruments';
   onSelectTab: (tab: 'interview' | 'dashboard' | 'instruments') => void;
   currentUser: User | null;
+  isAdmin: boolean;
+  onOpenAdminModal: () => void;
+  onLockAdmin: () => void;
   onNewSession: () => void;
   onOpenThesisModal: () => void;
   activeSessionParticipant?: string;
@@ -36,6 +42,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentTab,
   onSelectTab,
   currentUser,
+  isAdmin,
+  onOpenAdminModal,
+  onLockAdmin,
   onNewSession,
   onOpenThesisModal,
   activeSessionParticipant,
@@ -129,17 +138,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
-            <button
-              onClick={() => onSelectTab('dashboard')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm transition-all cursor-pointer ${
-                currentTab === 'dashboard'
-                  ? 'btn-aero-green font-bold shadow-sm'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-cyan-300 hover:bg-white/60 dark:hover:bg-slate-800/60 font-semibold'
-              }`}
-            >
-              <LayoutDashboard className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-              <span>{t.navDashboard}</span>
-            </button>
+            {/* Historial Tab (Only visible for Authorized Researchers / Admins) */}
+            {isAdmin && (
+              <button
+                onClick={() => onSelectTab('dashboard')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm transition-all cursor-pointer ${
+                  currentTab === 'dashboard'
+                    ? 'btn-aero-green font-bold shadow-sm'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-cyan-300 hover:bg-white/60 dark:hover:bg-slate-800/60 font-semibold'
+                }`}
+              >
+                <LayoutDashboard className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                <span>{t.navDashboard}</span>
+              </button>
+            )}
 
             <button
               onClick={() => onSelectTab('instruments')}
@@ -259,36 +271,60 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hidden sm:inline">{t.newChat}</span>
             </button>
 
-            {/* Google Authentication */}
-            {currentUser ? (
+            {/* Researcher Access / Authentication */}
+            {isAdmin ? (
               <div className="flex items-center gap-2">
-                {currentUser.photoURL ? (
-                  <img
-                    src={currentUser.photoURL}
-                    alt={currentUser.displayName || 'Investigador'}
-                    className="h-8 w-8 rounded-full ring-2 ring-emerald-400/80 shadow-md"
-                  />
+                <div
+                  title={currentUser?.email ? `Investigador: ${currentUser.email}` : 'Investigador Autorizado (PIN)'}
+                  className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100/90 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700/80 shadow-2xs backdrop-blur-xs"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span>{language === 'en' ? 'Researcher' : 'Investigador'}</span>
+                </div>
+
+                {currentUser ? (
+                  currentUser.photoURL ? (
+                    <img
+                      src={currentUser.photoURL}
+                      alt={currentUser.displayName || 'Investigador'}
+                      title={currentUser.email || undefined}
+                      className="h-8 w-8 rounded-full ring-2 ring-emerald-400/80 shadow-md"
+                    />
+                  ) : (
+                    <div
+                      title={currentUser.email || undefined}
+                      className="h-8 w-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center border border-emerald-300"
+                    >
+                      {(currentUser.displayName || currentUser.email || 'U')[0].toUpperCase()}
+                    </div>
+                  )
                 ) : (
-                  <div className="h-8 w-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center border border-emerald-300">
-                    {(currentUser.displayName || currentUser.email || 'U')[0].toUpperCase()}
+                  <div className="h-8 w-8 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center border border-emerald-400/40">
+                    <ShieldCheck className="h-4 w-4" />
                   </div>
                 )}
+
                 <button
-                  onClick={handleLogout}
-                  title={t.signOut}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white transition cursor-pointer"
+                  onClick={async () => {
+                    await handleLogout();
+                    onLockAdmin();
+                  }}
+                  title={language === 'en' ? 'Lock / Sign Out' : 'Cerrar sesión de Investigador'}
+                  className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer rounded-full hover:bg-rose-50 dark:hover:bg-rose-950/40"
                 >
                   <LogOut className="h-4 w-4" />
                 </button>
               </div>
             ) : (
               <button
-                onClick={handleLogin}
-                disabled={isLoggingIn}
-                className="btn-aero-glass inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-xs"
+                onClick={onOpenAdminModal}
+                className="btn-aero-glass inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-xs hover:border-emerald-400"
+                title={language === 'en' ? 'Unlock researcher tools' : 'Acceso exclusivo a investigadores'}
               >
-                <LogIn className="h-3.5 w-3.5 text-emerald-600 dark:text-cyan-400" />
-                <span className="hidden md:inline">{t.signInGoogle}</span>
+                <Lock className="h-3.5 w-3.5 text-emerald-600 dark:text-cyan-400" />
+                <span className="hidden md:inline">
+                  {language === 'en' ? 'Researcher Access' : 'Acceso Investigador'}
+                </span>
               </button>
             )}
           </div>

@@ -11,7 +11,13 @@ import { SummaryView } from './components/SummaryView';
 import { SessionsDashboard } from './components/SessionsDashboard';
 import { NewSessionModal } from './components/NewSessionModal';
 import { ThesisProjectModal } from './components/ThesisProjectModal';
+import { AdminLoginModal } from './components/AdminLoginModal';
 import { InstrumentsView } from './components/instruments/InstrumentsView';
+import {
+  isUserAdmin,
+  isPinUnlocked,
+  lockResearcherPin,
+} from './lib/adminAuth';
 import {
   observeAuth,
   subscribeToSessions,
@@ -51,6 +57,11 @@ export default function App() {
   const [viewingSummarySession, setViewingSummarySession] = useState<InterviewSession | null>(null);
   const [isNewSessionModalOpen, setIsNewSessionModalOpen] = useState(false);
   const [isThesisModalOpen, setIsThesisModalOpen] = useState(false);
+  const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useState(false);
+  const [isPinAuthorized, setIsPinAuthorized] = useState<boolean>(() => isPinUnlocked());
+
+  // Researcher / Admin Authorization Check
+  const isAdmin = isUserAdmin(currentUser) || isPinAuthorized;
 
   // Language state (persisted in localStorage)
   const [language, setLanguage] = useState<Language>(() => {
@@ -96,6 +107,13 @@ export default function App() {
 
   const t = translations[language];
 
+  // Protect dashboard tab from unauthorized access
+  useEffect(() => {
+    if (currentTab === 'dashboard' && !isAdmin) {
+      setCurrentTab('interview');
+    }
+  }, [currentTab, isAdmin]);
+
   // Subscribe to Firebase Authentication
   useEffect(() => {
     const unsubscribeAuth = observeAuth((user) => {
@@ -104,8 +122,13 @@ export default function App() {
     return () => unsubscribeAuth();
   }, []);
 
-  // Subscribe to Firestore Real-time Sessions
+  // Subscribe to Firestore Real-time Sessions (Strictly restricted to authorized researchers)
   useEffect(() => {
+    if (!isAdmin) {
+      setSessions([]);
+      return;
+    }
+
     const unsubscribeSessions = subscribeToSessions((updatedSessions) => {
       setSessions(updatedSessions);
       if (activeSession) {
@@ -117,7 +140,7 @@ export default function App() {
     });
 
     return () => unsubscribeSessions();
-  }, [activeSession?.id]);
+  }, [isAdmin, activeSession?.id]);
 
   // Subscribe to Firestore Guides
   useEffect(() => {
@@ -129,13 +152,18 @@ export default function App() {
     return () => unsubscribeGuides();
   }, []);
 
-  // Subscribe to Firestore & Offline Instrument Responses
+  // Subscribe to Firestore & Offline Instrument Responses (Restricted to researchers)
   useEffect(() => {
+    if (!isAdmin) {
+      setInstrumentResponses([]);
+      return;
+    }
+
     const unsubscribeResponses = subscribeToInstrumentResponses((updatedResponses) => {
       setInstrumentResponses(updatedResponses);
     });
     return () => unsubscribeResponses();
-  }, []);
+  }, [isAdmin]);
 
   // Load last active session from localStorage
   useEffect(() => {
@@ -190,12 +218,19 @@ export default function App() {
       <Navbar
         currentTab={currentTab}
         onSelectTab={(tab) => {
+          if (tab === 'dashboard' && !isAdmin) return;
           setCurrentTab(tab);
           if (tab !== 'interview') {
             setViewingSummarySession(null);
           }
         }}
         currentUser={currentUser}
+        isAdmin={isAdmin}
+        onOpenAdminModal={() => setIsAdminLoginModalOpen(true)}
+        onLockAdmin={() => {
+          lockResearcherPin();
+          setIsPinAuthorized(false);
+        }}
         onNewSession={() => {
           setIsNewSessionModalOpen(true);
         }}
@@ -218,6 +253,7 @@ export default function App() {
                 onBackToInterview={() => setViewingSummarySession(null)}
                 onUpdateSession={handleUpdateSession}
                 language={language}
+                isAdmin={isAdmin}
               />
             ) : activeSession ? (
               <InterviewRoom
@@ -335,8 +371,8 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Recent Dialogues (if any exist) */}
-                {sessions.length > 0 && (
+                {/* Recent Dialogues (Restricted strictly to Authorized Researchers) */}
+                {isAdmin && sessions.length > 0 && (
                   <div className="aero-card p-6 rounded-3xl text-left">
                     <div className="flex items-center justify-between mb-4">
                       <div>
@@ -417,7 +453,7 @@ export default function App() {
           </>
         )}
 
-        {currentTab === 'dashboard' && (
+        {currentTab === 'dashboard' && isAdmin && (
           <SessionsDashboard
             sessions={sessions}
             onOpenSession={handleOpenExistingSession}
@@ -434,6 +470,7 @@ export default function App() {
             responses={instrumentResponses}
             language={language}
             onOpenThesisModal={() => setIsThesisModalOpen(true)}
+            isAdmin={isAdmin}
           />
         )}
       </main>
@@ -454,6 +491,18 @@ export default function App() {
       <ThesisProjectModal
         isOpen={isThesisModalOpen}
         onClose={() => setIsThesisModalOpen(false)}
+        language={language}
+      />
+
+      {/* Researcher / Admin Login & Passcode Modal */}
+      <AdminLoginModal
+        isOpen={isAdminLoginModalOpen}
+        onClose={() => setIsAdminLoginModalOpen(false)}
+        currentUser={currentUser}
+        isAdmin={isAdmin}
+        onAdminStateChange={() => {
+          setIsPinAuthorized(isPinUnlocked() || isUserAdmin(currentUser));
+        }}
         language={language}
       />
     </div>

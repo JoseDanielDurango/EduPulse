@@ -176,6 +176,38 @@ ${stageInstructions}
   }
 }
 
+// Endpoint: Health & Gemini Diagnostics Check
+app.get('/api/health', async (_req: Request, res: Response) => {
+  const hasKey = !!process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim().length > 5;
+  let geminiPing = 'untested';
+  let geminiError: string | null = null;
+  let activeModelUsed: string | null = null;
+
+  if (hasKey) {
+    try {
+      const ping = await generateWithRetry('gemini-3.5-flash-lite', 'Di "OK"', {
+        temperature: 0.1,
+      });
+      geminiPing = ping?.text ? 'connected' : 'empty';
+      activeModelUsed = 'gemini-3.5-flash-lite';
+    } catch (err: any) {
+      geminiPing = 'failed';
+      geminiError = err?.message || String(err);
+    }
+  }
+
+  return res.json({
+    status: 'ok',
+    hasGeminiKey: hasKey,
+    keySnippet: hasKey ? `${process.env.GEMINI_API_KEY!.slice(0, 8)}...` : 'MISSING',
+    geminiPing,
+    activeModelUsed,
+    geminiError,
+    nodeEnv: process.env.NODE_ENV || 'development',
+    time: new Date().toISOString(),
+  });
+});
+
 // Endpoint: AI Conversational Engine (Cereza - Fluid, Autonomous Saturation Decision)
 app.post('/api/chat', async (req: Request, res: Response) => {
   const {

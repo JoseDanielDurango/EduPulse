@@ -377,3 +377,25 @@ html.dark .modal-scroll::-webkit-scrollbar-thumb {
 html.dark .modal-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(56, 189, 248, 0.55);
 }
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS & SAFE AREA UTILITIES
+   ========================================================================== */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+}
+.pt-safe {
+  padding-top: max(0.5rem, env(safe-area-inset-top, 0.5rem));
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}

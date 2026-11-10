@@ -226,7 +226,7 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
                   placeholder={t.modalNamePlaceholder}
                   value={participantName}
                   onChange={(e) => setParticipantName(e.target.value)}
-                  className={`w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-2xl border transition focus:ring-4 focus:outline-hidden bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs ${
+                  className={`w-full pl-10 pr-3.5 py-2.5 text-base sm:text-sm rounded-2xl border transition focus:ring-4 focus:outline-hidden bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs ${
                     submittedAttempt && !isNameValid
                       ? 'border-rose-400 bg-rose-50/50 dark:bg-rose-950/20 focus:ring-rose-400/20 text-rose-900 dark:text-rose-200'
                       : 'border-slate-300/80 dark:border-slate-700 focus:border-cyan-500 focus:ring-cyan-400/20 text-slate-900 dark:text-white'
@@ -256,7 +256,7 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
                 <select
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
-                  className={`w-full pl-10 pr-8 py-2.5 text-xs sm:text-sm rounded-2xl border appearance-none transition focus:ring-4 focus:outline-hidden bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs ${
+                  className={`w-full pl-10 pr-8 py-2.5 text-base sm:text-sm rounded-2xl border appearance-none transition focus:ring-4 focus:outline-hidden bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs ${
                     submittedAttempt && !isSemesterValid
                       ? 'border-rose-400 bg-rose-50/50 dark:bg-rose-950/20 focus:ring-rose-400/20 text-rose-900 dark:text-rose-200'
                       : 'border-slate-300/80 dark:border-slate-700 focus:border-cyan-500 focus:ring-cyan-400/20 text-slate-900 dark:text-white'
@@ -280,7 +280,7 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
                     placeholder={language === 'en' ? 'e.g. 5th Semester / Thesis stage' : 'ej. 4° Semestre / Proyecto de grado'}
                     value={customSemester}
                     onChange={(e) => setCustomSemester(e.target.value)}
-                    className="w-full px-4 py-2 text-xs sm:text-sm rounded-2xl border border-cyan-300 dark:border-cyan-700 bg-white/70 dark:bg-slate-900/60 dark:text-white focus:ring-4 focus:ring-cyan-400/20 focus:outline-hidden"
+                    className="w-full px-4 py-2 text-base sm:text-sm rounded-2xl border border-cyan-300 dark:border-cyan-700 bg-white/70 dark:bg-slate-900/60 dark:text-white focus:ring-4 focus:ring-cyan-400/20 focus:outline-hidden"
                   />
                 </div>
               )}
@@ -303,7 +303,7 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
                 <select
                   value={centerLocation}
                   onChange={(e) => setCenterLocation(e.target.value)}
-                  className="w-full pl-10 pr-8 py-2.5 text-xs sm:text-sm rounded-2xl border border-slate-300/80 dark:border-slate-700 bg-white/70 dark:bg-slate-900/60 dark:text-white appearance-none focus:ring-4 focus:ring-cyan-400/20 focus:border-cyan-500 focus:outline-hidden"
+                  className="w-full pl-10 pr-8 py-2.5 text-base sm:text-sm rounded-2xl border border-slate-300/80 dark:border-slate-700 bg-white/70 dark:bg-slate-900/60 dark:text-white appearance-none focus:ring-4 focus:ring-cyan-400/20 focus:border-cyan-500 focus:outline-hidden"
                 >
                   {CAMPUS_LOCATIONS.map((loc) => (
                     <option key={loc} value={loc}>

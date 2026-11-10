@@ -40,12 +40,12 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
   };
 
   return (
-    <div className="w-full min-h-screen py-6 sm:py-10 transition-colors duration-200">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-6">
+    <div className="w-full min-h-screen py-4 sm:py-10 transition-colors duration-200">
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 space-y-4 sm:space-y-6">
         {/* Navigation / Switcher Bar in Aero Glass */}
-        <div className="aero-glass rounded-3xl p-4 sm:p-5 shadow-md flex flex-wrap items-center justify-between gap-4">
-          {/* Instrument Selector Pills */}
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="aero-glass rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          {/* Instrument Selector Pills (Horizontally scrollable on mobile) */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:flex-wrap w-full sm:w-auto">
             {instruments.map((inst) => {
               const isSelected = inst.id === selectedInstrumentId;
               const count = countResponses(inst.id);
@@ -54,14 +54,14 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
                 <button
                   key={inst.id}
                   onClick={() => setSelectedInstrumentId(inst.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition cursor-pointer ${
+                  className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full text-xs font-bold transition shrink-0 cursor-pointer ${
                     isSelected
                       ? 'btn-aero-green shadow-md'
                       : 'btn-aero-glass text-slate-700 dark:text-slate-200'
                   }`}
                 >
                   <span className="font-mono">{inst.code}</span>
-                  <span className="hidden sm:inline">{inst.shortTitle}</span>
+                  <span className="hidden xs:inline sm:inline">{inst.shortTitle}</span>
                   {isAdmin && (
                     <span
                       className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${

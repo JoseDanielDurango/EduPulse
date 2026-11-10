@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import { Navbar } from './components/Navbar';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { InterviewRoom } from './components/InterviewRoom';
 import { SummaryView } from './components/SummaryView';
 import { SessionsDashboard } from './components/SessionsDashboard';
@@ -243,8 +244,8 @@ export default function App() {
         onSelectTheme={setTheme}
       />
 
-      {/* Main View Area */}
-      <main className="flex-1">
+      {/* Main View Area with Mobile Bottom Nav Clearance */}
+      <main className="flex-1 pb-20 md:pb-6">
         {currentTab === 'interview' && (
           <>
             {viewingSummarySession ? (
@@ -265,7 +266,7 @@ export default function App() {
               />
             ) : (
               /* Friendly, Modern Conversational Landing with Frutiger Aero Aesthetic */
-              <div className="max-w-4xl mx-auto px-4 py-10 sm:py-16 text-center space-y-12 relative">
+              <div className="max-w-4xl mx-auto px-4 py-6 sm:py-16 text-center space-y-7 sm:space-y-12 relative">
                 {/* Decorative Ambient Floating Aero Bubbles */}
                 <div
                   className="aero-bubble w-20 h-20 -top-6 -left-10 opacity-70 hidden md:block"
@@ -281,40 +282,40 @@ export default function App() {
                 />
 
                 {/* Hero Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white/80 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-white/90 dark:border-emerald-600/40 shadow-sm backdrop-blur-md">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/80 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-white/90 dark:border-emerald-600/40 shadow-sm backdrop-blur-md">
                   <Sparkles className="h-3.5 w-3.5 text-emerald-500 dark:text-cyan-400 animate-pulse" />
                   <span>{t.heroBadge}</span>
                 </div>
 
                 {/* Hero Title & Subtitle */}
-                <div className="space-y-4 max-w-3xl mx-auto">
-                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+                <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
                     {t.heroTitlePrefix}{' '}
                     <span className="aero-gradient-text drop-shadow-xs">
                       {t.heroTitleGradient}
                     </span>
                   </h1>
 
-                  <p className="text-base sm:text-lg text-slate-600 dark:text-cyan-100/80 max-w-2xl mx-auto leading-relaxed font-body">
+                  <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-cyan-100/80 max-w-2xl mx-auto leading-relaxed font-body">
                     {t.heroSubtitle}
                   </p>
                 </div>
 
-                {/* Primary Action Buttons (Glossy Frutiger Aero Pills) */}
-                <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
+                {/* Primary Action Buttons (Responsive on mobile) */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 pt-1 sm:pt-2">
                   <button
                     onClick={() => {
                       setIsNewSessionModalOpen(true);
                     }}
-                    className="btn-aero-green inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-sm shadow-md transition active:scale-95 cursor-pointer"
+                    className="btn-aero-green inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full font-bold text-xs sm:text-sm shadow-md transition active:scale-95 cursor-pointer"
                   >
-                    <MessageCircle className="h-5 w-5" />
+                    <MessageCircle className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                     <span>{t.heroStartBtn}</span>
                   </button>
 
                   <button
                     onClick={() => setCurrentTab('instruments')}
-                    className="btn-aero-cyan inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm shadow-md transition active:scale-95 cursor-pointer"
+                    className="btn-aero-cyan inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full font-bold text-xs sm:text-sm shadow-md transition active:scale-95 cursor-pointer"
                   >
                     <ClipboardList className="h-4 w-4" />
                     <span>{language === 'en' ? 'Questionnaires & Diagnostic' : 'Cuestionarios y Diagnóstico'}</span>
@@ -322,7 +323,7 @@ export default function App() {
 
                   <button
                     onClick={() => setIsThesisModalOpen(true)}
-                    className="btn-aero-glass inline-flex items-center gap-2 px-5 py-3.5 rounded-full font-bold text-sm shadow-xs transition cursor-pointer"
+                    className="btn-aero-glass inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer"
                   >
                     <BookOpen className="h-4 w-4 text-emerald-600 dark:text-cyan-400" />
                     <span>{language === 'en' ? 'Research Project Info' : 'Ficha de Investigación'}</span>
@@ -330,11 +331,11 @@ export default function App() {
                 </div>
 
                 {/* 3 Friendly Value Pillars in Aero Glass Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left pt-6">
-                  <div className="aero-card p-6 rounded-3xl space-y-3">
-                    <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-emerald-300 via-emerald-500 to-teal-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-5 text-left pt-4 sm:pt-6">
+                  <div className="aero-card p-4 sm:p-6 rounded-3xl space-y-2.5 sm:space-y-3">
+                    <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-2xl bg-gradient-to-b from-emerald-300 via-emerald-500 to-teal-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
                       <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
-                      <MessageCircle className="h-5 w-5 drop-shadow-xs" />
+                      <MessageCircle className="h-4.5 w-4.5 sm:h-5 sm:w-5 drop-shadow-xs" />
                     </div>
                     <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop1Title}
@@ -344,10 +345,10 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="aero-card p-6 rounded-3xl space-y-3">
-                    <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-cyan-300 via-sky-500 to-blue-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
+                  <div className="aero-card p-4 sm:p-6 rounded-3xl space-y-2.5 sm:space-y-3">
+                    <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-2xl bg-gradient-to-b from-cyan-300 via-sky-500 to-blue-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
                       <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
-                      <FileSpreadsheet className="h-5 w-5 drop-shadow-xs" />
+                      <FileSpreadsheet className="h-4.5 w-4.5 sm:h-5 sm:w-5 drop-shadow-xs" />
                     </div>
                     <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop2Title}
@@ -357,10 +358,10 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="aero-card p-6 rounded-3xl space-y-3">
-                    <div className="h-11 w-11 rounded-2xl bg-gradient-to-b from-teal-300 via-emerald-500 to-indigo-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
+                  <div className="aero-card p-4 sm:p-6 rounded-3xl space-y-2.5 sm:space-y-3">
+                    <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-2xl bg-gradient-to-b from-teal-300 via-emerald-500 to-indigo-700 text-white flex items-center justify-center font-bold shadow-md relative overflow-hidden">
                       <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
-                      <ShieldCheck className="h-5 w-5 drop-shadow-xs" />
+                      <ShieldCheck className="h-4.5 w-4.5 sm:h-5 sm:w-5 drop-shadow-xs" />
                     </div>
                     <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">
                       {t.prop3Title}
@@ -474,6 +475,22 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Mobile Floating Bottom Navigation Bar */}
+      <MobileBottomNav
+        currentTab={currentTab}
+        onSelectTab={(tab) => {
+          if (tab === 'dashboard' && !isAdmin) return;
+          setCurrentTab(tab);
+          if (tab !== 'interview') {
+            setViewingSummarySession(null);
+          }
+        }}
+        isAdmin={isAdmin}
+        onOpenThesisModal={() => setIsThesisModalOpen(true)}
+        hasActiveSession={!!activeSession && activeSession.status === 'active'}
+        language={language}
+      />
 
       {/* New Qualitative Session Modal */}
       <NewSessionModal

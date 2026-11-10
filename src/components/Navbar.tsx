@@ -91,11 +91,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 aero-glass overflow-visible border-b border-white/80 dark:border-cyan-500/20 shadow-md transition-colors duration-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
-        <div className="flex items-center justify-between gap-3 sm:gap-4 lg:gap-6 h-16 overflow-visible">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 overflow-visible">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 lg:gap-6 h-14 md:h-16 overflow-visible">
           {/* Institutional Brand: EduPulse & UniCórdoba */}
-          <div className="flex items-center gap-3.5 shrink-0">
-            <div className="h-10 w-10 rounded-2xl bg-gradient-to-b from-white/90 via-cyan-50/80 to-emerald-100/90 dark:from-slate-900/90 dark:via-cyan-950/80 dark:to-emerald-950/90 p-1 flex items-center justify-center shadow-md ring-2 ring-white/80 dark:ring-cyan-400/50 relative overflow-hidden group cursor-pointer backdrop-blur-xs">
+          <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-2xl bg-gradient-to-b from-white/90 via-cyan-50/80 to-emerald-100/90 dark:from-slate-900/90 dark:via-cyan-950/80 dark:to-emerald-950/90 p-1 flex items-center justify-center shadow-md ring-2 ring-white/80 dark:ring-cyan-400/50 relative overflow-hidden group cursor-pointer backdrop-blur-xs">
               <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
               <img
                 src="/umbran-watch-icon.png"
@@ -105,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display font-extrabold text-lg tracking-tight text-slate-900 dark:text-white">
+                <span className="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white">
                   Edu<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">Pulse</span>
                 </span>
                 <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100/80 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-200 border border-emerald-300/80 dark:border-emerald-700/80 shadow-2xs backdrop-blur-xs">
@@ -119,8 +119,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Navigation Tabs (Conversación, Historial, Cuestionarios) */}
-          <nav className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
+          {/* Navigation Tabs (Desktop only; on mobile rendered via MobileBottomNav) */}
+          <nav className="hidden md:flex items-center gap-1 sm:gap-1.5 lg:gap-2">
             <button
               onClick={() => onSelectTab('interview')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm transition-all cursor-pointer ${
@@ -247,7 +247,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onToggleLanguage}
               title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
-              className="btn-aero-glass inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-xs"
+              className="btn-aero-glass inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-xs"
             >
               <Globe className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
               <span>{language.toUpperCase()}</span>
@@ -265,7 +265,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* New Session Button */}
             <button
               onClick={onNewSession}
-              className="btn-aero-cyan inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold shadow-sm transition active:scale-95 cursor-pointer"
+              className="btn-aero-cyan inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold shadow-sm transition active:scale-95 cursor-pointer"
             >
               <PlusCircle className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">{t.newChat}</span>
@@ -273,7 +273,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Researcher Access / Authentication */}
             {isAdmin ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <div
                   title={currentUser?.email ? `Investigador: ${currentUser.email}` : 'Investigador Autorizado (PIN)'}
                   className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100/90 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700/80 shadow-2xs backdrop-blur-xs"
@@ -288,19 +288,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                       src={currentUser.photoURL}
                       alt={currentUser.displayName || 'Investigador'}
                       title={currentUser.email || undefined}
-                      className="h-8 w-8 rounded-full ring-2 ring-emerald-400/80 shadow-md"
+                      className="h-7 w-7 sm:h-8 sm:w-8 rounded-full ring-2 ring-emerald-400/80 shadow-md"
                     />
                   ) : (
                     <div
                       title={currentUser.email || undefined}
-                      className="h-8 w-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center border border-emerald-300"
+                      className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center border border-emerald-300"
                     >
                       {(currentUser.displayName || currentUser.email || 'U')[0].toUpperCase()}
                     </div>
                   )
                 ) : (
-                  <div className="h-8 w-8 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center border border-emerald-400/40">
-                    <ShieldCheck className="h-4 w-4" />
+                  <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center border border-emerald-400/40">
+                    <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                 )}
 
@@ -310,7 +310,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onLockAdmin();
                   }}
                   title={language === 'en' ? 'Lock / Sign Out' : 'Cerrar sesión de Investigador'}
-                  className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer rounded-full hover:bg-rose-50 dark:hover:bg-rose-950/40"
+                  className="p-1 sm:p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer rounded-full hover:bg-rose-50 dark:hover:bg-rose-950/40"
                 >
                   <LogOut className="h-4 w-4" />
                 </button>
@@ -318,7 +318,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <button
                 onClick={onOpenAdminModal}
-                className="btn-aero-glass inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-xs hover:border-emerald-400"
+                className="btn-aero-glass inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-xs hover:border-emerald-400"
                 title={language === 'en' ? 'Unlock researcher tools' : 'Acceso exclusivo a investigadores'}
               >
                 <Lock className="h-3.5 w-3.5 text-emerald-600 dark:text-cyan-400" />

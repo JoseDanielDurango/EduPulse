@@ -345,9 +345,9 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
   const participantCode = session.studentCode || 'EST-01';
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-5xl mx-auto px-4 py-3 sm:py-4">
-      {/* Stitch Design System: Methodological Phases Bar */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 mb-3 shadow-xs">
+    <div className="flex flex-col h-[calc(100dvh-7.5rem)] md:h-[calc(100vh-4rem)] max-w-5xl mx-auto px-2.5 sm:px-4 py-2 sm:py-4">
+      {/* Stitch Design System: Methodological Phases Bar (Desktop/Tablet only) */}
+      <div className="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 mb-3 shadow-xs">
         <div className="flex items-center justify-between gap-2 overflow-x-auto text-[11px] font-body">
           <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
             <span className="h-5 w-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-[10px] text-slate-500 dark:text-slate-400">
@@ -376,8 +376,58 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
         </div>
       </div>
 
-      {/* Header & Participant Badge (Fluid Qualitative Conversation) with Frutiger Aero Glass */}
-      <div className="aero-glass rounded-3xl p-4 sm:p-5 mb-4 shadow-lg border border-white/90 dark:border-cyan-500/30">
+      {/* Mobile-Only Sleek Compact App Bar (< 640px) */}
+      <div className="sm:hidden aero-glass rounded-2xl p-2.5 mb-2 shadow-md border border-white/90 dark:border-cyan-500/30 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="h-8 w-8 rounded-full p-0.5 bg-gradient-to-tr from-cyan-400/40 via-white/80 to-emerald-400/40 shadow-sm ring-1 ring-white/90 dark:ring-cyan-400/60 shrink-0 flex items-center justify-center">
+            <img
+              src="/cereza-avatar.png"
+              alt="Cereza Avatar"
+              className="h-full w-full object-contain rounded-full drop-shadow-xs"
+            />
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="font-display font-bold text-xs text-slate-900 dark:text-white truncate">
+                Cereza
+              </span>
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-white/70 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200 shrink-0">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                {participantCode}
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-500 dark:text-cyan-200/70 truncate">
+              {session.currentDimension || 'Diálogo Reflexivo'}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            onClick={() => setAutoSpeechSynthesis(!autoSpeechSynthesis)}
+            title={autoSpeechSynthesis ? t.voiceToggleOn : t.voiceToggleOff}
+            className={`p-1.5 rounded-full text-xs transition flex items-center justify-center cursor-pointer ${
+              autoSpeechSynthesis
+                ? 'btn-aero-green text-white'
+                : 'btn-aero-glass text-slate-600 dark:text-slate-300'
+            }`}
+          >
+            {autoSpeechSynthesis ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+          </button>
+
+          <button
+            onClick={() => handleTriggerFullSynthesis(session)}
+            disabled={isAiResponding || session.messages.length < 2}
+            className="btn-aero-green inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-bold transition disabled:opacity-50 shadow-xs cursor-pointer"
+          >
+            <FileCheck2 className="h-3.5 w-3.5" />
+            <span>{session.status === 'completed' ? t.viewSummary : t.finishChat}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop/Tablet Header Card (hidden on mobile to save vertical space) */}
+      <div className="hidden sm:block aero-glass rounded-3xl p-4 sm:p-5 mb-4 shadow-lg border border-white/90 dark:border-cyan-500/30">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/60 dark:border-cyan-800/40">
           <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-full p-0.5 bg-gradient-to-tr from-cyan-400/40 via-white/80 to-emerald-400/40 shadow-lg ring-2 ring-white/90 dark:ring-cyan-400/60 shrink-0 relative flex items-center justify-center">
@@ -573,8 +623,8 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       )}
 
       {/* Input Console - Aero Glass Container with Glossy Controls */}
-      <div className="mt-2 aero-glass rounded-3xl p-3 sm:p-4 shadow-xl border border-white/90 dark:border-cyan-500/30">
-        <form onSubmit={handleSendMessage} className="flex flex-col gap-2.5">
+      <div className="mt-1.5 sm:mt-2 aero-glass rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 shadow-xl border border-white/90 dark:border-cyan-500/30">
+        <form onSubmit={handleSendMessage} className="flex flex-col gap-2 sm:gap-2.5">
           <div className="relative">
             <textarea
               ref={textareaRef}
@@ -584,25 +634,25 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               disabled={isAiResponding || session.status === 'completed'}
               placeholder={session.status === 'completed' ? t.inputCompleted : t.inputPlaceholder}
               rows={2}
-              className="w-full resize-none rounded-2xl border border-cyan-200/80 dark:border-cyan-800/80 bg-white/70 dark:bg-slate-900/60 backdrop-blur-md px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-cyan-200/40 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden focus:border-cyan-500 focus:ring-4 focus:ring-cyan-400/20 disabled:opacity-50 transition font-body shadow-inner"
+              className="w-full resize-none rounded-xl sm:rounded-2xl border border-cyan-200/80 dark:border-cyan-800/80 bg-white/70 dark:bg-slate-900/60 backdrop-blur-md px-3.5 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-cyan-200/40 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden focus:border-cyan-500 focus:ring-4 focus:ring-cyan-400/20 disabled:opacity-50 transition font-body shadow-inner"
             />
           </div>
 
-          <div className="flex items-center justify-between px-1">
-            <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <div className="flex items-center justify-between px-0.5 sm:px-1">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 dark:text-slate-400">
               {speechSupported && (
                 <button
                   type="button"
                   onClick={toggleSpeechRecognition}
                   disabled={session.status === 'completed' || isAiResponding}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-bold text-xs transition border cursor-pointer shadow-xs ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs transition border cursor-pointer shadow-xs ${
                     isListening
                       ? 'bg-rose-500 text-white border-rose-400 ring-2 ring-rose-300 animate-pulse'
                       : 'btn-aero-glass text-slate-700 dark:text-slate-200'
                   }`}
                 >
                   {isListening ? <MicOff className="h-3.5 w-3.5 text-white" /> : <Mic className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />}
-                  <span>{isListening ? t.listeningBtn : t.dictateBtn}</span>
+                  <span className="hidden xs:inline">{isListening ? t.listeningBtn : t.dictateBtn}</span>
                 </button>
               )}
               <span className="hidden sm:inline text-slate-500 dark:text-cyan-200/60 font-body text-[11px]">
@@ -614,7 +664,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             <button
               type="submit"
               disabled={!inputText.trim() || isAiResponding || session.status === 'completed'}
-              className="btn-aero-cyan inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-extrabold text-xs active:scale-95 transition shadow-md disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+              className="btn-aero-cyan inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-extrabold text-xs active:scale-95 transition shadow-md disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
             >
               <span>{t.sendBtn}</span>
               <Send className="h-3.5 w-3.5" />

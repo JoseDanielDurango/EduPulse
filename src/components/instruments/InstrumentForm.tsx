@@ -607,7 +607,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                   }
                 }}
                 placeholder={language === 'en' ? 'Your full name' : 'Escribe tus nombres y apellidos'}
-                className={`w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                className={`w-full px-3.5 py-2.5 rounded-xl text-base sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                   validationErrors.participantName
                     ? 'border-red-400 dark:border-red-600'
                     : 'border-slate-300 dark:border-slate-700'
@@ -630,7 +630,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                 value={studentCode}
                 onChange={(e) => setStudentCode(e.target.value)}
                 placeholder={language === 'en' ? 'e.g. 1102839482' : 'ej. 1067894523'}
-                className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3.5 py-2.5 rounded-xl text-base sm:text-sm bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
             </div>
 
@@ -655,7 +655,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                   }
                 }}
                 placeholder="ej. 21"
-                className={`w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                className={`w-full px-3.5 py-2.5 rounded-xl text-base sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                   validationErrors.age
                     ? 'border-red-400 dark:border-red-600'
                     : 'border-slate-300 dark:border-slate-700'
@@ -676,7 +676,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
               <select
                 value={centerLocation}
                 onChange={(e) => setCenterLocation(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl text-base sm:text-sm bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
               >
                 <option value="Sede Central Montería">
                   {language === 'en' ? 'Montería Central Campus' : 'Sede Central Montería'}
@@ -803,7 +803,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                           value={value || ''}
                           onChange={(e) => handleTextChange(q.id, e.target.value)}
                           placeholder={q.placeholder || (language === 'en' ? 'Write your reflection here...' : 'Escribe tu reflexión con tus propias palabras...')}
-                          className={`w-full p-3.5 rounded-2xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white leading-relaxed resize-y transition focus:outline-none focus:ring-2 focus:ring-emerald-500 font-body ${
+                          className={`w-full p-3.5 rounded-2xl text-base sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white leading-relaxed resize-y transition focus:outline-none focus:ring-2 focus:ring-emerald-500 font-body ${
                             hasError
                               ? 'border-red-400 dark:border-red-600'
                               : 'border-slate-300 dark:border-slate-700'
@@ -988,7 +988,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                         value={value || ''}
                         onChange={(e) => handleTextChange(q.id, e.target.value)}
                         placeholder={q.placeholder || ''}
-                        className={`w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                        className={`w-full px-3.5 py-2.5 rounded-xl text-base sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                           hasError
                             ? 'border-red-400 dark:border-red-600'
                             : 'border-slate-300 dark:border-slate-700'
@@ -1003,7 +1003,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                         value={value !== undefined ? value : ''}
                         onChange={(e) => handleTextChange(q.id, e.target.value)}
                         placeholder={q.placeholder || ''}
-                        className={`w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                        className={`w-full px-3.5 py-2.5 rounded-xl text-base sm:text-sm bg-slate-50 dark:bg-slate-800 border text-slate-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                           hasError
                             ? 'border-red-400 dark:border-red-600'
                             : 'border-slate-300 dark:border-slate-700'
@@ -1056,21 +1056,21 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
         </div>
 
         {/* Submit Actions Bar with Frutiger Aero Gloss */}
-        <div className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 p-6 flex flex-wrap items-center justify-between gap-4 shadow-lg">
+        <div className="aero-glass rounded-2xl sm:rounded-3xl border border-white/90 dark:border-cyan-500/30 p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5 sm:gap-4 shadow-lg">
           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-cyan-200/80">
-            <Save className="h-4 w-4 text-emerald-600 dark:text-cyan-400" />
-            <span>
+            <Save className="h-4 w-4 text-emerald-600 dark:text-cyan-400 shrink-0" />
+            <span className="text-[11px] sm:text-xs">
               {language === 'en'
                 ? 'Your responses will be securely stored in the research database.'
                 : 'Tus respuestas se guardarán de forma permanente en el repositorio de investigación.'}
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <button
               type="button"
               onClick={handleClearDraft}
-              className="btn-aero-glass px-5 py-2.5 rounded-full font-bold text-xs cursor-pointer"
+              className="btn-aero-glass px-4 sm:px-5 py-2.5 rounded-full font-bold text-xs cursor-pointer text-center justify-center"
             >
               {language === 'en' ? 'Reset form' : 'Reiniciar formulario'}
             </button>
@@ -1078,7 +1078,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-aero-green inline-flex items-center gap-2 px-8 py-3 rounded-full font-bold text-sm shadow-xl transition active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="btn-aero-green inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-full font-bold text-xs sm:text-sm shadow-xl transition active:scale-95 disabled:opacity-50 cursor-pointer text-center"
             >
               <Send className="h-4 w-4" />
               <span>

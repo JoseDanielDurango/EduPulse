@@ -129,7 +129,7 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
             placeholder={t.dashSearch}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-xs sm:text-sm rounded-2xl border border-cyan-200/70 dark:border-cyan-800/70 focus:outline-hidden focus:ring-4 focus:ring-cyan-400/20 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs text-slate-900 dark:text-white"
+            className="w-full pl-10 pr-4 py-2 text-base sm:text-sm rounded-2xl border border-cyan-200/70 dark:border-cyan-800/70 focus:outline-hidden focus:ring-4 focus:ring-cyan-400/20 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs text-slate-900 dark:text-white"
           />
         </div>
 

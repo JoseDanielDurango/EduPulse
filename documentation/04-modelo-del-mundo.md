@@ -2,120 +2,142 @@ DOCUMENTO 04 | MODELO DEL MUNDO (DESIGN.MD): INTERFAZ Y ECOSISTEMA CONVERSACIONA
 
 # DOCUMENTO — 04
 # Modelo del Mundo (DESIGN.md): Interfaz y Ecosistema Conversacional
+### Diseño de Interacción Humano-Computador, Estética Glassmorphic y UX Móvil · Versión 2.0
 
 | Campo | Detalle |
 | :--- | :--- |
 | **Proyecto** | La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba |
-| **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática con Énfasis en Medios Audiovisuales |
+| **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
-| **Documento** | Documento 04 — Modelo del Mundo (DESIGN.md): Interfaz y Ecosistema Conversacional (Versión 1.0) |
+| **Director del proyecto** | Juan Carlos Giraldo Cardozo |
+| **Componente documentado** | Modelo del Mundo (DESIGN.md: Interfaz gráfica, metáfora del diálogo reflexivo, diseño responsive móvil, navegación por gestos, inventario de vistas y resiliencia técnica) |
+| **Documento** | 04 — Modelo del Mundo (Versión 2.0) |
+| **Fecha de actualización** | Noviembre de 2026 |
 
-*Propósito del documento. Este documento define el modelo conceptual, la metáfora de interfaz, las condiciones materiales de uso y resiliencia tecnológica, el flujo de interacción humano-computador (HCI) y el inventario exhaustivo de vistas de la plataforma EduPulse, con énfasis en una experiencia inmersiva, accesible, reflexiva y orientada a la recolección fidedigna de datos cualitativos.*
-
----
-
-## 1. Metáfora del Sistema
-**Metáfora principal: El Café Pedagógico y Sala de Diálogo Reflexivo.**
-
-Para favorecer la apertura dialéctica y mitigar el sesgo de deseabilidad social o la intimidación tecnológica, la interfaz abandona de manera deliberada la estética asociada a "formularios de encuesta", "exámenes virtuales" o "plataformas burocráticas". El sistema adopta la metáfora de un encuentro informal entre colegas educadores que comparten un café para dialogar sobre los desafíos de su profesión docente:
-* El docente en formación se siente escuchado por una colega empática (**Maya**), en un clima de confianza donde se explicita que no existen respuestas correctas ni erradas.
-* La sala de interacción elimina contadores regresivos punitivos, cronómetros de evaluación o calificaciones numéricas.
-* Los elementos de guía (tarjeta temática superior y barra de progresión armónica) orientan la conversación sin generar presión temporal.
-* La interfaz prioriza la calidez visual, la legibilidad tipográfica y la baja carga cognitiva, adaptándose tanto a usuarios con alta destreza técnica como a aquellos en semestres formativos iniciales.
+*Documento técnico para la especificación del entorno visual, metáfora de interfaz, arquitectura móvil, resiliencia contextual y flujo HCI de EduPulse.*
 
 ---
 
-## 2. Condiciones Materiales y Resiliencia — Contexto Universitario y Regional
+## 1. Metáfora del Sistema y Estética Visual
 
-El diseño de interacción se fundamenta en las condiciones reales de infraestructura tecnológica presentes en el departamento de Córdoba y en las distintas sedes de la Universidad de Córdoba (Montería, Lorica, Planeta Rica, Sahagún y Montelíbano), caracterizadas por fluctuaciones en el fluido eléctrico e intermitencia en el acceso a internet.
+### 1.1 Metáfora Principal: El Café Pedagógico y Sala de Diálogo Reflexivo
+Para favorecer la apertura dialéctica y mitigar el sesgo de deseabilidad social o la intimidación tecnológica, la interfaz abandona deliberadamente la apariencia de "formularios burocráticos" o "exámenes virtuales". El sistema adopta la metáfora de un encuentro reflexivo entre colegas educadores:
+* El docente en formación conversa con **Cereza**, una agente inteligente inspirada en la seguridad, distinción e ingenio maduro de Bayonetta, con un trato cercano, lúdico y de profunda exigencia académica.
+* Se explicita que no existen respuestas correctas ni erróneas; el foco radica en desentrañar vivencias reales, tensiones formativas y apropiación didáctica.
+* Se eliminan contadores regresivos punitivos, cronómetros de evaluación o calificaciones numéricas.
 
-### 2.1 Tolerancia a la Latencia y Fluctuaciones de Red
-Las consultas a modelos de lenguaje extensos (LLMs) conllevan tiempos de procesamiento inherentes que pueden incrementarse en redes lentas. Para salvaguardar la confianza del informante y evitar la sensación de abandono:
-* **Micro-estados informativos:** El sistema emite indicadores visuales discretos y dinámicos durante la inferencia (*"Maya está reflexionando..."*, *"Escuchando con atención..."*).
-* **Persistencia local inmediata:** Cada turno de habla se escribe primero en el estado reactivo del cliente antes de confirmar la sincronización remota, impidiendo la pérdida de transcripciones si la conexión se interrumpe momentáneamente.
-* **Mecanismos de reintento suave (*Soft Backoff*):** Si la API remota experimenta sobrecarga o caída transitoria, el backend ejecuta reintentos graduales y, en caso extremo, activa una respuesta de contingencia conversacional sin romper la sesión.
-
-### 2.2 Enfoque Multimodal Equilibrado (Voz y Texto)
-Para maximizar la riqueza expresiva y la inclusión de participantes con diversos estilos de comunicación:
-* **Entrada por Voz (Web Speech API):** Los docentes en formación pueden presionar el control de micrófono para expresar oralmente sus vivencias. Esto estimula respuestas más extensas, narrativas vivas y anécdotas espontáneas en comparación con el tecleo convencional.
-* **Salida de Audio (Text-to-Speech):** Posibilidad de escuchar la voz de Maya con entonación naturalizada, fortaleciendo la sensación de un diálogo humano presencial.
-* **Arquitectura Text-First de Respaldo:** Todas las operaciones de voz cuentan con transcripción bidireccional instantánea a texto legible. En equipos sin micrófono funcional o en salas de informática con ruido ambiente, la interacción por teclado permanece 100% operativa con consumo mínimo de ancho de banda.
-
-### 2.3 Exportación Inmediata y Portabilidad hacia CAQDAS
-Los datos cualitativos recolectados deben preservarse con integridad metodológica para su posterior análisis temático:
-* **Canalización a Google Sheets:** Sincronización estructurada de columnas mediante el módulo `sheetsExport.ts`.
-* **Descarga de Archivos Planos (CSV / Excel):** Generación de tablas estandarizadas con identificador seudo-anonimizado (`studentCode`), marca temporal, etapa formativa, cita textual directa y subcategoría deductiva asignada.
-* **Compatibilidad con Software Cualitativo:** Formato estructurado directamente importable en programas de análisis cualitativo asistido por computadora (ATLAS.ti, NVivo, MAXQDA).
+### 1.2 Estética Visual: Frutiger Aero Modern Glassmorphism
+La dirección de arte de EduPulse implementa un estilo visual sofisticado basado en el **Frutiger Aero Moderno**:
+* **Fondos y Profundidad:** Paleta oscura y elegante en tonos azul medianoche (`#070d18`, `#0a1526`) con gradientes radiales cian, esmeralda y zafiro.
+* **Cristalismo Translúcido (*Glassmorphism*):** Paneles y tarjetas con `backdrop-blur-md`, bordes luminiscentes sutiles (`border-white/10`) y sombras difusas que generan una sensación de ligereza táctil.
+* **Sello Simbólico de Cereza:** El reloj de Umbra (*Umbran Watch Symbol*), un sello esotérico y refinado con resplandores azul aguamarina, que acompaña las intervenciones del agente, dotándolo de personalidad y distinción.
 
 ---
 
-## 3. Flujo de Interacción Humano-Máquina (HCI)
+## 2. Condiciones Materiales y Resiliencia Regional (UniCórdoba)
 
-La interacción en EduPulse se organiza bajo el principio de **Asistencia Progresiva y Mayéutica No Directiva** (Kvale, 2007; Shneiderman et al., 2016): el sistema inicia contextualizando al informante, formula preguntas abiertas graduadas según su semestre, ejecuta repreguntas de profundización (*probing*) si la intervención lo requiere y sintetiza los hallazgos antes de transitar al siguiente bloque.
+El diseño de interacción se fundamenta en las condiciones reales de conectividad e infraestructura en Montería y los centros de tutoría regionales (Lorica, Planeta Rica, Sahagún, Montelíbano):
 
-| Etapa | Entrada del Informante / Usuario | Respuesta del Agente (Maya) | Resultado en el Sistema |
+### 2.1 Tolerancia a la Latencia y Fluctuaciones de Conectividad
+* **Micro-estados informativos:** Indicadores sutiles durante la inferencia de Google Gemini (*"Cereza está reflexionando..."*, *"Escuchando con atención..."*).
+* **Persistencia local inmediata:** Los mensajes e instrumentos se persisten localmente en memoria reactiva y `localStorage` antes de la confirmación remota en Firestore, impidiendo la pérdida de datos ante cortes eléctricos o pérdidas de señal celular.
+* **Cascada de Modelos y Reintento Automático:** El backend orquesta un mecanismo de reintento suave que conmuta transparentemente entre modelos (`gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.8-flash`) en caso de saturación 503, emitiendo mensajes de contingencia elegantes si la red colapsa temporalmente.
+
+### 2.2 Enfoque Multimodal Accesible (Voz y Texto)
+* **Entrada por Voz (Web Speech API):** Los estudiantes pueden dictar sus testimonios mediante reconocimiento de voz integrado en el navegador, promoviendo respuestas orales más espontáneas y ricas en anécdotas.
+* **Síntesis de Voz (Text-to-Speech):** Reproducción de voz artificial modulada para escuchar las intervenciones de Cereza.
+* **Prioridad Textual (*Text-First*):** Operatividad plena mediante teclado para salas de informática ruidosas o equipos sin micrófono.
+
+---
+
+## 3. Arquitectura de Navegación y Soporte Móvil Integral
+
+### 3.1 Barra de Navegación Móvil Inferior (`MobileBottomNav.tsx`)
+Para resolver la ergonomía en dispositivos móviles (smartphones y pantallas táctiles), se desarrolló un componente de navegación flotante inferior adaptado al área del pulgar:
+* **Botones Táctiles de Alta Accesibilidad:** Accesos directos a Diálogo Cualitativo (`Conversación`), Cuestionarios Diagnósticos (`Instrumentos`), Nueva Sesión, Selector de Idioma (ES/EN) y Portal de Investigación.
+* **Indicadores Activos:** Retroalimentación luminosa cian sobre la vista actualmente activa.
+
+### 3.2 Botones de Retorno en Pantalla (*In-App Go-Back Navigation*)
+Tanto en la versión web como en la móvil, se han incorporado botones explícitos de retorno con flecha (`ArrowLeft`):
+* Ubicados en la barra superior (`Navbar`), la sala de entrevista (`InterviewRoom`), el gestor de instrumentos y los paneles de análisis.
+* Permiten que los usuarios regresen con un solo clic a la pantalla de bienvenida o al menú principal sin recurrir obligatoriamente a los controles del navegador.
+
+### 3.3 Intercepción de Gestos y Botón Atrás del Hardware (`popstate` + `beforeunload`)
+Un problema recurrente en navegadores móviles (Chrome Android, Safari iOS) es el cierre involuntario de sesiones al deslizar el dedo desde el borde de la pantalla:
+* **Gestión del Historial HTML5 (`window.history.pushState`):** Al ingresar a la sala de entrevista, el sistema inyecta un estado en el historial. Si el informante activa el gesto o presiona el botón físico de retroceso, el evento `popstate` intercepta la acción, desplegando un cuadro modal de confirmación (*"¿Deseas pausar la conversación? Tus reflexiones se guardarán de forma segura"*).
+* **Guarda de Seguridad `beforeunload`:** Bloquea la recarga o salida accidental si hay un turno de conversación activo en proceso de redacción o inferencia.
+
+---
+
+## 4. Flujo de Interacción Humano-Computador (HCI)
+
+```text
+[ Pantalla Principal (Landing / Navbar) ]
+                  │
+      ┌───────────┴───────────┐
+      ▼                       ▼
+[ Módulo Cualitativo ]  [ Módulo Cuantitativo ]
+  (NewSessionModal)       (InstrumentsView)
+      │                       │
+      ▼                       ▼
+[ InterviewRoom ]       [ InstrumentForm ]
+  Diálogo con Cereza      Escala Likert (Autosave)
+      │                       │
+      ▼                       ▼
+[ Saturación Cereza ]   [ Envío Firestore ]
+      │                       │
+      └───────────┬───────────┘
+                  ▼
+[ Portal del Investigador (2FA) ]
+  SummaryView · ResponsesViewer · Exportación CAQDAS / Sheets
+```
+
+### Tabla de Etapas del Flujo HCI
+
+| Etapa | Acción del Usuario | Respuesta del Sistema y Cereza | Impacto Técnico |
 | :--- | :--- | :--- | :--- |
-| **01 · Ingreso y Consentimiento** | Registro de datos sociodemográficos y validación del consentimiento informado en `NewSessionModal`. | Inicializa el perfil en el Modelo del Alumno e inyecta la directriz de etapa formativa. | Sesión creada en Firestore con estado `active` y código de anonimización (`E01`). |
-| **02 · Apertura y Encuadre** | Ingreso a la sala `InterviewRoom`. | Saluda cordialmente por su nombre, reconoce su semestre en la Licenciatura y formula la primera pregunta abierta adaptada. | Primer turno conversacional desplegado; foco temático activo en pantalla. |
-| **03 · Narrativa y Profundización** | Expresión oral o escrita del estudiante compartiendo vivencias o anécdotas. | Evalúa la densidad discursiva. Si es breve o ambigua, lanza una repregunta reflexiva (*probing*, máx. 2) solicitando ejemplos reales. | Incremento de `currentClarificationCount`; enriquecimiento cualitativo del testimonio. |
-| **04 · Saturación y Transición** | Respuesta detallada o cumplimiento del límite de repreguntas. | Emite una validación empática neutral, extrae el hallazgo pedagógico y enlaza suavemente con la siguiente pregunta de la guía. | `advanceToNextQuestion: true`; avance visual en la barra de progreso (ej: de 28% a 42%). |
-| **05 · Cierre y Meta-reflexión** | Respuesta a la última pregunta sobre propuestas curriculares para la universidad. | Agradece calurosamente al participante por sus aportes a la investigación y declara formalmente el fin de la sesión. | `isInterviewFinished: true`; cambio de estado de sesión a `completed`. |
-| **06 · Análisis y Triangulación** | El investigador accede a `SummaryView` o activa el análisis analítico. | El motor genera síntesis hermenéutica, agrupando citas directas en las categorías A, B y C de la investigación. | Informe consolidado listo para exportación y triangulación teórica. |
+| **01 · Ingreso y Consentimiento** | Registro en `NewSessionModal` o selección de cuestionario en `InstrumentsView`. | Inicializa el perfil en el Modelo del Alumno; asigna código anónimo (`E01`). | Sesión registrada en Firestore con `consent: true`. |
+| **02 · Apertura con Distinción** | Ingreso a la sala `InterviewRoom`. | Saludo cálido, magnético y seguro reconociendo su semestre en la Licenciatura en Informática. | Primer turno desplegado; foco temático activo. |
+| **03 · Diálogo y Desafío Socrático** | Testimonio escrito o por voz del estudiante. | Escucha activa, eco reflexivo y repregunta socrática mordaz si la respuesta es evasiva o superficial. | Incremento de `participantTurns`; pre-categorización. |
+| **04 · Saturación y Cierre Autónomo** | Respuesta sustantiva tras al menos 6 intervenciones maduras. | Cereza evalúa saturación, agradece con elegancia, sintetiza aprendizajes y declara el cierre. | `isInterviewFinished: true`; cambio a estado `completed`. |
+| **05 · Consulta y Triangulación** | Investigador accede con credencial 2FA. | Despliegue de transcripción íntegra, citas categorizadas y tabulaciones cuantitativas. | Listo para exportación a ATLAS.ti, NVivo y Sheets. |
 
-### Ejemplo de Diálogo y Negociación Dialéctica Contextualizada:
-> **Maya:** *"¡Hola Carlos! Qué gusto conversar contigo, sabiendo que estás en 5° semestre de la Licenciatura en Informática y Medios Audiovisuales. Hoy tendremos una charla tranquila sobre cómo vives la tecnología y la IA en tus materias. Para empezar: ¿De qué manera has incorporado herramientas como ChatGPT o generadores de imágenes en tus proyectos o clases?"*  
-> **Carlos (Docente en Formación):** *"Pues casi siempre lo uso para redactar los guiones de los videos educativos que nos piden en producción de medios, pero a veces no me convence lo que redacta."*  
-> **Maya (Probing de Ejemplificación):** *"Tiene mucho sentido lo que mencionas. Pensando en esos guiones educativos, ¿podrías contarme alguna anécdota o ejemplo puntual donde sentiste que el guion de la IA no se adaptaba a lo que tú querías enseñar pedagógicamente?"*  
-> **Carlos:** *"Sí, claro. En una microclase de scratch para niños de primaria, la IA usaba palabras muy técnicas como 'algoritmo recursivo' que ningún niño de cuarto iba a entender. Me tocó reescribir todo el enfoque para hacerlo con metáforas de cocina."*  
-> *(El agente detecta transposición didáctica crítica, guarda la cita y avanza al tema ético).*
-
----
-
-## 4. Inventario de Vistas (Pantallas del Sistema)
-
-| ID | Vista / Componente | Función Principal e Interfaz de Usuario |
-| :--- | :--- | :--- |
-| **V-01** | `SessionsDashboard` (Panel del Investigador) | Vista principal para los tesistas administradores. Permite visualizar la lista de entrevistas en tiempo real, filtrar por estado (`active`, `completed`), consultar métricas de avance, acceder al lector de transcripciones íntegras y activar la exportación masiva a hojas de cálculo o CSV. |
-| **V-02** | `NewSessionModal` (Configuración y Consentimiento) | Formulario modal de ingreso donde se parametriza la sesión: nombre del participante, semestre (1° a 10°), sede universitaria (Montería u otras) y lectura del texto de consentimiento informado con casilla de verificación obligatoria. |
-| **V-03** | `InterviewRoom` (Sala de Entrevista Multimodal) | Entorno inmersivo de diálogo. Dispone de tarjeta superior de orientación con el tema actual, medidor visual de progreso (0% a 100%), panel de mensajes tipo burbuja con diferenciación cromática entre Maya y el estudiante, área de entrada de texto enriquecido, conmutador de reconocimiento de voz y reproductor de voz artificial. |
-| **V-04** | `GuidesManager` (Gestión de Guiones Cualitativos) | Interfaz para consultar, crear o editar guiones de entrevista semiestructurados. Permite enlazar preguntas individuales con objetivos de investigación específicos, definir pistas de profundización (*probingTips*) y seleccionar la guía activa para nuevas entrevistas. |
-| **V-05** | `SummaryView` (Extracción Analítica y Triangulación) | Panel de síntesis cualitativa generado por el backend (`/api/analyze-interview`). Organiza los extractos del diálogo en las categorías A (IA), B (Formación Docente) y C (Efectos), destacando citas textuales directas, puntos críticos y sentimiento global. |
-| **V-06** | `ThesisProjectModal` (Ficha Técnica Institucional) | Componente de transparencia pública. Despliega la información formal del proyecto de grado: autores (José Daniel Durango Caballero y Jefersson Ramírez Oviedo), título, formulación del problema, supuestos, objetivos generales y específicos, y aval de la Universidad de Córdoba. |
-| **V-07** | `Navbar` (Barra de Navegación Global) | Encabezado superior con accesos rápidos a la Sala de Entrevista, el Panel de Sesiones, el Gestor de Guiones, el modal institucional y el selector de idioma de la plataforma. |
+### Ejemplo de Interacción Dialógica con Cereza:
+> **Cereza:** *"Hola, Carlos. Qué placer tenerte aquí. Sé bien que estás transitando tu 6° semestre de la Licenciatura en Informática en Montería. Hoy tendremos una charla distendida, libre de exámenes o formalismos acartonados. Cuéntame, futuro colega: ¿cómo has venido experimentando con herramientas como ChatGPT o asistentes generativos en tus materias y en tu preparación docente?"*  
+> **Carlos (Docente en Formación):** *"Pues la verdad casi siempre le pido que me arme los cuestionarios y las guías de clase para salir rápido de eso."*  
+> **Cereza (Toque lúdico y repregunta socrática):** *"Vaya, una jugada sumamente práctica... pero entre tú y yo, querido colega, no me dejes con la mitad del misterio: al llevar esa guía a tus estudiantes, ¿sentiste que la IA enriqueció tu propuesta pedagógica, o terminó siendo una muleta cómoda para evitar pensar la clase? Cuéntame con total franqueza."*  
+> **Carlos:** *"Siendo sincero, al principio era una muleta. Pero me di cuenta en una microclase de que si yo no domino la lógica del taller, los muchachos hacen preguntas que no sé responder. Ahora la uso para darme ideas, pero la transposición didáctica la hago yo."*  
+> *(Cereza registra la tensión superada y la autonomía cognitiva ganada, formulando la siguiente dimensión).*
 
 ---
 
-## 5. Principios de Diseño del Ecosistema
+## 5. Inventario Exhaustivo de Vistas (Pantallas del Sistema)
 
-| Principio | Aplicación Concreta en EduPulse |
-| :--- | :--- |
-| **Horizontalidad y Empatía** | Maya no juzga ni instruye con superioridad académica; conversa como una colega reflexiva, disipando tensiones evaluativas en el informante. |
-| **Transparencia Epistemológica** | El participante conoce en todo momento los objetivos del proyecto y puede revisar la ficha técnica institucional con un solo clic. |
-| **Resiliencia Tecnológica** | La interfaz tolera interrupciones de red, conserva estados en el cliente y ofrece alternativas funcionales ante caídas de ancho de banda en sedes provinciales. |
-| **Baja Carga Cognitiva** | Formulación de una sola pregunta a la vez, tarjetas contextuales limpias y eliminación de menús engorrosos durante la entrevista. |
-| **Soberanía y Agencia del Informante** | El estudiante decide si responder por voz o texto, controla la pausa de su sesión y es el protagonista de sus reflexiones pedagógicas. |
-| **Portabilidad y Fidelidad de Datos** | La información cualitativa se procesa sin distorsión semántica y se entrega en formatos abiertos listos para CAQDAS y hojas analíticas. |
-
----
-
-## 6. Arquitectura Conceptual de la Experiencia
-
-El ecosistema de interacción de EduPulse se articula en tres superficies complementarias:
-* **Superficie de Entrada:** `NewSessionModal` y encuadre ético, donde se configuran los parámetros del informante y se formaliza el consentimiento informado.
-* **Superficie de Interacción:** `InterviewRoom`, donde se ejecuta el co-pilotaje cualitativo y el diálogo multimodal entre el docente en formación y Maya.
-* **Superficie de Producción:** `SummaryView`, `SessionsDashboard` y módulos de exportación, donde los testimonios discursivos se transforman en artefactos científicos tabulados, analizados y listos para el informe final de grado.
+| ID | Componente | Tipo de Vista | Descripción Funcional y Perfil de Usuario |
+| :--- | :--- | :--- | :--- |
+| **V-01** | `Navbar.tsx` | Barra de Navegación | Encabezado superior responsivo con soporte de idioma dual (ES/EN), botón de regreso universal, accesos rápidos y disparador de acceso administrativo. |
+| **V-02** | `MobileBottomNav.tsx` | Barra Móvil Inferior | Barra de navegación flotante inferior exclusiva para dispositivos móviles con diseño ergonómico para el pulgar. |
+| **V-03** | `NewSessionModal.tsx` | Modal de Inicio | Captura de caracterización inicial (nombre, semestre 1°-10°, sede) y validación vinculante de consentimiento informado digital. |
+| **V-04** | `InterviewRoom.tsx` | Sala Conversacional | Sala interactiva de diálogo cualitativo con Cereza: burbujas de chat, dictado por voz, síntesis auditiva, indicador de tema y protección contra retroceso accidental. |
+| **V-05** | `InstrumentsView.tsx` | Portal Diagnóstico | Centro de acceso a los cuestionarios estructurados cuantitativos (Instrumento 1: Percepciones; Instrumento 2: Autoeficacia). |
+| **V-06** | `InstrumentForm.tsx` | Formulario Likert | Vista de aplicación de encuestas Likert de 5 puntos con persistencia reactiva de borradores offline (`localStorage`) y sincronización a Firestore. |
+| **V-07** | `AdminAuthModal.tsx` | Portal de Seguridad | Modal de autenticación de doble factor para investigadores: verificación de cuenta de Google con lista blanca y PIN Maestro (`0412`). |
+| **V-08** | `SessionsDashboard.tsx` | Panel de Control | Centro de supervisión para investigadores: lista de entrevistas en tiempo real, filtros por semestre/sede y visor de transcripciones completas. |
+| **V-09** | `InstrumentResponsesViewer.tsx`| Visor Estadístico | Dashboard analítico cuantitativo con cálculo de medias aritméticas ($\bar{x}$), desviaciones estándar ($\sigma$), distribución porcentual por dimensión y exportación a CSV. |
+| **V-10** | `SummaryView.tsx` | Matriz Cualitativa | Extracción hermenéutica generada por `/api/analyze-interview`, organizando citas directas en la ontología deductiva (IA, Formación, Efectos). |
+| **V-11** | `GuidesManager.tsx` | Gestor de Guiones | Interfaz administrativa para consultar o calibrar los guiones cualitativos semiestructurados y sus pistas socráticas. |
+| **V-12** | `ThesisProjectModal.tsx` | Ficha Técnica | Ficha institucional de transparencia con autores, director, problema, objetivos y respaldo de la Universidad de Córdoba. |
 
 ---
 
-## 7. Criterios Técnicos de Interfaz
-* **Jerarquía visual inequívoca:** Separación cromática nítida entre mensajes del agente y del participante, resaltando los botones de acción crítica (enviar mensaje, activar micrófono, avanzar sesión).
-* **Retroalimentación continua de inferencia:** Indicadores de estado visuales durante el procesamiento de la API de Google Gemini para prevenir pulsaciones dobles o confusión.
-* **Diseño completamente adaptable (*Responsive*):** Interfaz optimizada para operar tanto en computadores portátiles y de escritorio como en tabletas y dispositivos móviles utilizados por los estudiantes.
-* **Cumplimiento de pautas de accesibilidad:** Contrastes de color certificados bajo estándares WCAG 2.1 nivel AA y soporte integral de atajos de teclado y lectores de pantalla.
+## 6. Criterios Técnicos de Usabilidad y Accesibilidad
+* **Compatibilidad Multiplataforma:** Optimización fluida desde pantallas móviles estrechas (360px) hasta monitores de alta resolución (4K).
+* **Paridad Bilingüe Completa:** Conmutación dinámica e instantánea de la interfaz entre español e inglés sin recargar la aplicación ni reiniciar la sesión.
+* **Estándares WCAG 2.1 AA:** Contrastes cromáticos verificados sobre fondos oscuros, navegación completa por teclado y soporte para lectores de pantalla.
 
 ---
 
-## 8. Referencias académicas utilizadas
+## 7. Referencias Académicas Utilizadas
 * Creswell, J. W., & Poth, C. N. (2018). *Qualitative inquiry and research design: Choosing among five approaches* (4th ed.). SAGE Publications.
 * Kvale, S. (2007). *Doing interviews*. SAGE Publications. https://doi.org/10.4135/9781849208963
 * Nielsen, J., & Budiu, R. (2013). *Mobile usability*. New Riders.

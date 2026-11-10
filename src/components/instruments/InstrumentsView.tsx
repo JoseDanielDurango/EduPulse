@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   Clock,
   ArrowRight,
+  ArrowLeft,
 } from 'lucide-react';
 import { InstrumentDefinition, InstrumentResponse } from '../../types/instruments';
 import { getInstruments } from '../../lib/defaultInstruments';
@@ -20,6 +21,7 @@ interface InstrumentsViewProps {
   language: Language;
   onOpenThesisModal?: () => void;
   isAdmin?: boolean;
+  onBack?: () => void;
 }
 
 export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
@@ -27,6 +29,7 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
   language,
   onOpenThesisModal,
   isAdmin = false,
+  onBack,
 }) => {
   const instruments = getInstruments(language);
   const [selectedInstrumentId, setSelectedInstrumentId] = useState<string>(instruments[0].id);
@@ -46,6 +49,16 @@ export const InstrumentsView: React.FC<InstrumentsViewProps> = ({
         <div className="aero-glass rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           {/* Instrument Selector Pills (Horizontally scrollable on mobile) */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:flex-wrap w-full sm:w-auto">
+            {onBack && (
+              <button
+                onClick={onBack}
+                title={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+                className="btn-aero-glass h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-cyan-300 transition shrink-0 cursor-pointer shadow-xs active:scale-95 mr-1"
+                aria-label={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+            )}
             {instruments.map((inst) => {
               const isSelected = inst.id === selectedInstrumentId;
               const count = countResponses(inst.id);

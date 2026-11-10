@@ -6,6 +6,7 @@ import {
   Trash2,
   FileSpreadsheet,
   ArrowRight,
+  ArrowLeft,
   Radio,
   MapPin,
   MessageCircle,
@@ -20,6 +21,7 @@ interface SessionsDashboardProps {
   onViewSummary: (session: InterviewSession) => void;
   onNewSession: () => void;
   language: Language;
+  onBack?: () => void;
 }
 
 export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
@@ -28,6 +30,7 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
   onViewSummary,
   onNewSession,
   language,
+  onBack,
 }) => {
   const t = translations[language];
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,13 +63,25 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 font-body">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            <span className="aero-gradient-text">{t.dashTitle}</span>
-          </h1>
-          <p className="text-sm text-slate-500 dark:text-cyan-200/70 font-medium">
-            {t.dashSubtitle}
-          </p>
+        <div className="flex items-center gap-3">
+          {onBack && (
+            <button
+              onClick={onBack}
+              title={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+              className="btn-aero-glass h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-cyan-300 transition shrink-0 cursor-pointer shadow-xs active:scale-95"
+              aria-label={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          )}
+          <div>
+            <h1 className="font-display text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <span className="aero-gradient-text">{t.dashTitle}</span>
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-cyan-200/70 font-medium">
+              {t.dashSubtitle}
+            </p>
+          </div>
         </div>
         <button
           onClick={onNewSession}

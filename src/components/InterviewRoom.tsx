@@ -14,6 +14,7 @@ import {
   Sparkle,
   CheckCircle2,
   Layers,
+  ArrowLeft,
 } from 'lucide-react';
 import { InterviewGuide, InterviewSession, ChatMessage } from '../types';
 import { saveSession } from '../lib/firebase';
@@ -25,6 +26,7 @@ interface InterviewRoomProps {
   onUpdateSession: (updated: InterviewSession) => void;
   onFinishSession: (finalSession: InterviewSession) => void;
   language: Language;
+  onBack?: () => void;
 }
 
 export const InterviewRoom: React.FC<InterviewRoomProps> = ({
@@ -33,6 +35,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
   onUpdateSession,
   onFinishSession,
   language,
+  onBack,
 }) => {
   const t = translations[language];
   const [inputText, setInputText] = useState('');
@@ -387,6 +390,16 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       {/* Mobile-Only Sleek Compact App Bar (< 640px) */}
       <div className="sm:hidden aero-glass rounded-2xl p-2.5 mb-2 shadow-md border border-white/90 dark:border-cyan-500/30 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
+          {onBack && (
+            <button
+              onClick={onBack}
+              title={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+              className="btn-aero-glass h-8 w-8 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-cyan-300 transition shrink-0 cursor-pointer shadow-2xs active:scale-95"
+              aria-label={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          )}
           <div className="h-8 w-8 rounded-full p-0.5 bg-gradient-to-tr from-cyan-400/40 via-white/80 to-emerald-400/40 shadow-sm ring-1 ring-white/90 dark:ring-cyan-400/60 shrink-0 flex items-center justify-center">
             <img
               src="/cereza-avatar.png"
@@ -438,6 +451,16 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       <div className="hidden sm:block aero-glass rounded-3xl p-4 sm:p-5 mb-4 shadow-lg border border-white/90 dark:border-cyan-500/30">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/60 dark:border-cyan-800/40">
           <div className="flex items-center gap-3">
+            {onBack && (
+              <button
+                onClick={onBack}
+                title={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+                className="btn-aero-glass h-9 w-9 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-cyan-300 transition shrink-0 cursor-pointer shadow-xs active:scale-95"
+                aria-label={language === 'en' ? 'Back to home' : 'Volver al inicio'}
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+            )}
             <div className="h-12 w-12 rounded-full p-0.5 bg-gradient-to-tr from-cyan-400/40 via-white/80 to-emerald-400/40 shadow-lg ring-2 ring-white/90 dark:ring-cyan-400/60 shrink-0 relative flex items-center justify-center">
               <img
                 src="/cereza-avatar.png"

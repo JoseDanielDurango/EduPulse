@@ -37,6 +37,7 @@ import {
   Users,
   Sparkles,
   ArrowRight,
+  ArrowLeft,
   ShieldCheck,
   CheckCircle2,
   BookOpen,
@@ -46,6 +47,8 @@ import {
   ChevronRight,
   Clock,
   ClipboardList,
+  Radio,
+  PlusCircle,
 } from 'lucide-react';
 
 export default function App() {
@@ -55,6 +58,7 @@ export default function App() {
   const [guides, setGuides] = useState<InterviewGuide[]>(DEFAULT_GUIDES);
   const [instrumentResponses, setInstrumentResponses] = useState<InstrumentResponse[]>([]);
   const [activeSession, setActiveSession] = useState<InterviewSession | null>(null);
+  const [isChatRoomOpen, setIsChatRoomOpen] = useState(false);
   const [viewingSummarySession, setViewingSummarySession] = useState<InterviewSession | null>(null);
   const [isNewSessionModalOpen, setIsNewSessionModalOpen] = useState(false);
   const [isThesisModalOpen, setIsThesisModalOpen] = useState(false);
@@ -63,6 +67,101 @@ export default function App() {
 
   // Researcher / Admin Authorization Check
   const isAdmin = isUserAdmin(currentUser) || isPinAuthorized;
+
+  // History state navigation helper (prevents accidental tab closure on phones)
+  const pushNavState = (view: string) => {
+    try {
+      window.history.pushState({ edupulse_view: view }, '');
+    } catch {
+      // Ignore pushState errors
+    }
+  };
+
+  // Popstate listener: catches Android hardware back button and swipe back gestures
+  useEffect(() => {
+    try {
+      if (!window.history.state || !window.history.state.edupulse_view) {
+        window.history.replaceState({ edupulse_view: 'home' }, '');
+      }
+    } catch {
+      // Ignore
+    }
+
+    const handlePopState = () => {
+      // Priority 1: Close open modals first
+      if (isThesisModalOpen) {
+        setIsThesisModalOpen(false);
+        return;
+      }
+      if (isAdminLoginModalOpen) {
+        setIsAdminLoginModalOpen(false);
+        return;
+      }
+      if (isNewSessionModalOpen) {
+        setIsNewSessionModalOpen(false);
+        return;
+      }
+
+      // Priority 2: Return from summary view to chat or hub
+      if (viewingSummarySession) {
+        setViewingSummarySession(null);
+        return;
+      }
+
+      // Priority 3: Step out of chat room back to Student Hub
+      if (isChatRoomOpen) {
+        setIsChatRoomOpen(false);
+        return;
+      }
+
+      // Priority 4: Return from tabs to interview tab
+      if (currentTab !== 'interview') {
+        setCurrentTab('interview');
+        return;
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [
+    isThesisModalOpen,
+    isAdminLoginModalOpen,
+    isNewSessionModalOpen,
+    viewingSummarySession,
+    isChatRoomOpen,
+    currentTab,
+  ]);
+
+  // Beforeunload listener: warns user before closing tab if an active conversation is open
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isChatRoomOpen && activeSession && activeSession.messages.length > 0) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isChatRoomOpen, activeSession]);
+
+  // Unified Go Back handler (used by back arrow buttons across web and mobile)
+  const handleGoBack = () => {
+    if (window.history.state?.edupulse_view && window.history.state.edupulse_view !== 'home') {
+      window.history.back();
+    } else {
+      // Direct in-app fallback
+      if (isThesisModalOpen) setIsThesisModalOpen(false);
+      else if (isAdminLoginModalOpen) setIsAdminLoginModalOpen(false);
+      else if (isNewSessionModalOpen) setIsNewSessionModalOpen(false);
+      else if (viewingSummarySession) setViewingSummarySession(null);
+      else if (isChatRoomOpen) setIsChatRoomOpen(false);
+      else if (currentTab !== 'interview') setCurrentTab('interview');
+    }
+  };
+
+  const canGoBack =
+    (currentTab === 'interview' && (isChatRoomOpen || !!viewingSummarySession)) ||
+    currentTab !== 'interview';
 
   // Language state (persisted in localStorage)
   const [language, setLanguage] = useState<Language>(() => {
@@ -181,22 +280,28 @@ export default function App() {
 
   const handleStartNewSession = (newSession: InterviewSession, _guide: InterviewGuide) => {
     setActiveSession(newSession);
+    setIsChatRoomOpen(true);
     setViewingSummarySession(null);
     setCurrentTab('interview');
     localStorage.setItem('last_active_session_id', newSession.id);
     saveSession(newSession);
+    pushNavState('chat');
   };
 
   const handleOpenExistingSession = (session: InterviewSession) => {
     setActiveSession(session);
+    setIsChatRoomOpen(true);
     setViewingSummarySession(null);
     setCurrentTab('interview');
     localStorage.setItem('last_active_session_id', session.id);
+    pushNavState('chat');
   };
 
   const handleViewSummary = (session: InterviewSession) => {
     setViewingSummarySession(session);
+    setIsChatRoomOpen(false);
     setCurrentTab('interview');
+    pushNavState('summary');
   };
 
   const handleUpdateSession = (updated: InterviewSession) => {
@@ -209,6 +314,8 @@ export default function App() {
   const handleFinishSession = (completedSession: InterviewSession) => {
     setActiveSession(completedSession);
     setViewingSummarySession(completedSession);
+    setIsChatRoomOpen(false);
+    pushNavState('summary');
   };
 
   const currentGuide = guides[0] || DEFAULT_GUIDES[0];
@@ -223,25 +330,41 @@ export default function App() {
           setCurrentTab(tab);
           if (tab !== 'interview') {
             setViewingSummarySession(null);
+            setIsChatRoomOpen(false);
+            pushNavState(tab);
+          } else {
+            if (activeSession) {
+              setIsChatRoomOpen(true);
+              pushNavState('chat');
+            }
           }
         }}
         currentUser={currentUser}
         isAdmin={isAdmin}
-        onOpenAdminModal={() => setIsAdminLoginModalOpen(true)}
+        onOpenAdminModal={() => {
+          setIsAdminLoginModalOpen(true);
+          pushNavState('modal');
+        }}
         onLockAdmin={() => {
           lockResearcherPin();
           setIsPinAuthorized(false);
         }}
         onNewSession={() => {
           setIsNewSessionModalOpen(true);
+          pushNavState('modal');
         }}
-        onOpenThesisModal={() => setIsThesisModalOpen(true)}
+        onOpenThesisModal={() => {
+          setIsThesisModalOpen(true);
+          pushNavState('modal');
+        }}
         activeSessionParticipant={activeSession?.studentCode || activeSession?.participantName}
         hasActiveSession={!!activeSession && activeSession.status === 'active'}
         language={language}
         onToggleLanguage={handleToggleLanguage}
         theme={theme}
         onSelectTheme={setTheme}
+        canGoBack={canGoBack}
+        onGoBack={handleGoBack}
       />
 
       {/* Main View Area with Mobile Bottom Nav Clearance */}
@@ -251,18 +374,19 @@ export default function App() {
             {viewingSummarySession ? (
               <SummaryView
                 session={viewingSummarySession}
-                onBackToInterview={() => setViewingSummarySession(null)}
+                onBackToInterview={handleGoBack}
                 onUpdateSession={handleUpdateSession}
                 language={language}
                 isAdmin={isAdmin}
               />
-            ) : activeSession ? (
+            ) : (activeSession && isChatRoomOpen) ? (
               <InterviewRoom
                 session={activeSession}
                 guide={currentGuide}
                 onUpdateSession={handleUpdateSession}
                 onFinishSession={handleFinishSession}
                 language={language}
+                onBack={handleGoBack}
               />
             ) : (
               /* Sleek, Modern, High-End Student Hub */
@@ -320,18 +444,50 @@ export default function App() {
                       </p>
                     </div>
 
-                    {/* Single Prominent Primary Action */}
-                    <div className="w-full sm:w-auto pt-2">
-                      <button
-                        onClick={() => {
-                          setIsNewSessionModalOpen(true);
-                        }}
-                        className="btn-aero-green w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-sm sm:text-base shadow-lg transition active:scale-98 cursor-pointer"
-                      >
-                        <MessageCircle className="h-5 w-5" />
-                        <span>{t.heroStartBtn}</span>
-                        <ArrowRight className="h-4 w-4 ml-1" />
-                      </button>
+                    {/* Primary Actions: Resume Dialogue or Start New */}
+                    <div className="w-full sm:w-auto pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                      {activeSession && activeSession.status === 'active' ? (
+                        <>
+                          <button
+                            onClick={() => {
+                              setIsChatRoomOpen(true);
+                              pushNavState('chat');
+                            }}
+                            className="btn-aero-green w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-sm sm:text-base shadow-lg transition active:scale-98 cursor-pointer"
+                          >
+                            <Radio className="h-5 w-5 animate-pulse text-white" />
+                            <span>
+                              {language === 'en'
+                                ? `Resume Dialogue with Cereza (${activeSession.studentCode || activeSession.participantName})`
+                                : `Continuar Diálogo con Cereza (${activeSession.studentCode || activeSession.participantName})`}
+                            </span>
+                            <ArrowRight className="h-4 w-4 ml-1" />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setIsNewSessionModalOpen(true);
+                              pushNavState('modal');
+                            }}
+                            className="btn-aero-glass w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm transition active:scale-98 cursor-pointer text-slate-700 dark:text-slate-200"
+                          >
+                            <PlusCircle className="h-4 w-4 text-emerald-600 dark:text-cyan-400" />
+                            <span>{language === 'en' ? 'Start New Dialogue' : 'Iniciar Nueva Charla'}</span>
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setIsNewSessionModalOpen(true);
+                            pushNavState('modal');
+                          }}
+                          className="btn-aero-green w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-sm sm:text-base shadow-lg transition active:scale-98 cursor-pointer"
+                        >
+                          <MessageCircle className="h-5 w-5" />
+                          <span>{t.heroStartBtn}</span>
+                          <ArrowRight className="h-4 w-4 ml-1" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -340,7 +496,10 @@ export default function App() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   {/* Card 1: Cuestionarios */}
                   <div
-                    onClick={() => setCurrentTab('instruments')}
+                    onClick={() => {
+                      setCurrentTab('instruments');
+                      pushNavState('instruments');
+                    }}
                     className="aero-card rounded-2xl p-5 flex items-start gap-3.5 cursor-pointer hover:border-emerald-400/60 transition group"
                   >
                     <div className="h-10 w-10 rounded-xl bg-cyan-100/80 dark:bg-cyan-950/70 text-cyan-700 dark:text-cyan-300 flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
@@ -363,7 +522,10 @@ export default function App() {
 
                   {/* Card 2: Ficha de Tesis */}
                   <div
-                    onClick={() => setIsThesisModalOpen(true)}
+                    onClick={() => {
+                      setIsThesisModalOpen(true);
+                      pushNavState('modal');
+                    }}
                     className="aero-card rounded-2xl p-5 flex items-start gap-3.5 cursor-pointer hover:border-emerald-400/60 transition group"
                   >
                     <div className="h-10 w-10 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
@@ -484,8 +646,10 @@ export default function App() {
             onViewSummary={handleViewSummary}
             onNewSession={() => {
               setIsNewSessionModalOpen(true);
+              pushNavState('modal');
             }}
             language={language}
+            onBack={handleGoBack}
           />
         )}
 
@@ -493,8 +657,12 @@ export default function App() {
           <InstrumentsView
             responses={instrumentResponses}
             language={language}
-            onOpenThesisModal={() => setIsThesisModalOpen(true)}
+            onOpenThesisModal={() => {
+              setIsThesisModalOpen(true);
+              pushNavState('modal');
+            }}
             isAdmin={isAdmin}
+            onBack={handleGoBack}
           />
         )}
       </main>
@@ -507,10 +675,20 @@ export default function App() {
           setCurrentTab(tab);
           if (tab !== 'interview') {
             setViewingSummarySession(null);
+            setIsChatRoomOpen(false);
+            pushNavState(tab);
+          } else {
+            if (activeSession) {
+              setIsChatRoomOpen(true);
+              pushNavState('chat');
+            }
           }
         }}
         isAdmin={isAdmin}
-        onOpenThesisModal={() => setIsThesisModalOpen(true)}
+        onOpenThesisModal={() => {
+          setIsThesisModalOpen(true);
+          pushNavState('modal');
+        }}
         hasActiveSession={!!activeSession && activeSession.status === 'active'}
         language={language}
       />

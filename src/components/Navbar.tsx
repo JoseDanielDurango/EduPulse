@@ -14,6 +14,7 @@ import {
   ClipboardList,
   ShieldCheck,
   Lock,
+  ArrowLeft,
 } from 'lucide-react';
 import { User } from 'firebase/auth';
 import { loginWithGoogle, logout } from '../lib/firebase';
@@ -36,6 +37,8 @@ interface NavbarProps {
   onToggleLanguage: () => void;
   theme: ThemeMode;
   onSelectTheme: (mode: ThemeMode) => void;
+  canGoBack?: boolean;
+  onGoBack?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -53,6 +56,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleLanguage,
   theme,
   onSelectTheme,
+  canGoBack = false,
+  onGoBack,
 }) => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
@@ -95,6 +100,16 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 h-14 md:h-16 w-full">
           {/* Institutional Brand: EduPulse & UniCórdoba */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
+            {canGoBack && onGoBack && (
+              <button
+                onClick={onGoBack}
+                title={language === 'en' ? 'Go back' : 'Volver'}
+                className="btn-aero-glass h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-cyan-300 transition-all cursor-pointer shadow-xs shrink-0 active:scale-95"
+                aria-label={language === 'en' ? 'Go back' : 'Volver'}
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+            )}
             <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-2xl bg-gradient-to-b from-white/90 via-cyan-50/80 to-emerald-100/90 dark:from-slate-900/90 dark:via-cyan-950/80 dark:to-emerald-950/90 p-1 flex items-center justify-center shadow-md ring-2 ring-white/80 dark:ring-cyan-400/50 relative overflow-hidden group cursor-pointer backdrop-blur-xs shrink-0">
               <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent pointer-events-none" />
               <img

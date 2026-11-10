@@ -353,7 +353,9 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             <span className="h-5 w-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-[10px] text-slate-500 dark:text-slate-400">
               1
             </span>
-            <span className="hidden sm:inline">Análisis Documental</span>
+            <span className="hidden sm:inline">
+              {language === 'en' ? 'Documentary Analysis' : 'Análisis Documental'}
+            </span>
           </div>
 
           <div className="h-0.5 w-6 bg-emerald-200 dark:bg-emerald-800"></div>
@@ -362,7 +364,11 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             <span className="h-5 w-5 rounded-full bg-[#059669] text-white flex items-center justify-center font-bold text-[10px]">
               2
             </span>
-            <span>Interacción Dialógica Mediada por IA (Activa)</span>
+            <span>
+              {language === 'en'
+                ? 'AI-Mediated Dialogic Interaction (Active)'
+                : 'Interacción Dialógica Mediada por IA (Activa)'}
+            </span>
           </div>
 
           <div className="h-0.5 w-6 bg-slate-200 dark:bg-slate-800"></div>
@@ -371,7 +377,9 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             <span className="h-5 w-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-[10px] text-slate-500 dark:text-slate-400">
               3
             </span>
-            <span className="hidden sm:inline">Codificación y Categorización</span>
+            <span className="hidden sm:inline">
+              {language === 'en' ? 'Coding & Categorization' : 'Codificación y Categorización'}
+            </span>
           </div>
         </div>
       </div>
@@ -397,7 +405,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
               </span>
             </div>
             <p className="text-[10px] text-slate-500 dark:text-cyan-200/70 truncate">
-              {session.currentDimension || 'Diálogo Reflexivo'}
+              {session.currentDimension || (language === 'en' ? 'Reflective Dialogue' : 'Diálogo Reflexivo')}
             </p>
           </div>
         </div>
@@ -440,12 +448,12 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="font-display font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
-                  Diálogo Reflexivo con Cereza
+                  {language === 'en' ? 'Reflective Dialogue with Cereza' : 'Diálogo Reflexivo con Cereza'}
                 </h1>
                 {/* Participant Badge */}
                 <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold bg-white/70 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200 shadow-2xs">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-sm"></span>
-                  {participantCode} • {session.semester || 'Licenciatura'}
+                  {participantCode} • {session.semester || (language === 'en' ? 'Undergraduate' : 'Licenciatura')}
                 </span>
                 {session.centerLocation && (
                   <span className="hidden md:inline-flex text-[11px] px-2.5 py-0.5 rounded-full bg-cyan-100/70 dark:bg-cyan-950/70 text-cyan-900 dark:text-cyan-200 font-semibold border border-cyan-200/60 dark:border-cyan-800/60">
@@ -454,8 +462,10 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                 )}
               </div>
               <p className="text-xs text-slate-500 dark:text-cyan-200/70 font-body">
-                Entrevistadora: <span className="font-bold text-slate-700 dark:text-slate-200">Cereza</span> •
-                Licenciatura en Informática (Universidad de Córdoba)
+                {language === 'en' ? 'Interviewer' : 'Entrevistadora'}: <span className="font-bold text-slate-700 dark:text-slate-200">Cereza</span> •{' '}
+                {language === 'en'
+                  ? 'Bachelor in Computer Science (University of Córdoba)'
+                  : 'Licenciatura en Informática (Universidad de Córdoba)'}
               </p>
             </div>
           </div>
@@ -491,19 +501,19 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
               <Layers className="h-3.5 w-3.5 text-emerald-600 dark:text-cyan-400" />
-              <span>Dimensión Actual:</span>
+              <span>{language === 'en' ? 'Current Dimension:' : 'Dimensión Actual:'}</span>
             </span>
             <span className="px-3 py-0.5 rounded-full text-[11px] font-bold bg-white/70 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
-              {session.currentDimension || 'Prácticas y Autoeficacia Didáctica'}
+              {session.currentDimension || (language === 'en' ? 'Practices & Didactic Self-Efficacy' : 'Prácticas y Autoeficacia Didáctica')}
             </span>
           </div>
 
           <div className="flex items-center gap-2 text-slate-500 dark:text-cyan-200/70">
             <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 font-semibold border border-slate-200/60 dark:border-slate-700/60">
-              Fase: {session.qualitativePhase || 'Exploración Inicial'}
+              {language === 'en' ? 'Phase:' : 'Fase:'} {session.qualitativePhase || (language === 'en' ? 'Initial Exploration' : 'Exploración Inicial')}
             </span>
             <span className="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
-              • {participantTurns} {participantTurns === 1 ? 'reflexión' : 'reflexiones'}
+              • {participantTurns} {participantTurns === 1 ? (language === 'en' ? 'reflection' : 'reflexión') : (language === 'en' ? 'reflections' : 'reflexiones')}
             </span>
           </div>
         </div>
@@ -539,7 +549,9 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                 <div className="flex items-center justify-between gap-3 mb-2 pb-1.5 border-b border-slate-200/50 dark:border-cyan-800/40">
                   <div className="flex items-center gap-2">
                     <span className="font-display font-bold text-xs text-slate-900 dark:text-cyan-200">
-                      {isAgent ? 'Cereza (Entrevistadora Cualitativa)' : `${session.participantName} [Cita Reflexiva]`}
+                      {isAgent
+                        ? (language === 'en' ? 'Cereza (Qualitative Interviewer)' : 'Cereza (Entrevistadora Cualitativa)')
+                        : `${session.participantName} [${language === 'en' ? 'Reflective Quote' : 'Cita Reflexiva'}]`}
                     </span>
                     {message.category && (
                       <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-100/70 dark:bg-cyan-950/70 text-cyan-900 dark:text-cyan-300 border border-cyan-200/60 dark:border-cyan-800/60">

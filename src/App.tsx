@@ -245,7 +245,7 @@ export default function App() {
       />
 
       {/* Main View Area with Mobile Bottom Nav Clearance */}
-      <main className="flex-1 pb-20 md:pb-6">
+      <main className="flex-1 pb-24 lg:pb-8">
         {currentTab === 'interview' && (
           <>
             {viewingSummarySession ? (
@@ -287,13 +287,31 @@ export default function App() {
                     {/* Institutional Tag */}
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50/90 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-700/50">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Licenciatura en Informática • Universidad de Córdoba</span>
+                      <span>
+                        {language === 'en'
+                          ? 'Computer Science Education • University of Córdoba'
+                          : 'Licenciatura en Informática • Universidad de Córdoba'}
+                      </span>
                     </div>
 
                     {/* Clean Title & Subtitle */}
                     <div className="space-y-2">
                       <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                        Diálogo Reflexivo con <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">Cereza</span>
+                        {language === 'en' ? (
+                          <>
+                            Reflective Dialogue with{' '}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">
+                              Cereza
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            Diálogo Reflexivo con{' '}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">
+                              Cereza
+                            </span>
+                          </>
+                        )}
                       </h1>
                       <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-body">
                         {language === 'en'

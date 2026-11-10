@@ -116,16 +116,20 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
 
           <div className="flex flex-wrap items-center gap-2.5">
             <h1 className="font-display text-xl sm:text-2xl font-extrabold tracking-tight">
-              <span className="aero-gradient-text">Matriz Cualitativa de Resultados</span>
+              <span className="aero-gradient-text">
+                {language === 'en' ? 'Qualitative Findings Matrix' : 'Matriz Cualitativa de Resultados'}
+              </span>
             </h1>
             <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold bg-white/70 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300 shadow-2xs">
               <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-xs animate-pulse"></span>
-              {participantCode} • {session.semester || 'Licenciatura'}
+              {participantCode} • {session.semester || (language === 'en' ? 'Undergraduate' : 'Licenciatura')}
             </span>
           </div>
 
           <p className="text-xs sm:text-sm text-slate-500 dark:text-cyan-200/70 mt-1 font-medium">
-            Universidad de Córdoba • Licenciatura en Informática • {session.messages.length} turnos de diálogo
+            {language === 'en'
+              ? `University of Córdoba • Bachelor in Computer Science • ${session.messages.length} dialogue turns`
+              : `Universidad de Córdoba • Licenciatura en Informática • ${session.messages.length} turnos de diálogo`}
           </p>
         </div>
 
@@ -170,7 +174,9 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
             <div>
               <h4 className="font-bold text-sm">{t.summaryExportedNotice}</h4>
               <p className="text-xs text-emerald-800 dark:text-emerald-400">
-                Sincronizado con Google Drive para análisis cualitativo y triangulación de datos.
+                {language === 'en'
+                  ? 'Synchronized with Google Drive for qualitative analysis and data triangulation.'
+                  : 'Sincronizado con Google Drive para análisis cualitativo y triangulación de datos.'}
               </p>
             </div>
           </div>
@@ -196,7 +202,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
             onClick={handleExportGoogleSheets}
             className="underline font-semibold hover:text-rose-700 text-xs shrink-0 cursor-pointer"
           >
-            Reintentar
+            {language === 'en' ? 'Retry' : 'Reintentar'}
           </button>
         </div>
       )}
@@ -219,7 +225,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
           {summary.keyThemes && summary.keyThemes.length > 0 && (
             <div className="pt-3 border-t border-slate-200/60 dark:border-cyan-800/40">
               <h3 className="font-display text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-cyan-200/70 mb-2.5">
-                {t.themesTitle} (Códigos Cualitativos Emergentes)
+                {t.themesTitle} ({language === 'en' ? 'Emerging Qualitative Codes' : 'Códigos Cualitativos Emergentes'})
               </h3>
               <div className="flex flex-wrap gap-2">
                 {summary.keyThemes.map((theme: string, i: number) => (
@@ -311,7 +317,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
               className="btn-aero-glass inline-flex items-center gap-1.5 px-3.5 py-1.5 mb-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer"
             >
               {hasCopied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-cyan-600" />}
-              <span>{hasCopied ? 'Copiado' : 'Copiar JSON'}</span>
+              <span>{hasCopied ? (language === 'en' ? 'Copied' : 'Copiado') : (language === 'en' ? 'Copy JSON' : 'Copiar JSON')}</span>
             </button>
           )}
         </div>
@@ -321,7 +327,7 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
           <div className="overflow-x-auto">
             {responses.length === 0 ? (
               <div className="p-8 text-center text-slate-500 dark:text-slate-400 text-sm">
-                Aún no se han generado registros analíticos.
+                {language === 'en' ? 'No analytical records generated yet.' : 'Aún no se han generado registros analíticos.'}
               </div>
             ) : (
               <table className="w-full text-left border-collapse text-xs sm:text-sm font-body">
@@ -332,7 +338,9 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                     <th className="py-3 px-4 min-w-[200px]">{t.colSynthesis}</th>
                     <th className="py-3 px-4 min-w-[180px]">{t.colDetails}</th>
                     <th className="py-3 px-4 min-w-[160px]">{t.colFriction}</th>
-                    <th className="py-3 px-4 min-w-[240px]">{t.colQuotes} (Citas Textuales)</th>
+                    <th className="py-3 px-4 min-w-[240px]">
+                      {t.colQuotes} {language === 'en' ? '(Verbatim Quotes)' : '(Citas Textuales)'}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
@@ -438,10 +446,10 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
                           alt="Cereza"
                           className="h-5 w-5 rounded-full object-contain ring-1 ring-cyan-300 dark:ring-cyan-500/50 shadow-xs"
                         />
-                        <span>Cereza (Entrevistadora Cualitativa)</span>
+                        <span>{language === 'en' ? 'Cereza (Qualitative Interviewer)' : 'Cereza (Entrevistadora Cualitativa)'}</span>
                       </>
                     ) : (
-                      `${session.participantName} [Cita]`
+                      `${session.participantName} [${language === 'en' ? 'Quote' : 'Cita'}]`
                     )}
                   </span>
                   <span className="text-slate-400 dark:text-slate-500 font-normal text-[10px] font-mono">

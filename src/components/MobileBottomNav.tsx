@@ -31,7 +31,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 inset-x-0 z-40 aero-glass border-t border-white/80 dark:border-cyan-500/20 shadow-2xl backdrop-blur-2xl pb-safe transition-all duration-200"
+      className="lg:hidden fixed bottom-0 inset-x-0 z-40 aero-glass border-t border-white/80 dark:border-cyan-500/20 shadow-2xl backdrop-blur-2xl pb-safe transition-all duration-200"
     >
       <div className="flex items-center justify-around h-15 px-2">
         {/* Tab 1: Conversación / Chat con Cereza */}

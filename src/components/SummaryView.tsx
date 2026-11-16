@@ -15,12 +15,15 @@ import {
   CheckCircle,
   GraduationCap,
   Quote,
+  Mail,
 } from 'lucide-react';
 import { InterviewSession, InterviewSummary } from '../types';
 import {
   exportSessionToGoogleSheets,
   downloadSessionAsCSV,
   downloadSessionAsJSON,
+  openEmailForSession,
+  copySessionToClipboard,
 } from '../lib/sheetsExport';
 import { saveSession } from '../lib/firebase';
 import { Language, translations } from '../lib/i18n';
@@ -133,35 +136,66 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
           </p>
         </div>
 
-        {/* Frutiger Aero Export Actions Toolbar (Strictly for Authorized Researchers) */}
-        {isAdmin && (
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              onClick={handleExportGoogleSheets}
-              disabled={isExporting}
-              className="btn-aero-green inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm text-white shadow-md transition active:scale-95 disabled:opacity-50 cursor-pointer"
-            >
-              <FileSpreadsheet className="h-4 w-4" />
-              <span>{isExporting ? t.summaryExporting : t.summaryExportSheets}</span>
-            </button>
+        {/* Frutiger Aero Export & Share Actions Toolbar */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => openEmailForSession(session)}
+            title="Abrir correo con el reporte y transcripción completa"
+            className="btn-aero-cyan inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-extrabold text-xs text-white shadow-md transition active:scale-95 cursor-pointer"
+          >
+            <Mail className="h-4 w-4" />
+            <span>{language === 'en' ? 'Send to Email (josedudaca@gmail.com)' : 'Enviar a mi correo (josedudaca@gmail.com)'}</span>
+          </button>
 
-            <button
-              onClick={() => downloadSessionAsCSV(session)}
-              className="btn-aero-glass inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
-            >
-              <Download className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
-              <span>{t.summaryDownloadCSV}</span>
-            </button>
+          <button
+            onClick={handleExportGoogleSheets}
+            disabled={isExporting}
+            className="btn-aero-green inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-extrabold text-xs text-white shadow-md transition active:scale-95 disabled:opacity-50 cursor-pointer"
+          >
+            <FileSpreadsheet className="h-4 w-4" />
+            <span>{isExporting ? t.summaryExporting : (language === 'en' ? 'Export to Drive (Sheets)' : 'Guardar en Drive (Sheets)')}</span>
+          </button>
 
-            <button
-              onClick={() => downloadSessionAsJSON(session)}
-              className="btn-aero-glass inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
-            >
-              <Code2 className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
-              <span>{t.summaryDownloadJSON}</span>
-            </button>
-          </div>
-        )}
+          <button
+            onClick={() => downloadSessionAsCSV(session)}
+            className="btn-aero-glass inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
+            title="Descargar matriz en CSV"
+          >
+            <Download className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+            <span>CSV</span>
+          </button>
+
+          <button
+            onClick={() => downloadSessionAsJSON(session)}
+            className="btn-aero-glass inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
+            title="Descargar transcripción y datos en JSON"
+          >
+            <Code2 className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+            <span>JSON</span>
+          </button>
+
+          <button
+            onClick={() => {
+              copySessionToClipboard(session);
+              setHasCopied(true);
+              setTimeout(() => setHasCopied(false), 2500);
+            }}
+            className="btn-aero-glass inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 transition shadow-xs cursor-pointer"
+            title="Copiar transcripción completa al portapapeles"
+          >
+            {hasCopied ? (
+              <>
+                <Check className="h-3.5 w-3.5 text-emerald-500" />
+                <span>{language === 'en' ? 'Copied!' : '¡Copiado!'}</span>
+              </>
+            ) : (
+              <>
+                <Copy className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                <span>{language === 'en' ? 'Copy Text' : 'Copiar Texto'}</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Export Notice / Direct Google Sheet Link Banner */}

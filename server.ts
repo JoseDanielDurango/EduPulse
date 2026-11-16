@@ -524,6 +524,123 @@ Genera el análisis cualitativo estructurado en formato JSON válido.
   }
 });
 
+// Endpoint to export interview sessions directly to Google Sheets in user's Drive
+app.post('/api/export-sheets', async (req: Request, res: Response) => {
+  try {
+    const {
+      accessToken,
+      sessionTitle,
+      participantName,
+      studentCode,
+      participantRole,
+      semester,
+      centerLocation,
+      language,
+      summary,
+      structuredResponses,
+      messages,
+    } = req.body;
+
+    if (!accessToken) {
+      return res.status(401).json({ error: 'Google Access Token is required to export to Google Sheets' });
+    }
+
+    const title = `EduPulse - Entrevista ${studentCode || 'E01'} - ${participantName || 'Participante'} (${semester ? `${semester}° Sem` : 'Licenciatura'})`;
+
+    // 1. Create a new Google Spreadsheet
+    const createResp = await fetch('https://sheets.googleapis.com/v4/spreadsheets', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        properties: { title },
+        sheets: [
+          { properties: { title: 'Resumen y Ficha', index: 0 } },
+          { properties: { title: 'Citas Categorizadas', index: 1 } },
+          { properties: { title: 'Transcripción Completa', index: 2 } },
+        ],
+      }),
+    });
+
+    if (!createResp.ok) {
+      const errText = await createResp.text();
+      console.error('Google Sheets create error:', errText);
+      return res.status(createResp.status).json({ error: `Error al crear hoja en Google Drive: ${errText}` });
+    }
+
+    const sheetData = (await createResp.json()) as any;
+    const spreadsheetId = sheetData.spreadsheetId;
+    const spreadsheetUrl = sheetData.spreadsheetUrl;
+
+    // 2. Prepare structured data
+    // Sheet 1: Resumen y Ficha
+    const summaryRows = [
+      ['PROYECTO DE INVESTIGACIÓN', 'La formación docente en la era de la IA: desafíos y perspectivas en la Universidad de Córdoba'],
+      ['Programa Académico', 'Licenciatura en Informática · Facultad de Educación y Ciencias Humanas'],
+      ['Investigadores', 'José Daniel Durango Caballero & Jefersson Ramírez Oviedo'],
+      ['Director del Proyecto', 'Juan Carlos Giraldo Cardozo'],
+      [''],
+      ['DATOS DEL PARTICIPANTE', ''],
+      ['Código de Anonimización', studentCode || 'E01'],
+      ['Nombre de Pila', participantName || 'N/A'],
+      ['Rol', participantRole || 'Docente en Formación'],
+      ['Semestre Actual', `${semester || 'N/A'}`],
+      ['Sede / Centro de Tutoría', centerLocation || 'Sede Central Montería'],
+      ['Fecha y Hora', new Date().toLocaleString()],
+      ['Total de Turnos', messages?.length || 0],
+      [''],
+      ['SÍNTESIS CUALITATIVA HERMENÉUTICA', ''],
+      ['Resumen General', summary?.overview || 'Sin síntesis disponible'],
+      ['Sentimiento Global', summary?.sentiment || 'Neutral'],
+      ['Puntos Críticos / Retos', (summary?.keyPainPoints || []).join('; ')],
+    ];
+
+    // Sheet 2: Citas Categorizadas
+    const categorizedHeaders = ['Categoría', 'Subcategoría', 'Tema', 'Citas Textuales Verbatim (Capítulo 5)', 'Retos / Limitaciones'];
+    const categorizedRows = (structuredResponses || []).map((r: any) => [
+      r.category || '',
+      r.subCategory || '',
+      r.topic || '',
+      (r.directQuotes || []).join('\n---\n'),
+      (r.challengesOrLimitations || []).join('; '),
+    ]);
+
+    // Sheet 3: Transcripción Completa
+    const transcriptHeaders = ['#', 'Interlocutor', 'Mensaje', 'Tipo', 'Hora'];
+    const transcriptRows = (messages || []).map((m: any, idx: number) => [
+      idx + 1,
+      m.sender === 'agent' ? 'Cereza (Entrevistadora IA)' : `[${studentCode || 'E01'}] ${participantName}`,
+      m.text,
+      m.isClarifying ? 'Repregunta Socrática (Probing)' : 'Intervención Principal',
+      m.timestamp || '',
+    ]);
+
+    // 3. Batch update the sheets with values
+    await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values:batchUpdate`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        valueInputOption: 'USER_ENTERED',
+        data: [
+          { range: "'Resumen y Ficha'!A1", values: summaryRows },
+          { range: "'Citas Categorizadas'!A1", values: [categorizedHeaders, ...categorizedRows] },
+          { range: "'Transcripción Completa'!A1", values: [transcriptHeaders, ...transcriptRows] },
+        ],
+      }),
+    });
+
+    return res.json({ spreadsheetId, spreadsheetUrl });
+  } catch (err: any) {
+    console.error('Error in /api/export-sheets:', err);
+    return res.status(500).json({ error: err.message || 'Error al exportar a Google Sheets' });
+  }
+});
+
 // Production static assets or Vite middleware mode
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')));

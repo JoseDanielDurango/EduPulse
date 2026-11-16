@@ -155,20 +155,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
-            {/* Historial Tab (Only visible for Authorized Researchers / Admins) */}
-            {isAdmin && (
-              <button
-                onClick={() => onSelectTab('dashboard')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm transition-all cursor-pointer ${
-                  currentTab === 'dashboard'
-                    ? 'btn-aero-green font-bold shadow-sm'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-cyan-300 hover:bg-white/60 dark:hover:bg-slate-800/60 font-semibold'
-                }`}
-              >
-                <LayoutDashboard className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                <span>{t.navDashboard}</span>
-              </button>
-            )}
+            {/* Historial Tab */}
+            <button
+              onClick={() => onSelectTab('dashboard')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm transition-all cursor-pointer ${
+                currentTab === 'dashboard'
+                  ? 'btn-aero-green font-bold shadow-sm'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-cyan-300 hover:bg-white/60 dark:hover:bg-slate-800/60 font-semibold'
+              }`}
+            >
+              <LayoutDashboard className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+              <span>{t.navDashboard}</span>
+              {!isAdmin && <Lock className="h-2.5 w-2.5 opacity-50 ml-0.5" />}
+            </button>
 
             <button
               onClick={() => onSelectTab('instruments')}

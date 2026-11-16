@@ -49,6 +49,8 @@ import {
   ClipboardList,
   Radio,
   PlusCircle,
+  Lock,
+  KeyRound,
 } from 'lucide-react';
 
 export default function App() {
@@ -222,13 +224,8 @@ export default function App() {
     return () => unsubscribeAuth();
   }, []);
 
-  // Subscribe to Firestore Real-time Sessions (Strictly restricted to authorized researchers)
+  // Subscribe to Real-time Sessions (Firestore + LocalStorage)
   useEffect(() => {
-    if (!isAdmin) {
-      setSessions([]);
-      return;
-    }
-
     const unsubscribeSessions = subscribeToSessions((updatedSessions) => {
       setSessions(updatedSessions);
       if (activeSession) {
@@ -240,7 +237,7 @@ export default function App() {
     });
 
     return () => unsubscribeSessions();
-  }, [isAdmin, activeSession?.id]);
+  }, [activeSession?.id]);
 
   // Subscribe to Firestore Guides
   useEffect(() => {
@@ -252,18 +249,13 @@ export default function App() {
     return () => unsubscribeGuides();
   }, []);
 
-  // Subscribe to Firestore & Offline Instrument Responses (Restricted to researchers)
+  // Subscribe to Firestore & Offline Instrument Responses
   useEffect(() => {
-    if (!isAdmin) {
-      setInstrumentResponses([]);
-      return;
-    }
-
     const unsubscribeResponses = subscribeToInstrumentResponses((updatedResponses) => {
       setInstrumentResponses(updatedResponses);
     });
     return () => unsubscribeResponses();
-  }, [isAdmin]);
+  }, []);
 
   // Load last active session from localStorage
   useEffect(() => {
@@ -326,7 +318,10 @@ export default function App() {
       <Navbar
         currentTab={currentTab}
         onSelectTab={(tab) => {
-          if (tab === 'dashboard' && !isAdmin) return;
+          if (tab === 'dashboard' && !isAdmin) {
+            setIsAdminLoginModalOpen(true);
+            return;
+          }
           setCurrentTab(tab);
           if (tab !== 'interview') {
             setViewingSummarySession(null);
@@ -639,18 +634,43 @@ export default function App() {
           </>
         )}
 
-        {currentTab === 'dashboard' && isAdmin && (
-          <SessionsDashboard
-            sessions={sessions}
-            onOpenSession={handleOpenExistingSession}
-            onViewSummary={handleViewSummary}
-            onNewSession={() => {
-              setIsNewSessionModalOpen(true);
-              pushNavState('modal');
-            }}
-            language={language}
-            onBack={handleGoBack}
-          />
+        {currentTab === 'dashboard' && (
+          isAdmin ? (
+            <SessionsDashboard
+              sessions={sessions}
+              onOpenSession={handleOpenExistingSession}
+              onViewSummary={handleViewSummary}
+              onNewSession={() => {
+                setIsNewSessionModalOpen(true);
+                pushNavState('modal');
+              }}
+              language={language}
+              onBack={handleGoBack}
+            />
+          ) : (
+            <div className="max-w-md mx-auto py-16 px-4 text-center space-y-5">
+              <div className="h-16 w-16 mx-auto rounded-3xl bg-cyan-100 dark:bg-cyan-950/80 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shadow-lg ring-1 ring-cyan-500/30">
+                <Lock className="h-8 w-8" />
+              </div>
+              <div className="space-y-1.5">
+                <h2 className="text-xl font-extrabold text-slate-900 dark:text-white font-display">
+                  {language === 'en' ? 'Researcher Historial Access' : 'Historial de Entrevistas y Diálogos'}
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-cyan-200/70 max-w-sm mx-auto leading-relaxed">
+                  {language === 'en'
+                    ? 'Access to raw qualitative transcripts is protected for authorized researchers. Enter your PIN (0412) to unlock.'
+                    : 'El acceso a las transcripciones cualitativas está protegido para los investigadores del proyecto de grado. Ingresa tu clave para desbloquear.'}
+                </p>
+              </div>
+              <button
+                onClick={() => setIsAdminLoginModalOpen(true)}
+                className="btn-aero-green inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-xs text-white shadow-md transition cursor-pointer active:scale-95"
+              >
+                <KeyRound className="h-4 w-4" />
+                <span>{language === 'en' ? 'Unlock with PIN (0412)' : 'Desbloquear con PIN (0412)'}</span>
+              </button>
+            </div>
+          )
         )}
 
         {currentTab === 'instruments' && (
@@ -671,7 +691,10 @@ export default function App() {
       <MobileBottomNav
         currentTab={currentTab}
         onSelectTab={(tab) => {
-          if (tab === 'dashboard' && !isAdmin) return;
+          if (tab === 'dashboard' && !isAdmin) {
+            setIsAdminLoginModalOpen(true);
+            return;
+          }
           setCurrentTab(tab);
           if (tab !== 'interview') {
             setViewingSummarySession(null);

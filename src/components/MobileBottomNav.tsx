@@ -83,29 +83,27 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           )}
         </button>
 
-        {/* Tab 3: Historial (Only for Authorized Researchers / Admins) */}
-        {isAdmin && (
-          <button
-            onClick={() => onSelectTab('dashboard')}
-            className={`flex-1 flex flex-col items-center justify-center py-1 rounded-2xl transition cursor-pointer relative ${
-              currentTab === 'dashboard'
-                ? 'text-emerald-700 dark:text-cyan-300 font-extrabold'
-                : 'text-slate-500 dark:text-slate-400 font-medium hover:text-slate-700 dark:hover:text-slate-200'
+        {/* Tab 3: Historial */}
+        <button
+          onClick={() => onSelectTab('dashboard')}
+          className={`flex-1 flex flex-col items-center justify-center py-1 rounded-2xl transition cursor-pointer relative ${
+            currentTab === 'dashboard'
+              ? 'text-emerald-700 dark:text-cyan-300 font-extrabold'
+              : 'text-slate-500 dark:text-slate-400 font-medium hover:text-slate-700 dark:hover:text-slate-200'
+          }`}
+        >
+          <LayoutDashboard
+            className={`h-5 w-5 transition-transform ${
+              currentTab === 'dashboard' ? 'scale-110' : ''
             }`}
-          >
-            <LayoutDashboard
-              className={`h-5 w-5 transition-transform ${
-                currentTab === 'dashboard' ? 'scale-110' : ''
-              }`}
-            />
-            <span className="text-[10px] mt-0.5 tracking-tight truncate max-w-[70px]">
-              {t.navDashboard}
-            </span>
-            {currentTab === 'dashboard' && (
-              <span className="absolute bottom-0.5 h-1 w-6 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400 shadow-xs" />
-            )}
-          </button>
-        )}
+          />
+          <span className="text-[10px] mt-0.5 tracking-tight truncate max-w-[70px]">
+            {t.navDashboard}
+          </span>
+          {currentTab === 'dashboard' && (
+            <span className="absolute bottom-0.5 h-1 w-6 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400 shadow-xs" />
+          )}
+        </button>
 
         {/* Tab 4: Ficha de Tesis / Información */}
         <button

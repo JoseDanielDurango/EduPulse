@@ -27,17 +27,8 @@ import { DEFAULT_GUIDES } from './defaultGuides';
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Database configuration as provisioned
-let dbInstance: Firestore;
-try {
-  // Use user's dedicated firestore database ID
-  dbInstance = getFirestore(app, 'ai-studio-69bb353c-ae84-4e1e-95a9-e601ea2eeee5');
-} catch (e) {
-  console.warn('Fallback to default firestore db:', e);
-  dbInstance = getFirestore(app);
-}
-
-export const db = dbInstance;
+// Use the default Firestore database instance
+export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 export const googleProvider = new GoogleAuthProvider();
@@ -95,7 +86,18 @@ export const observeAuth = (callback: (user: User | null) => void) => {
   });
 };
 
-// Firestore Sessions Operations
+// Firestore Sessions Operations (With automatic localStorage local-first sync)
+const getLocalSessions = (): InterviewSession[] => {
+  try {
+    const stored = JSON.parse(localStorage.getItem('local_sessions') || '{}');
+    return Object.values(stored).sort((a: any, b: any) =>
+      new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    ) as InterviewSession[];
+  } catch {
+    return [];
+  }
+};
+
 export const subscribeToSessions = (callback: (sessions: InterviewSession[]) => void) => {
   try {
     const sessionsCol = collection(db, 'sessions');
@@ -107,20 +109,38 @@ export const subscribeToSessions = (callback: (sessions: InterviewSession[]) => 
         snapshot.forEach((docSnap) => {
           list.push({ id: docSnap.id, ...(docSnap.data() as any) });
         });
-        callback(list);
+
+        // Merge local sessions that might not yet be in remote
+        const localList = getLocalSessions();
+        const remoteIds = new Set(list.map((s) => s.id));
+        const merged = [...list, ...localList.filter((s) => !remoteIds.has(s.id))];
+
+        callback(merged);
       },
       (error) => {
-        console.error('Error in subscribeToSessions:', error);
+        console.warn('Using local fallback for sessions:', error.message);
+        callback(getLocalSessions());
       }
     );
   } catch (err) {
-    console.error('Failed to subscribe to sessions:', err);
+    console.error('Failed to subscribe to sessions, using local fallback:', err);
+    callback(getLocalSessions());
     return () => {};
   }
 };
 
 export const subscribeToSession = (sessionId: string, callback: (session: InterviewSession | null) => void) => {
   if (!sessionId) return () => {};
+
+  const getLocalSession = (): InterviewSession | null => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('local_sessions') || '{}');
+      return stored[sessionId] || null;
+    } catch {
+      return null;
+    }
+  };
+
   try {
     const docRef = doc(db, 'sessions', sessionId);
     return onSnapshot(
@@ -129,20 +149,35 @@ export const subscribeToSession = (sessionId: string, callback: (session: Interv
         if (docSnap.exists()) {
           callback({ id: docSnap.id, ...(docSnap.data() as any) });
         } else {
-          callback(null);
+          callback(getLocalSession());
         }
       },
       (error) => {
-        console.error(`Error in subscribeToSession (${sessionId}):`, error);
+        console.warn(`Error in subscribeToSession (${sessionId}), using local:`, error.message);
+        callback(getLocalSession());
       }
     );
   } catch (err) {
     console.error('Failed to subscribe to session:', err);
+    callback(getLocalSession());
     return () => {};
   }
 };
 
 export const saveSession = async (session: InterviewSession) => {
+  // Always update localStorage first for instantaneous offline persistence
+  try {
+    const stored = JSON.parse(localStorage.getItem('local_sessions') || '{}');
+    stored[session.id] = {
+      ...session,
+      updatedAt: new Date().toISOString(),
+    };
+    localStorage.setItem('local_sessions', JSON.stringify(stored));
+  } catch (e) {
+    console.warn('Could not save session to localStorage:', e);
+  }
+
+  // Push to Firestore
   try {
     const docRef = doc(db, 'sessions', session.id);
     await setDoc(docRef, {
@@ -150,20 +185,24 @@ export const saveSession = async (session: InterviewSession) => {
       updatedAt: new Date().toISOString(),
     }, { merge: true });
   } catch (err) {
-    console.error('Failed to save session to Firestore:', err);
-    // Local fallback in case of network or permissions
-    const stored = JSON.parse(localStorage.getItem('local_sessions') || '{}');
-    stored[session.id] = session;
-    localStorage.setItem('local_sessions', JSON.stringify(stored));
+    console.warn('Failed to save session to Firestore (offline fallback maintained):', err);
   }
 };
 
 export const removeSession = async (sessionId: string) => {
   try {
+    const stored = JSON.parse(localStorage.getItem('local_sessions') || '{}');
+    delete stored[sessionId];
+    localStorage.setItem('local_sessions', JSON.stringify(stored));
+  } catch (e) {
+    console.warn('Failed to delete session from localStorage:', e);
+  }
+
+  try {
     const docRef = doc(db, 'sessions', sessionId);
     await deleteDoc(docRef);
   } catch (err) {
-    console.error('Failed to delete session:', err);
+    console.error('Failed to delete session from Firestore:', err);
   }
 };
 

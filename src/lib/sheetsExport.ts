@@ -168,3 +168,137 @@ export function downloadSessionAsCSV(session: InterviewSession) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+export function generateSessionEmailReport(session: InterviewSession): { subject: string; body: string } {
+  const code = session.studentCode || 'E01';
+  const subject = `[EduPulse UniCórdoba] Entrevista ${code} - ${session.participantName} (${session.semester || 'Licenciatura'})`;
+
+  const lines: string[] = [];
+  lines.push(`=======================================================`);
+  lines.push(`EDUPULSE · REPORTE CUALITATIVO DE ENTREVISTA`);
+  lines.push(`Proyecto: La formación docente en la era de la inteligencia artificial`);
+  lines.push(`Institución: Universidad de Córdoba · Licenciatura en Informática`);
+  lines.push(`Investigadores: José Daniel Durango Caballero & Jefersson Ramírez Oviedo`);
+  lines.push(`Director: Juan Carlos Giraldo Cardozo`);
+  lines.push(`=======================================================`);
+  lines.push(``);
+  lines.push(`DATOS DEL INFORMANTE:`);
+  lines.push(`• Código: ${code}`);
+  lines.push(`• Participante: ${session.participantName}`);
+  lines.push(`• Rol: ${session.participantRole || 'Docente en Formación'}`);
+  lines.push(`• Semestre: ${session.semester || 'N/A'}`);
+  lines.push(`• Sede / Centro de Tutoría: ${session.centerLocation || 'Montería'}`);
+  lines.push(`• Fecha de Aplicación: ${new Date(session.createdAt || Date.now()).toLocaleString()}`);
+  lines.push(`• Turnos de Diálogo: ${session.messages?.length || 0}`);
+  lines.push(``);
+
+  if (session.summary?.overview) {
+    lines.push(`=== SÍNTESIS HERMENÉUTICA ===`);
+    lines.push(session.summary.overview);
+    lines.push(``);
+  }
+
+  if (session.summary?.keyPainPoints && session.summary.keyPainPoints.length > 0) {
+    lines.push(`Puntos Críticos y Retos Identificados:`);
+    session.summary.keyPainPoints.forEach((p) => lines.push(`  - ${p}`));
+    lines.push(``);
+  }
+
+  if (session.structuredResponses && session.structuredResponses.length > 0) {
+    lines.push(`=== MATRIZ CATEGORIAL Y CITAS DIRECTAS (CAPÍTULO 5) ===`);
+    session.structuredResponses.forEach((r, idx) => {
+      lines.push(`[${idx + 1}] Categoría: ${r.category} | Subcategoría: ${r.subCategory}`);
+      if (r.topic) lines.push(`    Tema: ${r.topic}`);
+      if (r.coreQuestion) lines.push(`    Pregunta: ${r.coreQuestion}`);
+      if (r.participantAnswerSummary) lines.push(`    Síntesis: ${r.participantAnswerSummary}`);
+      if (r.directQuotes && r.directQuotes.length > 0) {
+        r.directQuotes.forEach((q) => lines.push(`    • Cita: "${q}"`));
+      }
+      if (r.challengesOrLimitations && r.challengesOrLimitations.length > 0) {
+        lines.push(`    • Retos: ${r.challengesOrLimitations.join('; ')}`);
+      }
+      lines.push(``);
+    });
+  }
+
+  lines.push(`=== TRANSCRIPCIÓN COMPLETA DEL DIÁLOGO CON CEREZA ===`);
+  (session.messages || []).forEach((m, idx) => {
+    const sender = m.sender === 'agent' ? 'Cereza (Entrevistadora IA)' : `[${code}] ${session.participantName}`;
+    lines.push(`[${idx + 1}] ${sender}:`);
+    lines.push(m.text);
+    lines.push(``);
+  });
+
+  lines.push(`=======================================================`);
+  lines.push(`EduPulse · Instrumento de Investigación Pedagógica · UniCórdoba`);
+  return { subject, body: lines.join('\n') };
+}
+
+export function openEmailForSession(session: InterviewSession, targetEmail = 'josedudaca@gmail.com') {
+  const { subject, body } = generateSessionEmailReport(session);
+  // Copy full text to clipboard as safety backup
+  navigator.clipboard.writeText(body).catch(() => {});
+  const mailtoUrl = `mailto:${encodeURIComponent(targetEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(mailtoUrl, '_blank');
+}
+
+export function copySessionToClipboard(session: InterviewSession): boolean {
+  try {
+    const { body } = generateSessionEmailReport(session);
+    navigator.clipboard.writeText(body);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function downloadAllSessionsAsCSV(sessions: InterviewSession[]) {
+  if (!sessions || sessions.length === 0) return;
+
+  const headers = [
+    'ID Sesión',
+    'Fecha',
+    'Código Informante',
+    'Nombre',
+    'Semestre',
+    'Sede',
+    'Estado',
+    'Total Mensajes',
+    'Resumen General',
+    'Sentimiento',
+  ];
+
+  const rows = sessions.map((s) => [
+    `"${s.id}"`,
+    `"${new Date(s.createdAt).toLocaleString()}"`,
+    `"${s.studentCode || 'E01'}"`,
+    `"${(s.participantName || '').replace(/"/g, '""')}"`,
+    `"${s.semester || ''}"`,
+    `"${(s.centerLocation || '').replace(/"/g, '""')}"`,
+    `"${s.status || 'active'}"`,
+    `"${s.messages?.length || 0}"`,
+    `"${(s.summary?.overview || '').replace(/"/g, '""')}"`,
+    `"${s.summary?.sentiment || 'neutral'}"`,
+  ]);
+
+  const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `edupulse-todas-las-entrevistas-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export function downloadAllSessionsAsJSON(sessions: InterviewSession[]) {
+  if (!sessions || sessions.length === 0) return;
+
+  const blob = new Blob([JSON.stringify(sessions, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `edupulse-todas-las-entrevistas-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}

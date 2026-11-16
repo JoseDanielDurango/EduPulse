@@ -10,10 +10,20 @@ import {
   Radio,
   MapPin,
   MessageCircle,
+  Mail,
+  Download,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { InterviewSession } from '../types';
 import { removeSession } from '../lib/firebase';
 import { Language, translations } from '../lib/i18n';
+import {
+  downloadAllSessionsAsCSV,
+  downloadAllSessionsAsJSON,
+  openEmailForSession,
+  copySessionToClipboard,
+} from '../lib/sheetsExport';
 
 interface SessionsDashboardProps {
   sessions: InterviewSession[];
@@ -35,6 +45,7 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
   const t = translations[language];
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const filtered = sessions.filter((s) => {
     const matchesSearch =
@@ -57,6 +68,47 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
     if (window.confirm(language === 'en' ? 'Delete this conversation?' : '¿Eliminar esta conversación?')) {
       await removeSession(id);
     }
+  };
+
+  const handleCopy = (session: InterviewSession, e: React.MouseEvent) => {
+    e.stopPropagation();
+    copySessionToClipboard(session);
+    setCopiedId(session.id);
+    setTimeout(() => setCopiedId(null), 2500);
+  };
+
+  const handleEmailSession = (session: InterviewSession, e: React.MouseEvent) => {
+    e.stopPropagation();
+    openEmailForSession(session, 'josedudaca@gmail.com');
+  };
+
+  const handleEmailAll = () => {
+    if (sessions.length === 0) return;
+    const subject = `[EduPulse Resumen Global] ${sessions.length} Entrevistas Registradas`;
+    let body = `EDUPULSE - RESUMEN CONSOLIDADO DE ENTREVISTAS\n`;
+    body += `Total de entrevistas: ${sessions.length}\n`;
+    body += `Fecha de generación: ${new Date().toLocaleString()}\n`;
+    body += `Destinatario de investigación: josedudaca@gmail.com\n\n`;
+    body += `====================================================\n\n`;
+
+    sessions.forEach((s, idx) => {
+      body += `--- ENTREVISTA #${idx + 1} (${s.studentCode || `E0${idx + 1}`}) ---\n`;
+      body += `Informante: ${s.participantName || 'Anónimo'}\n`;
+      body += `Semestre: ${s.semester || 'N/A'}\n`;
+      body += `Estado: ${s.status === 'completed' ? 'Completada' : 'En progreso'}\n`;
+      body += `Mensajes registrados: ${s.messages?.length || 0}\n`;
+      if (s.summary?.overview) {
+        body += `Síntesis: ${s.summary.overview}\n`;
+      }
+      if (s.exportedSheetUrl) {
+        body += `Google Sheets: ${s.exportedSheetUrl}\n`;
+      }
+      body += `\n`;
+    });
+
+    navigator.clipboard.writeText(body).catch(() => {});
+    const mailtoUrl = `mailto:josedudaca@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.slice(0, 1800))}`;
+    window.open(mailtoUrl, '_blank');
   };
 
   return (
@@ -165,6 +217,41 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
         </div>
       </div>
 
+      {/* Global Export Toolbar */}
+      {sessions.length > 0 && (
+        <div className="p-4 rounded-3xl bg-cyan-950/40 border border-cyan-500/30 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="text-cyan-200/80 font-medium">
+            <span className="font-bold text-white">Exportación de investigación:</span> {sessions.length} conversaciones registradas
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleEmailAll}
+              title="Enviar resumen consolidado a josedudaca@gmail.com"
+              className="px-3.5 py-1.5 rounded-full bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
+            >
+              <Mail className="h-3.5 w-3.5 text-cyan-300" />
+              <span>Enviar a josedudaca@gmail.com</span>
+            </button>
+            <button
+              onClick={() => downloadAllSessionsAsCSV(sessions)}
+              title="Descargar todas las sesiones en formato CSV"
+              className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
+            >
+              <Download className="h-3.5 w-3.5 text-emerald-400" />
+              <span>CSV</span>
+            </button>
+            <button
+              onClick={() => downloadAllSessionsAsJSON(sessions)}
+              title="Descargar copia de seguridad en JSON"
+              className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
+            >
+              <Download className="h-3.5 w-3.5 text-cyan-400" />
+              <span>JSON</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* List */}
       {filtered.length === 0 ? (
         <div className="aero-card rounded-3xl p-12 text-center shadow-sm border border-white/90 dark:border-cyan-500/30">
@@ -243,8 +330,8 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
                 </div>
 
                 {/* Footer Actions */}
-                <div className="mt-5 pt-3 border-t border-slate-200/60 dark:border-cyan-800/40 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                <div className="mt-5 pt-3 border-t border-slate-200/60 dark:border-cyan-800/40 flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     {s.exportedSheetUrl ? (
                       <a
                         href={s.exportedSheetUrl}
@@ -263,9 +350,36 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
                         {t.statusNotExported}
                       </span>
                     )}
+
+                    <button
+                      onClick={(e) => handleEmailSession(s, e)}
+                      title="Enviar esta entrevista a josedudaca@gmail.com"
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-200 bg-cyan-950/60 hover:bg-cyan-900/60 px-2.5 py-1 rounded-full border border-cyan-500/40 transition shadow-2xs cursor-pointer active:scale-95"
+                    >
+                      <Mail className="h-3 w-3 text-cyan-300" />
+                      <span>Email</span>
+                    </button>
+
+                    <button
+                      onClick={(e) => handleCopy(s, e)}
+                      title="Copiar texto de esta entrevista"
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-300 bg-slate-800/60 hover:bg-slate-700/60 px-2 py-1 rounded-full border border-slate-600/40 transition shadow-2xs cursor-pointer active:scale-95"
+                    >
+                      {copiedId === s.id ? (
+                        <>
+                          <Check className="h-3 w-3 text-emerald-400" />
+                          <span className="text-emerald-300">¡Copiado!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3 w-3" />
+                          <span>Copiar</span>
+                        </>
+                      )}
+                    </button>
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 ml-auto">
                     <button
                       onClick={(e) => handleDelete(s.id, e)}
                       title={t.dashDelete}

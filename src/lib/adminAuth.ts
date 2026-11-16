@@ -13,8 +13,9 @@ export const AUTHORIZED_RESEARCHER_EMAILS: readonly string[] = [
 
 /**
  * Secret master passcode / PIN for instant researcher unlocking on any device.
+ * Accepts 'unicordoba2026' or '0412'.
  */
-export const RESEARCHER_MASTER_PIN = 'unicordoba2026';
+export const RESEARCHER_MASTER_PIN = '0412';
 
 const STORAGE_KEY = 'edupulse_researcher_pin_unlocked';
 
@@ -44,7 +45,8 @@ export const isPinUnlocked = (): boolean => {
  * Validates PIN and unlocks researcher privileges.
  */
 export const verifyAndUnlockPin = (pin: string, rememberOnDevice = false): boolean => {
-  if (pin.trim() === RESEARCHER_MASTER_PIN) {
+  const cleanPin = pin.trim().toLowerCase();
+  if (cleanPin === '0412' || cleanPin === 'unicordoba2026') {
     try {
       sessionStorage.setItem(STORAGE_KEY, 'true');
       if (rememberOnDevice) {

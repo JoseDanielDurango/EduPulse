@@ -16,6 +16,9 @@ import {
   Layers,
   ArrowRight,
   ExternalLink,
+  Mail,
+  Download,
+  Copy,
 } from 'lucide-react';
 import { InstrumentDefinition, InstrumentQuestion, InstrumentResponse } from '../../types/instruments';
 import {
@@ -213,6 +216,11 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
     }
 
     instrument.questions.forEach((q) => {
+      // Skip demographic questions 1, 2, 3 as they are already validated above in the header inputs
+      if (q.id === 'q1_nombre' || q.id === 'q2_edad' || q.id === 'q3_semestre') {
+        return;
+      }
+
       if (q.required) {
         const val = answers[q.id];
         if (q.type === 'matrix_grid') {
@@ -302,6 +310,77 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
     }
   };
 
+  const [hasCopiedReport, setHasCopiedReport] = useState(false);
+
+  const generateEmailReport = (resp: InstrumentResponse) => {
+    const lines: string[] = [];
+    lines.push(`=======================================================`);
+    lines.push(`EDUPULSE · REPORTE DE INSTRUMENTO DIAGNÓSTICO`);
+    lines.push(`Trabajo de Grado: La formación docente en la era de la IA`);
+    lines.push(`Universidad de Córdoba · Licenciatura en Informática`);
+    lines.push(`Investigadores: José Daniel Durango & Jefersson Ramírez`);
+    lines.push(`Director: Juan Carlos Giraldo Cardozo`);
+    lines.push(`=======================================================`);
+    lines.push(``);
+    lines.push(`Instrumento: ${instrument.title} (${instrument.code})`);
+    lines.push(`Participante: ${resp.participantName}`);
+    if (resp.studentCode) lines.push(`Código Estudiantil: ${resp.studentCode}`);
+    lines.push(`Edad: ${resp.age} años`);
+    lines.push(`Semestre: ${resp.semester}° Semestre`);
+    lines.push(`Sede: ${resp.centerLocation}`);
+    lines.push(`Fecha de Registro: ${new Date(resp.submittedAt).toLocaleString()}`);
+    lines.push(`Consentimiento Informado: Aceptado y Verificado`);
+    lines.push(``);
+    lines.push(`--- RESPUESTAS REGISTRADAS ---`);
+    instrument.questions.forEach((q) => {
+      const val = resp.answers[q.id];
+      lines.push(``);
+      lines.push(`[${q.title}]`);
+      if (q.type === 'matrix_grid' && typeof val === 'object' && val !== null) {
+        q.matrixRows?.forEach((row) => {
+          const colId = val[row.id];
+          const colLabel = q.matrixColumns?.find((c) => c.id === colId)?.label || colId || 'Sin responder';
+          lines.push(`  • ${row.label}: ${colLabel}`);
+        });
+      } else if (Array.isArray(val)) {
+        lines.push(`  • ${val.join(', ')}`);
+      } else {
+        lines.push(`  • ${val !== undefined && val !== null && val !== '' ? val : 'Sin respuesta'}`);
+      }
+    });
+    lines.push(``);
+    lines.push(`=======================================================`);
+    return lines.join('\n');
+  };
+
+  const handleSendEmail = (resp: InstrumentResponse) => {
+    const subject = encodeURIComponent(
+      `[EduPulse Diagnóstico] ${instrument.shortTitle} - ${resp.participantName} (${resp.semester}° Semestre)`
+    );
+    const bodyText = generateEmailReport(resp);
+    // Copy full report to clipboard automatically as a safety measure
+    navigator.clipboard.writeText(bodyText).catch(() => {});
+    const body = encodeURIComponent(bodyText);
+    window.open(`mailto:josedudaca@gmail.com?subject=${subject}&body=${body}`, '_blank');
+  };
+
+  const handleDownloadJSON = (resp: InstrumentResponse) => {
+    const blob = new Blob([JSON.stringify(resp, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `edupulse-${instrument.code.toLowerCase()}-${resp.participantName.toLowerCase().replace(/\s+/g, '-')}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCopyReport = (resp: InstrumentResponse) => {
+    const text = generateEmailReport(resp);
+    navigator.clipboard.writeText(text);
+    setHasCopiedReport(true);
+    setTimeout(() => setHasCopiedReport(false), 2500);
+  };
+
   // SUCCESS CONFIRMATION VIEW
   if (submittedResponse) {
     return (
@@ -346,8 +425,48 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
             </div>
           </div>
 
+          {/* Immediate Export / Share Actions */}
+          <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-cyan-950/40 border border-cyan-200/80 dark:border-cyan-800/60 max-w-lg mx-auto text-center space-y-3">
+            <p className="text-xs font-bold text-cyan-900 dark:text-cyan-200">
+              {language === 'en'
+                ? 'Save or send a backup copy of your answers:'
+                : 'Guarda o envía una copia de respaldo de tus respuestas:'}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleSendEmail(submittedResponse)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-700 text-white shadow-xs transition cursor-pointer"
+                title="Abrir correo con las respuestas dirigidas al investigador"
+              >
+                <Mail className="h-3.5 w-3.5" />
+                <span>{language === 'en' ? 'Send to my Email' : 'Enviar a mi correo (josedudaca@gmail.com)'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleDownloadJSON(submittedResponse)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 transition cursor-pointer"
+                title="Descargar copia en formato JSON"
+              >
+                <Download className="h-3.5 w-3.5 text-emerald-600 dark:text-cyan-400" />
+                <span>{language === 'en' ? 'Download JSON' : 'Descargar JSON'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleCopyReport(submittedResponse)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 transition cursor-pointer"
+                title="Copiar texto de respuestas al portapapeles"
+              >
+                <Copy className="h-3.5 w-3.5 text-cyan-600" />
+                <span>{hasCopiedReport ? (language === 'en' ? 'Copied!' : '¡Copiado!') : (language === 'en' ? 'Copy Text' : 'Copiar Texto')}</span>
+              </button>
+            </div>
+          </div>
+
           {/* Action buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
               onClick={() => {
                 setSubmittedResponse(null);

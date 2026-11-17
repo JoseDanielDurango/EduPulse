@@ -14,6 +14,8 @@ import {
   Download,
   Copy,
   Check,
+  BarChart3,
+  LayoutGrid,
 } from 'lucide-react';
 import { InterviewSession } from '../types';
 import { removeSession } from '../lib/firebase';
@@ -24,6 +26,7 @@ import {
   openEmailForSession,
   copySessionToClipboard,
 } from '../lib/sheetsExport';
+import { InterviewsAnalyticsView } from './charts/InterviewsAnalyticsView';
 
 interface SessionsDashboardProps {
   sessions: InterviewSession[];
@@ -46,6 +49,7 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'cards' | 'charts'>('cards');
 
   const filtered = sessions.filter((s) => {
     const matchesSearch =
@@ -187,33 +191,65 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
         </div>
       </div>
 
-      {/* Filter and Search */}
+      {/* Filter, View Switcher and Search */}
       <div className="aero-glass rounded-3xl p-4 shadow-md border border-white/90 dark:border-cyan-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="relative w-full md:w-80">
-          <Search className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-cyan-300" />
-          <input
-            type="text"
-            placeholder={t.dashSearch}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-base sm:text-sm rounded-2xl border border-cyan-200/70 dark:border-cyan-800/70 focus:outline-hidden focus:ring-4 focus:ring-cyan-400/20 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs text-slate-900 dark:text-white"
-          />
+        {/* Subtabs: Cards List vs Google Forms Charts */}
+        <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/50 dark:bg-slate-900/50 border border-white/70 dark:border-cyan-500/20">
+          <button
+            onClick={() => setViewMode('cards')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+              viewMode === 'cards'
+                ? 'btn-aero-cyan text-white shadow-xs'
+                : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300'
+            }`}
+          >
+            <LayoutGrid className="h-3.5 w-3.5" />
+            <span>{language === 'en' ? 'Interviews List' : 'Lista de Entrevistas'}</span>
+          </button>
+
+          <button
+            onClick={() => setViewMode('charts')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+              viewMode === 'charts'
+                ? 'btn-aero-cyan text-white shadow-xs'
+                : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300'
+            }`}
+          >
+            <BarChart3 className="h-3.5 w-3.5" />
+            <span>{language === 'en' ? 'Charts & Statistics' : 'Gráficos y Métricas'}</span>
+            <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] bg-white/30 text-white font-mono">
+              {sessions.length}
+            </span>
+          </button>
         </div>
 
-        <div className="flex items-center gap-2 self-start md:self-auto">
-          {(['all', 'active', 'completed'] as const).map((status) => (
-            <button
-              key={status}
-              onClick={() => setStatusFilter(status)}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold capitalize transition cursor-pointer shadow-2xs ${
-                statusFilter === status
-                  ? 'btn-aero-green text-white'
-                  : 'btn-aero-glass text-slate-700 dark:text-slate-200'
-              }`}
-            >
-              {status === 'all' ? (language === 'en' ? 'All' : 'Todas') : status === 'active' ? t.statusActive : t.statusCompleted}
-            </button>
-          ))}
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          <div className="relative w-full sm:w-60">
+            <Search className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-cyan-300" />
+            <input
+              type="text"
+              placeholder={t.dashSearch}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 text-base sm:text-sm rounded-2xl border border-cyan-200/70 dark:border-cyan-800/70 focus:outline-hidden focus:ring-4 focus:ring-cyan-400/20 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xs text-slate-900 dark:text-white"
+            />
+          </div>
+
+          <div className="flex items-center gap-1.5 self-start sm:self-auto">
+            {(['all', 'active', 'completed'] as const).map((status) => (
+              <button
+                key={status}
+                onClick={() => setStatusFilter(status)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold capitalize transition cursor-pointer shadow-2xs ${
+                  statusFilter === status
+                    ? 'btn-aero-green text-white'
+                    : 'btn-aero-glass text-slate-700 dark:text-slate-200'
+                }`}
+              >
+                {status === 'all' ? (language === 'en' ? 'All' : 'Todas') : status === 'active' ? t.statusActive : t.statusCompleted}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -226,11 +262,11 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={handleEmailAll}
-              title="Enviar resumen consolidado a josedudaca@gmail.com"
+              title={language === 'en' ? 'Send consolidated report to researchers' : 'Enviar resumen consolidado a los investigadores'}
               className="px-3.5 py-1.5 rounded-full bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
             >
               <Mail className="h-3.5 w-3.5 text-cyan-300" />
-              <span>Enviar a josedudaca@gmail.com</span>
+              <span>{language === 'en' ? 'Send to researchers' : 'Enviar a investigadores'}</span>
             </button>
             <button
               onClick={() => downloadAllSessionsAsCSV(sessions)}
@@ -252,8 +288,10 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
         </div>
       )}
 
-      {/* List */}
-      {filtered.length === 0 ? (
+      {/* Content: Charts Mode vs Cards Mode */}
+      {viewMode === 'charts' ? (
+        <InterviewsAnalyticsView sessions={filtered} language={language} />
+      ) : filtered.length === 0 ? (
         <div className="aero-card rounded-3xl p-12 text-center shadow-sm border border-white/90 dark:border-cyan-500/30">
           <div className="h-14 w-14 rounded-2xl bg-cyan-100/70 dark:bg-cyan-950/70 text-cyan-600 dark:text-cyan-300 flex items-center justify-center mx-auto mb-3 shadow-xs">
             <MessageCircle className="h-7 w-7" />
@@ -353,7 +391,7 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
 
                     <button
                       onClick={(e) => handleEmailSession(s, e)}
-                      title="Enviar esta entrevista a josedudaca@gmail.com"
+                      title={language === 'en' ? 'Send this interview to researchers' : 'Enviar esta entrevista a los investigadores'}
                       className="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-200 bg-cyan-950/60 hover:bg-cyan-900/60 px-2.5 py-1 rounded-full border border-cyan-500/40 transition shadow-2xs cursor-pointer active:scale-95"
                     >
                       <Mail className="h-3 w-3 text-cyan-300" />

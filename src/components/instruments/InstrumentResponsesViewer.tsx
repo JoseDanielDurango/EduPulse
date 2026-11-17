@@ -24,6 +24,14 @@ import { InstrumentDefinition, InstrumentQuestion, InstrumentResponse } from '..
 import { removeInstrumentResponse } from '../../lib/firebase';
 import { isOptionMatch, getLocalizedOptionLabel } from '../../lib/defaultInstruments';
 import { Language } from '../../lib/i18n';
+import {
+  FormsDonutChart,
+  FormsBarChart,
+  FormsStackedLikertChart,
+  ChartTypeSwitch,
+  ChartDataPoint,
+  CHART_PALETTE,
+} from '../charts/GoogleFormsCharts';
 
 const formatCampusLabel = (campus: string, lang: Language) => {
   if (lang !== 'en') return campus;
@@ -55,6 +63,7 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedData, setCopiedData] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [chartTypeByQuestion, setChartTypeByQuestion] = useState<Record<string, 'pie' | 'bar'>>({});
 
   // Filter responses specific to this instrument
   const instrumentResponses = useMemo(() => {
@@ -113,6 +122,22 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
       campuses,
     };
   }, [instrumentResponses]);
+
+  // Google Forms chart structures for demographics
+  const semesterChartData = useMemo<ChartDataPoint[]>(() => {
+    return Object.entries(stats.semesters)
+      .map(([label, count]) => ({ label, count }))
+      .sort((a, b) => parseInt(a.label) - parseInt(b.label));
+  }, [stats.semesters]);
+
+  const campusChartData = useMemo<ChartDataPoint[]>(() => {
+    return Object.entries(stats.campuses)
+      .map(([label, count]) => ({
+        label: formatCampusLabel(label, language).replace('Sede ', ''),
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
+  }, [stats.campuses, language]);
 
   // Handle Export CSV
   const handleExportCSV = () => {
@@ -437,8 +462,8 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
       {/* TAB 1: AGGREGATED SUMMARY */}
       {instrumentResponses.length > 0 && activeTab === 'summary' && (
         <div className="space-y-6">
-          {/* Demographic Distributions Card */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 space-y-5 shadow-2xs">
+          {/* Demographic Distributions Card with Google Forms Visuals */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 space-y-6 shadow-2xs">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2">
                 <GraduationCap className="h-4 w-4 text-emerald-600" />
@@ -446,86 +471,114 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                   {language === 'en' ? 'Demographic Distribution of Sample' : 'Distribución Sociodemográfica de la Muestra'}
                 </h3>
               </div>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-slate-400 font-mono">
                 {instrumentResponses.length} {language === 'en' ? 'respondents' : 'participantes'}
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Semester Breakdown */}
-              <div className="space-y-3">
-                <span className="font-bold text-xs text-slate-700 dark:text-slate-300 block">
-                  {language === 'en' ? 'Distribution by Semester' : 'Distribución por Semestre en Curso'}
-                </span>
-                <div className="space-y-2">
-                  {Object.entries(stats.semesters)
-                    .sort((a, b) => b[1] - a[1])
-                    .map(([sem, count]) => {
-                      const pct = Math.round((count / instrumentResponses.length) * 100);
-                      return (
-                        <div key={sem} className="space-y-1">
-                          <div className="flex justify-between text-xs">
-                            <span className="font-semibold text-slate-800 dark:text-slate-200">{sem}</span>
-                            <span className="text-slate-500 font-mono">
-                              {count} ({pct}%)
-                            </span>
-                          </div>
-                          <div className="h-2.5 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
-                            <div
-                              className="h-full aero-progress-bar rounded-full transition-all duration-500"
-                              style={{ width: `${pct}%` }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+              {/* Semester Donut Chart */}
+              <div className="p-4 rounded-2xl bg-slate-50/60 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                <FormsDonutChart
+                  data={semesterChartData}
+                  title={language === 'en' ? 'Distribution by Academic Semester' : 'Distribución por Semestre en Curso'}
+                  centerLabel={`${instrumentResponses.length}`}
+                  centerSublabel={language === 'en' ? 'Students' : 'Estudiantes'}
+                  size={180}
+                />
               </div>
 
-              {/* Campus Breakdown */}
-              <div className="space-y-3">
-                <span className="font-bold text-xs text-slate-700 dark:text-slate-300 block">
-                  {language === 'en' ? 'Distribution by Campus' : 'Distribución por Sede o Centro de Tutoría'}
-                </span>
-                <div className="space-y-2">
-                  {Object.entries(stats.campuses)
-                    .sort((a, b) => b[1] - a[1])
-                    .map(([campus, count]) => {
-                      const pct = Math.round((count / instrumentResponses.length) * 100);
-                      const displayCampus = formatCampusLabel(campus, language);
-                      return (
-                        <div key={campus} className="space-y-1">
-                          <div className="flex justify-between text-xs">
-                            <span className="font-semibold text-slate-800 dark:text-slate-200">{displayCampus}</span>
-                            <span className="text-slate-500 font-mono">
-                              {count} ({pct}%)
-                            </span>
-                          </div>
-                          <div className="h-2.5 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
-                            <div
-                              className="h-full aero-progress-bar rounded-full transition-all duration-500"
-                              style={{ width: `${pct}%` }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
+              {/* Campus Bar Chart */}
+              <div className="p-4 rounded-2xl bg-slate-50/60 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                <FormsBarChart
+                  data={campusChartData}
+                  title={language === 'en' ? 'Distribution by Campus / Location' : 'Distribución por Sede o Centro de Tutoría'}
+                  orientation="horizontal"
+                  showPercentages={true}
+                />
               </div>
             </div>
           </div>
 
-          {/* Questions Breakdown */}
+          {/* Questions Breakdown (Google Forms Charts Style) */}
           {instrument.questions
             .filter((q) => q.id !== 'q1_nombre' && q.id !== 'q2_edad' && q.id !== 'q3_semestre')
             .map((q, idx) => {
+              const currentChartType = chartTypeByQuestion[q.id] || 'pie';
+
+              // Single Choice Data
+              const singleChoiceData: ChartDataPoint[] = (q.options || []).map((opt, optIdx) => {
+                const count = instrumentResponses.filter((r) =>
+                  isOptionMatch(q.id, opt, r.answers[q.id])
+                ).length;
+                return {
+                  label: opt,
+                  count,
+                  color: CHART_PALETTE[optIdx % CHART_PALETTE.length],
+                };
+              });
+
+              // Multiple Choice Data
+              const multiChoiceData: ChartDataPoint[] = (q.options || []).map((opt, optIdx) => {
+                const count = instrumentResponses.filter((r) => {
+                  const val = r.answers[q.id];
+                  return (
+                    Array.isArray(val) &&
+                    val.some((item) => isOptionMatch(q.id, opt, String(item)))
+                  );
+                }).length;
+                return {
+                  label: opt,
+                  count,
+                  color: CHART_PALETTE[optIdx % CHART_PALETTE.length],
+                };
+              });
+
+              // Matrix Grid Likert Data
+              const likertColumns = (q.matrixColumns || []).map((col, cIdx) => {
+                const palette = ['#059669', '#10b981', '#06b6d4', '#f59e0b', '#ef4444'];
+                return {
+                  id: col.id,
+                  label: col.label,
+                  color: palette[cIdx % palette.length],
+                };
+              });
+
+              const likertRows = (q.matrixRows || []).map((row) => {
+                const counts: Record<string, number> = {};
+                q.matrixColumns?.forEach((col) => {
+                  counts[col.id] = instrumentResponses.filter((r) => {
+                    const matrix = r.answers[q.id];
+                    return matrix && matrix[row.id] === col.id;
+                  }).length;
+                });
+                return {
+                  id: row.id,
+                  label: row.label,
+                  counts,
+                };
+              });
+
+              // Rating Histogram Data
+              const ratingData: ChartDataPoint[] = Array.from(
+                { length: (q.ratingMax || 10) - (q.ratingMin || 1) + 1 },
+                (_, i) => (q.ratingMin || 1) + i
+              ).map((num) => {
+                const count = instrumentResponses.filter((r) => Number(r.answers[q.id]) === num).length;
+                return {
+                  label: `${num}`,
+                  count,
+                  color: '#06b6d4',
+                };
+              });
+
               return (
                 <div
                   key={q.id}
                   className="aero-glass rounded-3xl border border-white/90 dark:border-cyan-500/30 p-6 sm:p-7 space-y-4 shadow-sm"
                 >
-                  {/* Question Title & Meta */}
-                  <div className="flex flex-wrap items-start justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+                  {/* Question Title & Meta Bar */}
+                  <div className="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
                     <div className="space-y-1 max-w-2xl">
                       <div className="flex items-center gap-2">
                         <span className="h-5 w-5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-mono text-[11px] font-bold flex items-center justify-center">
@@ -547,133 +600,126 @@ export const InstrumentResponsesViewer: React.FC<InstrumentResponsesViewerProps>
                       </h4>
                     </div>
 
-                    <span className="text-xs text-slate-400 font-medium">
-                      {instrumentResponses.filter((r) => r.answers[q.id] !== undefined).length} / {instrumentResponses.length} {language === 'en' ? 'answers' : 'respuestas'}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      {/* Chart Style Switcher for Single Choice (Google Forms Style) */}
+                      {q.type === 'single_choice' && (
+                        <ChartTypeSwitch
+                          currentType={currentChartType}
+                          onChange={(type) =>
+                            setChartTypeByQuestion((prev) => ({ ...prev, [q.id]: type }))
+                          }
+                        />
+                      )}
+
+                      <span className="text-xs text-slate-400 font-medium font-mono">
+                        {instrumentResponses.filter((r) => r.answers[q.id] !== undefined).length} / {instrumentResponses.length} {language === 'en' ? 'answers' : 'respuestas'}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Visual Analytics by Question Type */}
                   <div className="pt-2">
-                    {/* SINGLE CHOICE / RATING BREAKDOWN */}
+                    {/* SINGLE CHOICE (Google Forms Pie / Bar Charts) */}
                     {q.type === 'single_choice' && (
-                      <div className="space-y-3">
-                        {q.options?.map((opt) => {
-                          const count = instrumentResponses.filter((r) =>
-                            isOptionMatch(q.id, opt, r.answers[q.id])
-                          ).length;
-                          const pct = instrumentResponses.length > 0
-                            ? Math.round((count / instrumentResponses.length) * 100)
-                            : 0;
-
-                          return (
-                            <div key={opt} className="space-y-1.5">
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="font-semibold text-slate-800 dark:text-slate-200">
-                                  {opt}
-                                </span>
-                                <span className="text-slate-500 font-mono font-bold">
-                                  {count} <span className="font-normal text-slate-400">({pct}%)</span>
-                                </span>
-                              </div>
-                              <div className="h-3 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
-                                <div
-                                  className="h-full aero-progress-bar rounded-full transition-all duration-500"
-                                  style={{ width: `${pct}%` }}
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                      currentChartType === 'pie' ? (
+                        <FormsDonutChart
+                          data={singleChoiceData}
+                          showLegend={true}
+                          size={190}
+                          centerLabel={`${instrumentResponses.filter((r) => r.answers[q.id] !== undefined).length}`}
+                          centerSublabel={language === 'en' ? 'Answers' : 'Respuestas'}
+                        />
+                      ) : (
+                        <FormsBarChart
+                          data={singleChoiceData}
+                          orientation="horizontal"
+                          showPercentages={true}
+                        />
+                      )
                     )}
 
-                    {/* MULTIPLE CHOICE BREAKDOWN */}
+                    {/* MULTIPLE CHOICE (Horizontal Bar Chart) */}
                     {q.type === 'multiple_choice' && (
-                      <div className="space-y-3">
-                        {q.options?.map((opt) => {
-                          const count = instrumentResponses.filter((r) => {
-                            const val = r.answers[q.id];
-                            return (
-                              Array.isArray(val) &&
-                              val.some((item) => isOptionMatch(q.id, opt, String(item)))
-                            );
-                          }).length;
-                          const pct = instrumentResponses.length > 0
-                            ? Math.round((count / instrumentResponses.length) * 100)
-                            : 0;
+                      <FormsBarChart
+                        data={multiChoiceData}
+                        orientation="horizontal"
+                        showPercentages={true}
+                      />
+                    )}
 
-                          return (
-                            <div key={opt} className="space-y-1.5">
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="font-semibold text-slate-800 dark:text-slate-200">
-                                  {opt}
-                                </span>
-                                <span className="text-slate-500 font-mono font-bold">
-                                  {count} <span className="font-normal text-slate-400">({pct}%)</span>
-                                </span>
-                              </div>
-                              <div className="h-3 w-full bg-white/60 dark:bg-slate-900/60 rounded-full overflow-hidden border border-white/80 dark:border-cyan-500/20">
-                                <div
-                                  className="h-full aero-progress-bar rounded-full transition-all duration-500"
-                                  style={{ width: `${pct}%` }}
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
+                    {/* RATING SCALE (Vertical Histogram Bar Chart) */}
+                    {q.type === 'rating' && (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between text-xs text-slate-400">
+                          <span>{q.ratingMinLabel || `1 (${language === 'en' ? 'Lowest' : 'Más bajo'})`}</span>
+                          <span>{q.ratingMaxLabel || `10 (${language === 'en' ? 'Highest' : 'Más alto'})`}</span>
+                        </div>
+                        <FormsBarChart
+                          data={ratingData}
+                          orientation="vertical"
+                          showPercentages={true}
+                        />
                       </div>
                     )}
 
-                    {/* MATRIX GRID FREQUENCY MATRIX */}
+                    {/* MATRIX GRID FREQUENCY (Stacked Likert Bar + Table) */}
                     {q.type === 'matrix_grid' && (
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-xs text-left border-collapse">
-                          <thead>
-                            <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold">
-                              <th className="py-2.5 pr-4 font-bold text-slate-700 dark:text-slate-300">
-                                {language === 'en' ? 'Activity / Use Case' : 'Actividad o Uso'}
-                              </th>
-                              {q.matrixColumns?.map((col) => (
-                                <th key={col.id} className="py-2.5 px-3 text-center whitespace-nowrap">
-                                  {col.label}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-                            {q.matrixRows?.map((row) => {
-                              return (
-                                <tr key={row.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40">
-                                  <td className="py-3 pr-4 font-medium text-slate-800 dark:text-slate-200">
-                                    {row.label}
-                                  </td>
-                                  {q.matrixColumns?.map((col) => {
-                                    const count = instrumentResponses.filter((r) => {
-                                      const matrix = r.answers[q.id];
-                                      return matrix && matrix[row.id] === col.id;
-                                    }).length;
-                                    const pct = instrumentResponses.length > 0
-                                      ? Math.round((count / instrumentResponses.length) * 100)
-                                      : 0;
+                      <div className="space-y-5">
+                        <FormsStackedLikertChart
+                          columns={likertColumns}
+                          rows={likertRows}
+                        />
 
-                                    return (
-                                      <td key={col.id} className="py-3 px-3 text-center font-mono">
-                                        <div className="inline-flex flex-col items-center">
-                                          <span className="font-bold text-slate-900 dark:text-white">
-                                            {count}
-                                          </span>
-                                          <span className="text-[10px] text-slate-400">
-                                            {pct}%
-                                          </span>
-                                        </div>
-                                      </td>
-                                    );
-                                  })}
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
+                        {/* Frequency Matrix Table */}
+                        <div className="overflow-x-auto pt-2 border-t border-slate-100 dark:border-slate-800">
+                          <table className="w-full text-xs text-left border-collapse">
+                            <thead>
+                              <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold">
+                                <th className="py-2.5 pr-4 font-bold text-slate-700 dark:text-slate-300">
+                                  {language === 'en' ? 'Activity / Use Case' : 'Actividad o Uso'}
+                                </th>
+                                {q.matrixColumns?.map((col) => (
+                                  <th key={col.id} className="py-2.5 px-3 text-center whitespace-nowrap">
+                                    {col.label}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                              {q.matrixRows?.map((row) => {
+                                return (
+                                  <tr key={row.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40">
+                                    <td className="py-3 pr-4 font-medium text-slate-800 dark:text-slate-200">
+                                      {row.label}
+                                    </td>
+                                    {q.matrixColumns?.map((col) => {
+                                      const count = instrumentResponses.filter((r) => {
+                                        const matrix = r.answers[q.id];
+                                        return matrix && matrix[row.id] === col.id;
+                                      }).length;
+                                      const pct = instrumentResponses.length > 0
+                                        ? Math.round((count / instrumentResponses.length) * 100)
+                                        : 0;
+
+                                      return (
+                                        <td key={col.id} className="py-3 px-3 text-center font-mono">
+                                          <div className="inline-flex flex-col items-center">
+                                            <span className="font-bold text-slate-900 dark:text-white">
+                                              {count}
+                                            </span>
+                                            <span className="text-[10px] text-slate-400">
+                                              {pct}%
+                                            </span>
+                                          </div>
+                                        </td>
+                                      );
+                                    })}
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     )}
 

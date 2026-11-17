@@ -683,6 +683,7 @@ export default function App() {
             }}
             isAdmin={isAdmin}
             onBack={handleGoBack}
+            onRequireAdmin={() => setIsAdminLoginModalOpen(true)}
           />
         )}
       </main>

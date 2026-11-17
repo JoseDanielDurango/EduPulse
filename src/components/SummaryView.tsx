@@ -140,11 +140,11 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => openEmailForSession(session)}
-            title="Abrir correo con el reporte y transcripción completa"
+            title={language === 'en' ? 'Send full report to researchers by email' : 'Enviar informe y transcripción completa a los investigadores'}
             className="btn-aero-cyan inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-extrabold text-xs text-white shadow-md transition active:scale-95 cursor-pointer"
           >
             <Mail className="h-4 w-4" />
-            <span>{language === 'en' ? 'Send to Email (josedudaca@gmail.com)' : 'Enviar a mi correo (josedudaca@gmail.com)'}</span>
+            <span>{language === 'en' ? 'Send to researchers' : 'Enviar a investigadores'}</span>
           </button>
 
           <button

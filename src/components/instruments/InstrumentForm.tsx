@@ -437,10 +437,10 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                 type="button"
                 onClick={() => handleSendEmail(submittedResponse)}
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-700 text-white shadow-xs transition cursor-pointer"
-                title="Abrir correo con las respuestas dirigidas al investigador"
+                title={language === 'en' ? 'Send copy to researchers by email' : 'Enviar copia de respuestas por correo a los investigadores'}
               >
                 <Mail className="h-3.5 w-3.5" />
-                <span>{language === 'en' ? 'Send to my Email' : 'Enviar a mi correo (josedudaca@gmail.com)'}</span>
+                <span>{language === 'en' ? 'Send to researchers' : 'Enviar a investigadores'}</span>
               </button>
 
               <button

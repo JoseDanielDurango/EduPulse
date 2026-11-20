@@ -290,7 +290,11 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
 
       {/* Content: Charts Mode vs Cards Mode */}
       {viewMode === 'charts' ? (
-        <InterviewsAnalyticsView sessions={filtered} language={language} />
+        <InterviewsAnalyticsView
+          sessions={filtered}
+          language={language}
+          onViewSessionSummary={onViewSummary}
+        />
       ) : filtered.length === 0 ? (
         <div className="aero-card rounded-3xl p-12 text-center shadow-sm border border-white/90 dark:border-cyan-500/30">
           <div className="h-14 w-14 rounded-2xl bg-cyan-100/70 dark:bg-cyan-950/70 text-cyan-600 dark:text-cyan-300 flex items-center justify-center mx-auto mb-3 shadow-xs">

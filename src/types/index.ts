@@ -49,6 +49,7 @@ export interface InterviewSummary {
   overview: string;
   keyThemes: string[];
   actionableInsights: string[];
+  keyInsights?: string[];
   overallSentiment: 'positivo' | 'mayoritariamente positivo' | 'neutral / mixto' | 'frustrado' | 'crítico' | string;
   sentiment?: 'positivo' | 'mayoritariamente positivo' | 'neutral / mixto' | 'frustrado' | 'crítico' | string;
   keyPainPoints?: string[];

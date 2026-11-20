@@ -198,9 +198,10 @@ export function generateSessionEmailReport(session: InterviewSession): { subject
     lines.push(``);
   }
 
-  if (session.summary?.keyPainPoints && session.summary.keyPainPoints.length > 0) {
+  const painPoints = session.summary?.keyPainPoints || [];
+  if (painPoints.length > 0) {
     lines.push(`Puntos Críticos y Retos Identificados:`);
-    session.summary.keyPainPoints.forEach((p) => lines.push(`  - ${p}`));
+    painPoints.forEach((p: string) => lines.push(`  - ${p}`));
     lines.push(``);
   }
 
@@ -214,8 +215,9 @@ export function generateSessionEmailReport(session: InterviewSession): { subject
       if (r.directQuotes && r.directQuotes.length > 0) {
         r.directQuotes.forEach((q) => lines.push(`    • Cita: "${q}"`));
       }
-      if (r.challengesOrLimitations && r.challengesOrLimitations.length > 0) {
-        lines.push(`    • Retos: ${r.challengesOrLimitations.join('; ')}`);
+      const challenges = r.painPointsOrNeeds || r.challengesOrLimitations || [];
+      if (challenges.length > 0) {
+        lines.push(`    • Retos: ${challenges.join('; ')}`);
       }
       lines.push(``);
     });
@@ -278,7 +280,7 @@ export function downloadAllSessionsAsCSV(sessions: InterviewSession[]) {
     `"${s.status || 'active'}"`,
     `"${s.messages?.length || 0}"`,
     `"${(s.summary?.overview || '').replace(/"/g, '""')}"`,
-    `"${s.summary?.sentiment || 'neutral'}"`,
+    `"${(s.summary?.sentiment || s.summary?.overallSentiment || 'neutral').replace(/"/g, '""')}"`,
   ]);
 
   const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');

@@ -40,6 +40,7 @@ export interface StructuredResponseItem {
   participantAnswerSummary: string;
   clarifyingNotes: string[];
   painPointsOrNeeds: string[];
+  challengesOrLimitations?: string[];
   directQuotes: string[];
   sentiment: 'positivo' | 'neutral' | 'negativo' | 'mixto' | string;
 }
@@ -49,6 +50,8 @@ export interface InterviewSummary {
   keyThemes: string[];
   actionableInsights: string[];
   overallSentiment: 'positivo' | 'mayoritariamente positivo' | 'neutral / mixto' | 'frustrado' | 'crítico' | string;
+  sentiment?: 'positivo' | 'mayoritariamente positivo' | 'neutral / mixto' | 'frustrado' | 'crítico' | string;
+  keyPainPoints?: string[];
   participantPersonaInsight?: string;
   categoriesAnalysis?: {
     iaPracticasYEtica: string;

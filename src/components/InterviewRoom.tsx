@@ -234,7 +234,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
     onUpdateSession(interimSession);
     await saveSession(interimSession);
 
-    // Call Maya
+    // Call Cereza
     setIsAiResponding(true);
     setChatError(null);
     try {

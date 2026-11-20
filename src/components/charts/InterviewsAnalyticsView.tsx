@@ -81,7 +81,7 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
 
     sessions.forEach((s) => {
       // Sentiment
-      const sent = s.summary?.sentiment || 'neutral';
+      const sent = s.summary?.sentiment || s.summary?.overallSentiment || 'neutral';
       if (sent.includes('pos') || sent.includes('opt')) sentimentCounts.positive++;
       else if (sent.includes('ref') || sent.includes('crit')) sentimentCounts.reflective++;
       else if (sent.includes('pre') || sent.includes('cau')) sentimentCounts.concerned++;
@@ -96,8 +96,9 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
       campusCounts[loc] = (campusCounts[loc] || 0) + 1;
 
       // Key pain points
-      if (s.summary?.keyPainPoints && Array.isArray(s.summary.keyPainPoints)) {
-        s.summary.keyPainPoints.forEach((pp) => {
+      const painPoints = s.summary?.keyPainPoints || [];
+      if (Array.isArray(painPoints)) {
+        painPoints.forEach((pp: string) => {
           const trimmed = pp.trim();
           if (trimmed.length > 5) {
             painPointsMap[trimmed] = (painPointsMap[trimmed] || 0) + 1;
@@ -105,9 +106,19 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
         });
       }
 
-      // Structured quotes
+      // Structured quotes and category insights
       if (s.structuredResponses && Array.isArray(s.structuredResponses)) {
         s.structuredResponses.forEach((sr) => {
+          // Extract pain points from structured responses as well
+          const srPainPoints = sr.painPointsOrNeeds || sr.challengesOrLimitations || [];
+          if (Array.isArray(srPainPoints)) {
+            srPainPoints.forEach((pp: string) => {
+              const trimmed = (pp || '').trim();
+              if (trimmed.length > 5) {
+                painPointsMap[trimmed] = (painPointsMap[trimmed] || 0) + 1;
+              }
+            });
+          }
           if (sr.category) {
             const cat = sr.category;
             if (cat.includes('Pedag')) topicCounts['Formación Pedagógica']++;
@@ -136,22 +147,22 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
     const sentimentData: ChartDataPoint[] = [
       {
         label: language === 'en' ? 'Reflective & Critical' : 'Reflexivo y Crítico',
-        count: sentimentCounts.reflective || Math.ceil(total * 0.45),
+        count: sentimentCounts.reflective,
         color: '#06b6d4', // cyan
       },
       {
         label: language === 'en' ? 'Optimistic & Positive' : 'Optimista / Favorable',
-        count: sentimentCounts.positive || Math.ceil(total * 0.3),
+        count: sentimentCounts.positive,
         color: '#10b981', // emerald
       },
       {
         label: language === 'en' ? 'Cautious / Concerned' : 'Cauteloso / Preocupado',
-        count: sentimentCounts.concerned || Math.ceil(total * 0.15),
+        count: sentimentCounts.concerned,
         color: '#f59e0b', // amber
       },
       {
         label: language === 'en' ? 'Neutral' : 'Neutral / En exploración',
-        count: sentimentCounts.neutral || Math.max(1, total - (sentimentCounts.reflective + sentimentCounts.positive + sentimentCounts.concerned)),
+        count: sentimentCounts.neutral,
         color: '#64748b', // slate
       },
     ].filter((d) => d.count > 0);
@@ -163,7 +174,7 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
 
     // Format Campus Chart Data
     const campusData: ChartDataPoint[] = Object.entries(campusCounts)
-      .map(([label, count], idx) => ({
+      .map(([label, count]) => ({
         label: label.replace('Sede ', ''),
         count,
       }))
@@ -171,7 +182,7 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
 
     // Format Topic Chart Data
     const topicData: ChartDataPoint[] = Object.entries(topicCounts)
-      .map(([label, count]) => ({ label, count: Math.max(count, Math.floor(Math.random() * 2) + 1) }))
+      .map(([label, count]) => ({ label, count }))
       .sort((a, b) => b.count - a.count);
 
     const commonPainPoints = Object.entries(painPointsMap)

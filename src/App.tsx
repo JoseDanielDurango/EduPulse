@@ -51,6 +51,7 @@ import {
   PlusCircle,
   Lock,
   KeyRound,
+  FileCheck2,
 } from 'lucide-react';
 
 export default function App() {
@@ -329,8 +330,12 @@ export default function App() {
             pushNavState(tab);
           } else {
             if (activeSession) {
-              setIsChatRoomOpen(true);
-              pushNavState('chat');
+              if (activeSession.status === 'completed' && activeSession.summary) {
+                handleViewSummary(activeSession);
+              } else {
+                setIsChatRoomOpen(true);
+                pushNavState('chat');
+              }
             }
           }
         }}
@@ -439,7 +444,7 @@ export default function App() {
                       </p>
                     </div>
 
-                    {/* Primary Actions: Resume Dialogue or Start New */}
+                    {/* Primary Actions: Resume Dialogue, View Completed Results, or Start New */}
                     <div className="w-full sm:w-auto pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                       {activeSession && activeSession.status === 'active' ? (
                         <>
@@ -455,6 +460,32 @@ export default function App() {
                               {language === 'en'
                                 ? `Resume Dialogue with Cereza (${activeSession.studentCode || activeSession.participantName})`
                                 : `Continuar Diálogo con Cereza (${activeSession.studentCode || activeSession.participantName})`}
+                            </span>
+                            <ArrowRight className="h-4 w-4 ml-1" />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setIsNewSessionModalOpen(true);
+                              pushNavState('modal');
+                            }}
+                            className="btn-aero-glass w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm transition active:scale-98 cursor-pointer text-slate-700 dark:text-slate-200"
+                          >
+                            <PlusCircle className="h-4 w-4 text-emerald-600 dark:text-cyan-400" />
+                            <span>{language === 'en' ? 'Start New Dialogue' : 'Iniciar Nueva Charla'}</span>
+                          </button>
+                        </>
+                      ) : activeSession && activeSession.status === 'completed' ? (
+                        <>
+                          <button
+                            onClick={() => handleViewSummary(activeSession)}
+                            className="btn-aero-cyan w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-sm sm:text-base shadow-lg transition active:scale-98 cursor-pointer text-white"
+                          >
+                            <FileCheck2 className="h-5 w-5 text-white" />
+                            <span>
+                              {language === 'en'
+                                ? `View Results of Dialogue (${activeSession.studentCode || activeSession.participantName})`
+                                : `Ver Resultados de tu Diálogo (${activeSession.studentCode || activeSession.participantName})`}
                             </span>
                             <ArrowRight className="h-4 w-4 ml-1" />
                           </button>
@@ -703,8 +734,12 @@ export default function App() {
             pushNavState(tab);
           } else {
             if (activeSession) {
-              setIsChatRoomOpen(true);
-              pushNavState('chat');
+              if (activeSession.status === 'completed' && activeSession.summary) {
+                handleViewSummary(activeSession);
+              } else {
+                setIsChatRoomOpen(true);
+                pushNavState('chat');
+              }
             }
           }
         }}

@@ -19,6 +19,7 @@ import {
 import { InterviewGuide, InterviewSession, ChatMessage } from '../types';
 import { saveSession } from '../lib/firebase';
 import { Language, translations } from '../lib/i18n';
+import { generateFallbackSynthesis } from '../lib/qualitativeSynthesis';
 
 interface InterviewRoomProps {
   session: InterviewSession;
@@ -40,6 +41,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
   const t = translations[language];
   const [inputText, setInputText] = useState('');
   const [isAiResponding, setIsAiResponding] = useState(false);
+  const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [speechError, setSpeechError] = useState<string | null>(null);
@@ -228,6 +230,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
     const interimSession: InterviewSession = {
       ...session,
       messages: newMessages,
+      currentQuestionIndex: Math.min(session.totalQuestions || 5, participantTurns + 1),
     };
 
     setInputText('');
@@ -237,6 +240,8 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
     // Call Cereza
     setIsAiResponding(true);
     setChatError(null);
+    let isFinished = false;
+
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -258,7 +263,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       }
 
       const data = await response.json();
-      const isFinished = !!data.isInterviewFinished;
+      isFinished = !!data.isInterviewFinished;
 
       const agentMessage: ChatMessage = {
         id: `msg-${Date.now() + 1}`,
@@ -274,6 +279,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       const updatedSession: InterviewSession = {
         ...session,
         messages: finalMessages,
+        currentQuestionIndex: Math.min(session.totalQuestions || 5, participantTurns + 1),
         currentDimension: data.currentDimension || session.currentDimension,
         qualitativePhase: data.qualitativePhase || session.qualitativePhase,
         status: isFinished ? 'completed' : 'active',
@@ -284,7 +290,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       speakText(data.reply);
 
       if (isFinished) {
-        handleTriggerFullSynthesis(updatedSession);
+        await handleTriggerFullSynthesis(updatedSession);
       }
     } catch (err: any) {
       console.error('Error in Cereza turn:', err);
@@ -294,13 +300,28 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
           : 'Cereza tuvo un pequeño problema de conexión. Por favor envía tu mensaje de nuevo.'
       );
     } finally {
-      setIsAiResponding(false);
+      if (!isFinished) {
+        setIsAiResponding(false);
+      }
       setTimeout(() => textareaRef.current?.focus(), 100);
     }
   };
 
   const handleTriggerFullSynthesis = async (sessionToAnalyze = session) => {
+    // 1. If already completed with a valid summary and responses, navigate directly to summary view!
+    if (
+      sessionToAnalyze.status === 'completed' &&
+      sessionToAnalyze.summary &&
+      (sessionToAnalyze.structuredResponses?.length || 0) > 0
+    ) {
+      onFinishSession(sessionToAnalyze);
+      return;
+    }
+
     setIsAiResponding(true);
+    setIsSynthesizing(true);
+    setChatError(null);
+
     try {
       const res = await fetch('/api/analyze-interview', {
         method: 'POST',
@@ -317,13 +338,14 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       });
 
       if (!res.ok) {
-        throw new Error('Analysis failed');
+        throw new Error('Analysis API failed with status ' + res.status);
       }
 
       const data = await res.json();
       const finalizedSession: InterviewSession = {
         ...sessionToAnalyze,
         status: 'completed',
+        currentQuestionIndex: sessionToAnalyze.totalQuestions || 5,
         summary: data.summary,
         structuredResponses: data.structuredResponses,
       };
@@ -332,9 +354,22 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       await saveSession(finalizedSession);
       onFinishSession(finalizedSession);
     } catch (err) {
-      console.error('Error in synthesis:', err);
+      console.warn('Synthesis API error, applying intelligent qualitative fallback:', err);
+      const fallback = generateFallbackSynthesis(sessionToAnalyze, language);
+      const finalizedSession: InterviewSession = {
+        ...sessionToAnalyze,
+        status: 'completed',
+        currentQuestionIndex: sessionToAnalyze.totalQuestions || 5,
+        summary: fallback.summary,
+        structuredResponses: fallback.structuredResponses,
+      };
+
+      onUpdateSession(finalizedSession);
+      await saveSession(finalizedSession);
+      onFinishSession(finalizedSession);
     } finally {
       setIsAiResponding(false);
+      setIsSynthesizing(false);
     }
   };
 
@@ -608,7 +643,7 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
           );
         })}
 
-        {isAiResponding && (
+        {isAiResponding && !isSynthesizing && (
           <div className="flex items-start gap-3 justify-start">
             <div className="h-9 w-9 rounded-full ring-2 ring-white/90 dark:ring-cyan-400/60 shadow-md shrink-0 flex items-center justify-center bg-cyan-50/50 dark:bg-cyan-950/50 p-0.5">
               <img
@@ -628,6 +663,56 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                 <div className="h-2 w-2 rounded-full bg-gradient-to-b from-teal-400 to-emerald-600 shadow-xs animate-bounce" />
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Synthesis in Progress Banner */}
+        {isSynthesizing && (
+          <div className="aero-card rounded-3xl p-5 border border-cyan-400/50 bg-cyan-950/40 text-center space-y-2 animate-pulse my-3">
+            <div className="flex items-center justify-center gap-2 text-cyan-300 font-bold text-sm">
+              <Sparkles className="h-4 w-4 animate-spin text-cyan-400" />
+              <span>
+                {language === 'en'
+                  ? 'Cereza is synthesizing your reflections for the thesis...'
+                  : 'Cereza está estructurando y guardando tus reflexiones para la investigación...'}
+              </span>
+            </div>
+            <p className="text-xs text-cyan-200/70">
+              {language === 'en'
+                ? 'Generating qualitative matrix, direct quotes, and findings. In a few moments your summary will open automatically.'
+                : 'Generando la matriz categorial, citas textuales y síntesis hermenéutica. En unos segundos se abrirán tus resultados.'}
+            </p>
+          </div>
+        )}
+
+        {/* Completion Card in Chat when completed */}
+        {session.status === 'completed' && !isSynthesizing && (
+          <div className="aero-card rounded-3xl p-5 border-2 border-emerald-400/80 bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-teal-500/10 text-center space-y-3 shadow-lg my-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-bold text-xs border border-emerald-400/40">
+              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+              <span>
+                {language === 'en'
+                  ? 'Qualitative Dialogue Completed & Saved'
+                  : 'Diálogo Cualitativo Completado y Guardado'}
+              </span>
+            </div>
+            <h3 className="font-display font-extrabold text-base text-slate-900 dark:text-white">
+              {language === 'en'
+                ? 'Your reflections have been successfully recorded!'
+                : '¡Tus respuestas y reflexiones han sido guardadas con éxito!'}
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
+              {language === 'en'
+                ? 'Click below to review the qualitative findings matrix, verbatim quotes, and export to Drive or email.'
+                : 'Haz clic a continuación para revisar la matriz cualitativa de resultados, citas verbatim y exportar a Drive o correo.'}
+            </p>
+            <button
+              onClick={() => handleTriggerFullSynthesis(session)}
+              className="btn-aero-green inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold text-white shadow-md transition active:scale-95 cursor-pointer"
+            >
+              <FileCheck2 className="h-4 w-4" />
+              <span>{language === 'en' ? 'View Results & Qualitative Matrix' : 'Ver Resultados y Matriz Cualitativa'}</span>
+            </button>
           </div>
         )}
 

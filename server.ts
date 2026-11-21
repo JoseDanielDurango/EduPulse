@@ -622,6 +622,43 @@ Genera el análisis cualitativo estructurado en formato JSON válido.
   }
 });
 
+// Endpoint: High-Precision Multimodal Voice Audio Transcription via Gemini
+app.post('/api/transcribe-audio', async (req: Request, res: Response) => {
+  try {
+    const { audioBase64, mimeType = 'audio/webm', language = 'es' } = req.body || {};
+
+    if (!audioBase64) {
+      return res.status(400).json({ error: 'audioBase64 es requerido para transcribir.' });
+    }
+
+    const isEn = language === 'en';
+    const prompt = isEn
+      ? 'Transcribe this voice audio recording verbatim in English. Do not add quotes, introductions, or conversational commentary. If there is no discernible speech or only background noise, reply with an empty string.'
+      : 'Transcribe esta grabación de voz textualmente en español. Respeta las palabras exactas, modismos y puntuación natural del hablante. No agregues comillas, introducciones ni explicaciones. Si no hay voz inteligible o solo silencio, responde con una cadena vacía.';
+
+    // Clean mimeType (e.g. "audio/webm;codecs=opus" -> "audio/webm")
+    const cleanMimeType = (mimeType || 'audio/webm').split(';')[0].trim();
+
+    const response = await generateWithRetry('gemini-3.5-flash-lite', [
+      {
+        inlineData: {
+          mimeType: cleanMimeType,
+          data: audioBase64,
+        },
+      },
+      prompt,
+    ], {
+      temperature: 0.1,
+    });
+
+    const transcribedText = (response.text || '').trim();
+    return res.json({ text: transcribedText });
+  } catch (error: any) {
+    console.error('Error in /api/transcribe-audio:', error);
+    return res.status(500).json({ error: error.message || 'Error al transcribir el audio.' });
+  }
+});
+
 // Endpoint to export interview sessions directly to Google Sheets in user's Drive
 app.post('/api/export-sheets', async (req: Request, res: Response) => {
   try {

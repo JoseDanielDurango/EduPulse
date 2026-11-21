@@ -3,6 +3,7 @@ import {
   Send,
   Mic,
   MicOff,
+  Square,
   Sparkles,
   Volume2,
   VolumeX,
@@ -42,7 +43,9 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
   const [inputText, setInputText] = useState('');
   const [isAiResponding, setIsAiResponding] = useState(false);
   const [isSynthesizing, setIsSynthesizing] = useState(false);
-  const [isListening, setIsListening] = useState(false);
+  const [isRecordingAudio, setIsRecordingAudio] = useState(false);
+  const [isTranscribingAudio, setIsTranscribingAudio] = useState(false);
+  const [recordingDuration, setRecordingDuration] = useState(0);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [speechError, setSpeechError] = useState<string | null>(null);
   const [chatError, setChatError] = useState<string | null>(null);
@@ -51,6 +54,10 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<any>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioStreamRef = useRef<MediaStream | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const recordingTimerRef = useRef<any>(null);
 
   // Participant exchanges count
   const participantTurns = session.messages.filter((m) => m.sender === 'participant').length;
@@ -61,58 +68,250 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
 
   useEffect(() => {
     scrollToBottom();
-  }, [session.messages, isAiResponding]);
+  }, [session.messages, isAiResponding, isSynthesizing]);
 
-  // Speech Recognition setup (Web Speech API)
+  // Speech Recognition & MediaRecorder capability check
   useEffect(() => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      setSpeechSupported(true);
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = language === 'en' ? 'en-US' : 'es-ES';
+    const hasMedia =
+      typeof navigator !== 'undefined' &&
+      !!navigator.mediaDevices &&
+      !!navigator.mediaDevices.getUserMedia;
+    const hasWebSpeech =
+      typeof window !== 'undefined' &&
+      (!!(window as any).SpeechRecognition || !!(window as any).webkitSpeechRecognition);
 
-      recognition.onresult = (event: any) => {
-        let transcript = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
-        }
-        setInputText((prev) => {
-          const trimmed = prev.trim();
-          return trimmed ? `${trimmed} ${transcript}` : transcript;
-        });
-      };
+    setSpeechSupported(hasMedia || hasWebSpeech);
 
-      recognition.onerror = (event: any) => {
-        console.warn('Speech error:', event.error);
-        setIsListening(false);
-        setSpeechError(`${event.error}`);
-        setTimeout(() => setSpeechError(null), 4000);
-      };
+    // Optional Web Speech API setup for live interim transcript streaming
+    if (hasWebSpeech) {
+      try {
+        const SpeechRec =
+          (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        const rec = new SpeechRec();
+        rec.continuous = true;
+        rec.interimResults = true;
+        rec.lang = language === 'en' ? 'en-US' : 'es-ES';
 
-      recognition.onend = () => {
-        setIsListening(false);
-      };
+        rec.onresult = (event: any) => {
+          let liveTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+              liveTranscript += event.results[i][0].transcript;
+            }
+          }
+          if (liveTranscript) {
+            setInputText((prev) => {
+              const trimmed = prev.trim();
+              return trimmed ? `${trimmed} ${liveTranscript.trim()}` : liveTranscript.trim();
+            });
+          }
+        };
 
-      recognitionRef.current = recognition;
+        rec.onerror = () => {
+          // Silent fallback to MediaRecorder + Gemini
+        };
+
+        recognitionRef.current = rec;
+      } catch {}
     }
+
+    return () => {
+      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
+      if (audioStreamRef.current) {
+        audioStreamRef.current.getTracks().forEach((track) => track.stop());
+      }
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch {}
+      }
+    };
   }, [language]);
 
-  const toggleSpeechRecognition = () => {
-    if (!recognitionRef.current) return;
-    if (isListening) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    } else {
-      setSpeechError(null);
-      try {
-        recognitionRef.current.start();
-        setIsListening(true);
-      } catch (err) {
-        console.error('Error starting speech:', err);
+  const startAudioRecording = async () => {
+    setSpeechError(null);
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        if (recognitionRef.current) {
+          recognitionRef.current.start();
+          setIsRecordingAudio(true);
+          return;
+        }
+        throw new Error('Microphone not supported');
       }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+
+      audioStreamRef.current = stream;
+      audioChunksRef.current = [];
+
+      let mimeType = 'audio/webm';
+      if (typeof MediaRecorder !== 'undefined') {
+        if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+          mimeType = 'audio/webm;codecs=opus';
+        } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+          mimeType = 'audio/webm';
+        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+          mimeType = 'audio/mp4';
+        } else if (MediaRecorder.isTypeSupported('audio/aac')) {
+          mimeType = 'audio/aac';
+        } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
+          mimeType = 'audio/ogg';
+        }
+      }
+
+      const mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        clearInterval(recordingTimerRef.current);
+        setRecordingDuration(0);
+        setIsRecordingAudio(false);
+
+        if (audioStreamRef.current) {
+          audioStreamRef.current.getTracks().forEach((t) => t.stop());
+          audioStreamRef.current = null;
+        }
+
+        const actualMime = mediaRecorder.mimeType || mimeType || 'audio/webm';
+        const audioBlob = new Blob(audioChunksRef.current, { type: actualMime });
+
+        if (audioBlob.size < 500) {
+          return;
+        }
+
+        await handleTranscribeBlob(audioBlob, actualMime);
+      };
+
+      mediaRecorder.start(250);
+      mediaRecorderRef.current = mediaRecorder;
+      setIsRecordingAudio(true);
+      setRecordingDuration(0);
+
+      recordingTimerRef.current = setInterval(() => {
+        setRecordingDuration((prev) => prev + 1);
+      }, 1000);
+
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.start();
+        } catch {}
+      }
+    } catch (err: any) {
+      console.error('Error starting audio recording:', err);
+      const isNotAllowed =
+        err?.name === 'NotAllowedError' ||
+        err?.name === 'PermissionDeniedError' ||
+        String(err?.message || '').toLowerCase().includes('permission');
+
+      setSpeechError(
+        isNotAllowed
+          ? language === 'en'
+            ? 'Microphone permission denied. Please allow microphone access in your browser to dictate.'
+            : 'Permiso de micrófono denegado. Permite el acceso al micrófono en tu navegador para dictar.'
+          : language === 'en'
+          ? 'Could not access microphone on this device.'
+          : 'No se pudo acceder al micrófono en este dispositivo.'
+      );
+      setTimeout(() => setSpeechError(null), 5000);
+      setIsRecordingAudio(false);
+    }
+  };
+
+  const stopAudioRecording = () => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch {}
+    }
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    } else {
+      setIsRecordingAudio(false);
+      clearInterval(recordingTimerRef.current);
+      if (audioStreamRef.current) {
+        audioStreamRef.current.getTracks().forEach((t) => t.stop());
+        audioStreamRef.current = null;
+      }
+    }
+  };
+
+  const handleTranscribeBlob = async (blob: Blob, mimeType: string) => {
+    setIsTranscribingAudio(true);
+    try {
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onloadend = () => {
+          const res = reader.result as string;
+          const base64 = res.split(',')[1] || res;
+          resolve(base64);
+        };
+        reader.onerror = reject;
+      });
+      reader.readAsDataURL(blob);
+
+      const base64Audio = await base64Promise;
+
+      const response = await fetch('/api/transcribe-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          audioBase64: base64Audio,
+          mimeType,
+          language,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Transcription failed with status ' + response.status);
+      }
+
+      const data = await response.json();
+      const transcribed = (data.text || '').trim();
+
+      if (transcribed) {
+        setInputText((prev) => {
+          const trimmed = prev.trim();
+          return trimmed ? `${trimmed} ${transcribed}` : transcribed;
+        });
+        setTimeout(() => textareaRef.current?.focus(), 150);
+      } else {
+        setSpeechError(
+          language === 'en'
+            ? 'No clear speech detected. Try speaking closer to the microphone.'
+            : 'No se detectó voz con claridad. Intenta hablar más cerca del micrófono.'
+        );
+        setTimeout(() => setSpeechError(null), 4000);
+      }
+    } catch (err: any) {
+      console.warn('AI transcription error:', err);
+      setSpeechError(
+        language === 'en'
+          ? 'Could not transcribe voice audio. You can write your answer.'
+          : 'Hubo un inconveniente al transcribir la voz. Puedes escribir tu respuesta.'
+      );
+      setTimeout(() => setSpeechError(null), 4000);
+    } finally {
+      setIsTranscribingAudio(false);
+    }
+  };
+
+  const toggleSpeechRecognition = () => {
+    if (isRecordingAudio) {
+      stopAudioRecording();
+    } else {
+      startAudioRecording();
     }
   };
 
@@ -212,9 +411,8 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
     const textToSend = inputText.trim();
     if (!textToSend || isAiResponding) return;
 
-    if (isListening && recognitionRef.current) {
-      recognitionRef.current.stop();
-      setIsListening(false);
+    if (isRecordingAudio) {
+      stopAudioRecording();
     }
 
     const userMessage: ChatMessage = {
@@ -745,13 +943,52 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
       {/* Input Console - Aero Glass Container with Glossy Controls */}
       <div className="mt-1.5 sm:mt-2 aero-glass rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 shadow-xl border border-white/90 dark:border-cyan-500/30">
         <form onSubmit={handleSendMessage} className="flex flex-col gap-2 sm:gap-2.5">
+          {/* Active Audio Recording Visualizer Bar */}
+          {isRecordingAudio && (
+            <div className="flex items-center justify-between px-3.5 py-2 rounded-xl bg-rose-500/15 border border-rose-400/50 text-rose-800 dark:text-rose-200 text-xs font-semibold animate-pulse shadow-xs">
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-ping" />
+                <span>
+                  {language === 'en'
+                    ? 'Recording your voice... Speak naturally'
+                    : 'Grabando tu voz... Habla con naturalidad'}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 font-mono font-bold text-rose-600 dark:text-rose-300 text-xs">
+                <span>
+                  {String(Math.floor(recordingDuration / 60)).padStart(2, '0')}:
+                  {String(recordingDuration % 60).padStart(2, '0')}
+                </span>
+                <button
+                  type="button"
+                  onClick={stopAudioRecording}
+                  className="px-2.5 py-0.5 rounded-lg bg-rose-600 text-white text-[10px] font-bold hover:bg-rose-700 transition cursor-pointer shadow-xs active:scale-95"
+                >
+                  {language === 'en' ? 'Done' : 'Listo'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Transcribing Audio Loading Bar */}
+          {isTranscribingAudio && (
+            <div className="flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500/15 border border-cyan-400/50 text-cyan-800 dark:text-cyan-200 text-xs font-bold animate-pulse shadow-xs">
+              <Sparkles className="h-3.5 w-3.5 animate-spin text-cyan-500" />
+              <span>
+                {language === 'en'
+                  ? 'Transcribing your voice with Cereza AI...'
+                  : 'Transcribiendo tu voz con Cereza IA...'}
+              </span>
+            </div>
+          )}
+
           <div className="relative">
             <textarea
               ref={textareaRef}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
-              disabled={isAiResponding || session.status === 'completed'}
+              disabled={isAiResponding || session.status === 'completed' || isTranscribingAudio}
               placeholder={session.status === 'completed' ? t.inputCompleted : t.inputPlaceholder}
               rows={2}
               className="w-full resize-none rounded-xl sm:rounded-2xl border border-cyan-200/80 dark:border-cyan-800/80 bg-white/70 dark:bg-slate-900/60 backdrop-blur-md px-3.5 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-cyan-200/40 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden focus:border-cyan-500 focus:ring-4 focus:ring-cyan-400/20 disabled:opacity-50 transition font-body shadow-inner"
@@ -764,15 +1001,29 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
                 <button
                   type="button"
                   onClick={toggleSpeechRecognition}
-                  disabled={session.status === 'completed' || isAiResponding}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs transition border cursor-pointer shadow-xs ${
-                    isListening
+                  disabled={session.status === 'completed' || isAiResponding || isTranscribingAudio}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs transition border cursor-pointer shadow-xs active:scale-95 ${
+                    isRecordingAudio
                       ? 'bg-rose-500 text-white border-rose-400 ring-2 ring-rose-300 animate-pulse'
+                      : isTranscribingAudio
+                      ? 'btn-aero-cyan text-white opacity-80'
                       : 'btn-aero-glass text-slate-700 dark:text-slate-200'
                   }`}
                 >
-                  {isListening ? <MicOff className="h-3.5 w-3.5 text-white" /> : <Mic className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />}
-                  <span className="hidden xs:inline">{isListening ? t.listeningBtn : t.dictateBtn}</span>
+                  {isRecordingAudio ? (
+                    <Square className="h-3 w-3 fill-white text-white" />
+                  ) : isTranscribingAudio ? (
+                    <Sparkles className="h-3.5 w-3.5 animate-spin text-cyan-300" />
+                  ) : (
+                    <Mic className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+                  )}
+                  <span className="hidden xs:inline">
+                    {isRecordingAudio
+                      ? `${String(Math.floor(recordingDuration / 60)).padStart(2, '0')}:${String(recordingDuration % 60).padStart(2, '0')} • ${t.listeningBtn}`
+                      : isTranscribingAudio
+                      ? t.transcribingBtn
+                      : t.dictateBtn}
+                  </span>
                 </button>
               )}
               <span className="hidden sm:inline text-slate-500 dark:text-cyan-200/60 font-body text-[11px]">
@@ -783,7 +1034,12 @@ export const InterviewRoom: React.FC<InterviewRoomProps> = ({
             {/* Primary Action Button (Glossy Cyan Frutiger Aero) */}
             <button
               type="submit"
-              disabled={!inputText.trim() || isAiResponding || session.status === 'completed'}
+              disabled={
+                !inputText.trim() ||
+                isAiResponding ||
+                session.status === 'completed' ||
+                isTranscribingAudio
+              }
               className="btn-aero-cyan inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-extrabold text-xs active:scale-95 transition shadow-md disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
             >
               <span>{t.sendBtn}</span>

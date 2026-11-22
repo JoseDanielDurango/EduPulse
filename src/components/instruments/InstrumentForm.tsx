@@ -184,14 +184,21 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
   };
 
   const handleMatrixChange = (questionId: string, rowId: string, colId: string) => {
+    let nextMatrix: Record<string, string> = {};
     setAnswers((prev) => {
       const currentMatrix = typeof prev[questionId] === 'object' && prev[questionId] !== null
         ? { ...prev[questionId] }
         : {};
       currentMatrix[rowId] = colId;
+      nextMatrix = currentMatrix;
       return { ...prev, [questionId]: currentMatrix };
     });
-    if (validationErrors[questionId]) {
+
+    const qDef = instrument.questions.find((q) => q.id === questionId);
+    const rowCount = qDef?.matrixRows?.length || 0;
+    const answeredCount = Object.keys(nextMatrix).length;
+
+    if (answeredCount >= rowCount && validationErrors[questionId]) {
       setValidationErrors((prev) => {
         const copy = { ...prev };
         delete copy[questionId];
@@ -199,6 +206,79 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
       });
     }
   };
+
+  const scrollToField = (fieldId: string) => {
+    const targetId = fieldId === 'informedConsent' ? 'field-informedConsent' : `field-${fieldId}`;
+    const el = document.getElementById(targetId) || document.getElementById('form-error-banner');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('ring-4', 'ring-red-400', 'dark:ring-red-500', 'transition-all');
+      setTimeout(() => {
+        el.classList.remove('ring-4', 'ring-red-400', 'dark:ring-red-500');
+      }, 3000);
+    }
+  };
+
+  const getMissingFieldsList = () => {
+    const list: Array<{
+      key: string;
+      fieldId: string;
+      label: string;
+      detail: string;
+    }> = [];
+
+    if (validationErrors.informedConsent) {
+      list.push({
+        key: 'informedConsent',
+        fieldId: 'informedConsent',
+        label: language === 'en' ? 'Informed Consent' : 'Consentimiento Informado',
+        detail: language === 'en' ? 'Check the voluntary participation box' : 'Marca la casilla obligatoria de autorización',
+      });
+    }
+
+    if (validationErrors.participantName) {
+      list.push({
+        key: 'participantName',
+        fieldId: 'participantName',
+        label: language === 'en' ? 'Full Name' : 'Nombre Completo',
+        detail: language === 'en' ? 'Enter your full name' : 'Ingresa tus nombres y apellidos',
+      });
+    }
+
+    if (validationErrors.age) {
+      list.push({
+        key: 'age',
+        fieldId: 'age',
+        label: language === 'en' ? 'Age' : 'Edad',
+        detail: language === 'en' ? 'Enter a valid age (15-99)' : 'Ingresa una edad válida (15-99)',
+      });
+    }
+
+    instrument.questions.forEach((q, idx) => {
+      if (validationErrors[q.id]) {
+        let detail = validationErrors[q.id];
+        if (q.type === 'matrix_grid') {
+          const matrix = answers[q.id] || {};
+          const missingRows = q.matrixRows?.filter((r) => !matrix[r.id]) || [];
+          if (missingRows.length > 0) {
+            detail = language === 'en'
+              ? `Missing rows: ${missingRows.map((r) => r.label).join(', ')}`
+              : `Faltan las filas: ${missingRows.map((r) => r.label).join(', ')}`;
+          }
+        }
+        list.push({
+          key: q.id,
+          fieldId: q.id,
+          label: `${language === 'en' ? 'Question' : 'Pregunta'} ${idx + 4}`,
+          detail,
+        });
+      }
+    });
+
+    return list;
+  };
+
+  const missingFieldsList = getMissingFieldsList();
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
@@ -255,9 +335,14 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
     if (Object.keys(errors).length > 0) {
       // Scroll to the first error
       const firstErrorKey = Object.keys(errors)[0];
-      const el = document.getElementById(`field-${firstErrorKey}`) || document.getElementById('form-error-banner');
+      const targetId = firstErrorKey === 'informedConsent' ? 'field-informedConsent' : `field-${firstErrorKey}`;
+      const el = document.getElementById(targetId) || document.getElementById('form-error-banner');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('ring-4', 'ring-red-400', 'dark:ring-red-500', 'transition-all');
+        setTimeout(() => {
+          el.classList.remove('ring-4', 'ring-red-400', 'dark:ring-red-500');
+        }, 3000);
       }
       return false;
     }
@@ -600,23 +685,43 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
       {/* Main Form Form Body */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Validation Error Banner */}
-        {Object.keys(validationErrors).length > 0 && (
+        {missingFieldsList.length > 0 && (
           <div
             id="form-error-banner"
-            className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/70 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 text-xs flex items-center gap-3 animate-fade-in"
+            className="p-5 rounded-3xl bg-red-50 dark:bg-red-950/80 border-2 border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 text-xs space-y-3.5 shadow-md animate-fade-in"
           >
-            <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
-            <div>
-              <span className="font-bold block">
-                {language === 'en'
-                  ? 'There are required fields left unanswered:'
-                  : 'Faltan preguntas o campos obligatorios por completar:'}
-              </span>
-              <span className="text-[11px] text-red-700 dark:text-red-300">
-                {language === 'en'
-                  ? 'Please check the highlighted questions below and accept the informed consent.'
-                  : 'Revisa las preguntas señaladas en rojo a continuación y recuerda marcar el consentimiento informado.'}
-              </span>
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <span className="font-extrabold text-sm block">
+                  {language === 'en'
+                    ? `Cannot submit yet: ${missingFieldsList.length} required field(s) pending:`
+                    : `No se puede enviar aún: faltan ${missingFieldsList.length} campo(s) obligatorio(s) por completar:`}
+                </span>
+                <span className="text-[11px] text-red-700 dark:text-red-300 block">
+                  {language === 'en'
+                    ? 'Check the items below. Click any button to jump straight to that question:'
+                    : 'Revisa los campos pendientes señalados en rojo. Haz clic en cualquiera de los botones para ir directo al campo pendiente:'}
+                </span>
+              </div>
+            </div>
+
+            {/* Interactive clickable pills */}
+            <div className="flex flex-wrap gap-2 pt-1">
+              {missingFieldsList.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => scrollToField(item.fieldId)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-red-900/60 border border-red-300 dark:border-red-700 text-red-800 dark:text-red-100 hover:bg-red-100 dark:hover:bg-red-800/80 transition cursor-pointer shadow-2xs group"
+                >
+                  <ArrowRight className="h-3 w-3 text-red-600 dark:text-red-400 group-hover:translate-x-0.5 transition-transform" />
+                  <span>{item.label}</span>
+                  <span className="text-[10px] opacity-75 font-normal max-w-[170px] truncate hidden sm:inline">
+                    ({item.detail})
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         )}
@@ -626,7 +731,7 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
           id="field-informedConsent"
           className={`aero-glass rounded-3xl border p-6 sm:p-7 space-y-4 shadow-md transition ${
             validationErrors.informedConsent
-              ? 'border-red-400 dark:border-red-600 ring-2 ring-red-400/20'
+              ? 'border-red-400 dark:border-red-600 ring-4 ring-red-400/30 bg-red-50/20 dark:bg-red-950/20'
               : 'border-white/80 dark:border-cyan-500/20'
           }`}
         >
@@ -659,6 +764,33 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
             </p>
           </div>
 
+          {validationErrors.informedConsent && (
+            <div className="p-3.5 rounded-2xl bg-red-100/90 dark:bg-red-950/90 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 font-semibold shadow-xs animate-fade-in">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 text-red-600 shrink-0" />
+                <span>
+                  {language === 'en'
+                    ? 'Required: You must accept informed consent to submit your responses.'
+                    : 'Requerido: Debes aceptar el consentimiento informado para poder enviar tus respuestas.'}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setInformedConsentAccepted(true);
+                  setValidationErrors((prev) => {
+                    const c = { ...prev };
+                    delete c.informedConsent;
+                    return c;
+                  });
+                }}
+                className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shrink-0 cursor-pointer shadow-xs transition text-center"
+              >
+                {language === 'en' ? 'Accept Consent Now' : 'Aceptar Consentimiento Ahora'}
+              </button>
+            </div>
+          )}
+
           <label className="flex items-start gap-3 cursor-pointer pt-1 group">
             <input
               type="checkbox"
@@ -681,11 +813,6 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                 : 'He leído el propósito de la investigación, acepto participar voluntariamente y autorizo el tratamiento confidencial de mis respuestas. *'}
             </span>
           </label>
-          {validationErrors.informedConsent && (
-            <p className="text-xs text-red-600 dark:text-red-400 font-semibold">
-              {validationErrors.informedConsent}
-            </p>
-          )}
         </div>
 
         {/* Section 1: Participant Demographics */}
@@ -1026,10 +1153,25 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                             <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
                               {q.matrixRows?.map((row) => {
                                 const selectedColId = value ? value[row.id] : undefined;
+                                const isRowMissing = hasError && !selectedColId;
                                 return (
-                                  <tr key={row.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40">
+                                  <tr
+                                    key={row.id}
+                                    className={`transition ${
+                                      isRowMissing
+                                        ? 'bg-red-50/70 dark:bg-red-950/40 border-l-4 border-l-red-500'
+                                        : 'hover:bg-slate-50/70 dark:hover:bg-slate-800/40'
+                                    }`}
+                                  >
                                     <td className="py-3.5 pr-4 font-medium text-slate-800 dark:text-slate-200">
-                                      {row.label}
+                                      <div className="flex items-center gap-2">
+                                        <span>{row.label}</span>
+                                        {isRowMissing && (
+                                          <span className="text-[10px] font-bold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950/80 px-2 py-0.5 rounded-full border border-red-200 dark:border-red-900 shrink-0">
+                                            {language === 'en' ? 'Required row' : 'Falta responder'}
+                                          </span>
+                                        )}
+                                      </div>
                                     </td>
                                     {q.matrixColumns?.map((col) => {
                                       const isCellSelected = selectedColId === col.id;
@@ -1039,11 +1181,17 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                                           onClick={() => handleMatrixChange(q.id, row.id, col.id)}
                                           className="py-3 px-3 text-center cursor-pointer"
                                         >
-                                          <div className="inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                                          <div className={`inline-flex items-center justify-center p-1.5 rounded-lg transition ${
+                                            isRowMissing
+                                              ? 'hover:bg-red-100 dark:hover:bg-red-900/40'
+                                              : 'hover:bg-slate-200 dark:hover:bg-slate-700'
+                                          }`}>
                                             <div
                                               className={`h-4 w-4 rounded-full border flex items-center justify-center transition ${
                                                 isCellSelected
                                                   ? 'border-emerald-600 bg-emerald-600'
+                                                  : isRowMissing
+                                                  ? 'border-red-400 dark:border-red-500 bg-red-50 dark:bg-red-950/50'
                                                   : 'border-slate-400 dark:border-slate-600'
                                               }`}
                                             >
@@ -1066,14 +1214,26 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                         <div className="sm:hidden space-y-3">
                           {q.matrixRows?.map((row) => {
                             const selectedColId = value ? value[row.id] : undefined;
+                            const isRowMissing = hasError && !selectedColId;
                             return (
                               <div
                                 key={row.id}
-                                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-2.5"
+                                className={`p-3.5 rounded-2xl border transition space-y-2.5 ${
+                                  isRowMissing
+                                    ? 'bg-red-50/80 dark:bg-red-950/40 border-red-400 dark:border-red-700 ring-2 ring-red-400/20'
+                                    : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/80'
+                                }`}
                               >
-                                <span className="font-bold text-xs text-slate-800 dark:text-slate-200 block">
-                                  {row.label}
-                                </span>
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="font-bold text-xs text-slate-800 dark:text-slate-200 block">
+                                    {row.label}
+                                  </span>
+                                  {isRowMissing && (
+                                    <span className="text-[10px] font-bold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950 px-2 py-0.5 rounded-md shrink-0">
+                                      {language === 'en' ? 'Select an option' : 'Falta responder'}
+                                    </span>
+                                  )}
+                                </div>
                                 <div className="grid grid-cols-2 gap-1.5">
                                   {q.matrixColumns?.map((col) => {
                                     const isCellSelected = selectedColId === col.id;
@@ -1084,7 +1244,9 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
                                         onClick={() => handleMatrixChange(q.id, row.id, col.id)}
                                         className={`px-2.5 py-1.5 rounded-xl text-[11px] font-semibold border transition cursor-pointer text-center ${
                                           isCellSelected
-                                            ? 'bg-emerald-600 text-white border-emerald-600'
+                                            ? 'bg-emerald-600 text-white border-emerald-600 font-bold shadow-2xs'
+                                            : isRowMissing
+                                            ? 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-red-300 dark:border-red-800'
                                             : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
                                         }`}
                                       >
@@ -1173,6 +1335,39 @@ export const InstrumentForm: React.FC<InstrumentFormProps> = ({
               );
             })}
         </div>
+
+        {/* Bottom Error Notification if validation failed */}
+        {missingFieldsList.length > 0 && (
+          <div className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/70 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md animate-fade-in">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 shrink-0" />
+              <div>
+                <span className="font-extrabold block">
+                  {language === 'en'
+                    ? `Cannot submit: ${missingFieldsList.length} field(s) still pending:`
+                    : `No se puede enviar: ${missingFieldsList.length} campo(s) obligatorio(s) pendiente(s):`}
+                </span>
+                <span className="text-[11px] text-red-700 dark:text-red-300">
+                  {language === 'en'
+                    ? 'Complete the highlighted items or click any button to jump directly to it:'
+                    : 'Completa los campos señalados o haz clic en los botones para ir directo:'}
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-1.5 shrink-0">
+              {missingFieldsList.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => scrollToField(item.fieldId)}
+                  className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white dark:bg-red-900/90 text-red-700 dark:text-red-200 border border-red-300 dark:border-red-700 hover:bg-red-100 transition cursor-pointer shadow-2xs"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Submit Actions Bar with Frutiger Aero Gloss */}
         <div className="aero-glass rounded-2xl sm:rounded-3xl border border-white/90 dark:border-cyan-500/30 p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5 sm:gap-4 shadow-lg">

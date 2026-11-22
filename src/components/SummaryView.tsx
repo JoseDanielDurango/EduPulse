@@ -227,17 +227,63 @@ export const SummaryView: React.FC<SummaryViewProps> = ({
       )}
 
       {exportError && (
-        <div className="bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 rounded-xl p-4 text-rose-900 dark:text-rose-200 text-xs flex items-center justify-between gap-3 font-body">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0" />
-            <span>{exportError}</span>
+        <div className="bg-rose-50 dark:bg-rose-950/50 border border-rose-300 dark:border-rose-900 rounded-2xl p-4 sm:p-5 text-rose-900 dark:text-rose-200 text-xs space-y-3 font-body shadow-sm">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-2.5">
+              <AlertTriangle className="h-5 w-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <span className="font-bold text-sm block">
+                  {exportError.includes('origin_mismatch')
+                    ? (language === 'en' ? 'Google OAuth Authorization Notice (origin_mismatch)' : 'Aviso de Autorización de Google OAuth (Error 400: origin_mismatch)')
+                    : (language === 'en' ? 'Export Error' : 'Error al exportar a Google Sheets')}
+                </span>
+                <p className="text-xs text-rose-800 dark:text-rose-300 leading-relaxed">
+                  {exportError}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleExportGoogleSheets}
+              className="px-3 py-1.5 rounded-xl bg-rose-100 hover:bg-rose-200 dark:bg-rose-900/60 dark:hover:bg-rose-800 text-rose-900 dark:text-rose-100 font-bold text-xs shrink-0 cursor-pointer transition"
+            >
+              {language === 'en' ? 'Retry' : 'Reintentar'}
+            </button>
           </div>
-          <button
-            onClick={handleExportGoogleSheets}
-            className="underline font-semibold hover:text-rose-700 text-xs shrink-0 cursor-pointer"
-          >
-            {language === 'en' ? 'Retry' : 'Reintentar'}
-          </button>
+
+          {exportError.includes('origin_mismatch') && (
+            <div className="p-3 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-rose-200 dark:border-rose-800/60 space-y-2 text-[11px] text-slate-700 dark:text-slate-300">
+              <span className="font-bold block text-slate-900 dark:text-white">
+                {language === 'en' ? 'Immediate alternatives without waiting:' : 'Alternativas inmediatas sin esperas:'}
+              </span>
+              <div className="flex flex-wrap gap-2 pt-0.5">
+                <button
+                  type="button"
+                  onClick={() => downloadSessionAsCSV(session)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold cursor-pointer"
+                >
+                  <Download className="h-3 w-3" />
+                  <span>Descargar CSV (Excel)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openEmailForSession(session)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white font-bold cursor-pointer"
+                >
+                  <Mail className="h-3 w-3" />
+                  <span>Enviar a investigadores por correo</span>
+                </button>
+                <a
+                  href="https://console.cloud.google.com/apis/credentials?project=gen-lang-client-0983089494"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold"
+                >
+                  <span>Google Cloud Console</span>
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

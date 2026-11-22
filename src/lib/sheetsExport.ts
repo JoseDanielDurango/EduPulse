@@ -24,8 +24,28 @@ export async function requestGoogleAccessToken(): Promise<string> {
       const client = window.google.accounts.oauth2.initTokenClient({
         client_id: firebaseConfig.oAuthClientId,
         scope: 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file',
+        error_callback: (err: any) => {
+          console.error('Google OAuth error_callback:', err);
+          if (err?.type === 'popup_closed') {
+            reject(new Error('La ventana de Google se cerró antes de autorizar.'));
+          } else {
+            reject(
+              new Error(
+                `Error 400 (origin_mismatch): El origen "${window.location.origin}" debe agregarse en Google Cloud Console en "Orígenes autorizados de JavaScript".`
+              )
+            );
+          }
+        },
         callback: (tokenResponse: any) => {
           if (tokenResponse.error) {
+            if (tokenResponse.error === 'origin_mismatch' || tokenResponse.error_description?.includes('origin_mismatch')) {
+              reject(
+                new Error(
+                  `Error 400 (origin_mismatch): El origen "${window.location.origin}" no está autorizado en Google Cloud Console.`
+                )
+              );
+              return;
+            }
             reject(new Error(tokenResponse.error_description || tokenResponse.error));
             return;
           }

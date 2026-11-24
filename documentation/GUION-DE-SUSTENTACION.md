@@ -1,159 +1,185 @@
-# Guion y Estructura de Sustentación Final · EduPulse v2.3
-### Presentación de Trabajo de Grado · Universidad de Córdoba · Licenciatura en Informática
+# Guion de Sustentación Técnica · EduPulse v2.3
+### Presentación de Ingeniería de Software, Diseño UI/UX y Agente Conversacional Cereza
+**Licenciatura en Informática · Universidad de Córdoba**
 
 | Campo | Detalle |
 | :--- | :--- |
-| **Título de la Tesis** | La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba |
-| **Sustentantes (Autores)** | José Daniel Durango Caballero & Jefersson Ramírez Oviedo |
-| **Director de Tesis** | Mag. Juan Carlos Giraldo Cardozo |
-| **Archivo de Presentación** | `EduPulse_Sustentacion_Final.pptx` (14 diapositivas en formato panorámico 16:9) |
-| **Tiempo Estimado de Exposición** | 15 a 20 minutos (más sesión de preguntas del jurado) |
+| **Producto de Software** | EduPulse v2.3: Plataforma Web Híbrida y Agente Dialógico Inteligente |
+| **Sustentantes (Desarrolladores)** | José Daniel Durango Caballero & Jefersson Ramírez Oviedo |
+| **Director de Proyecto** | Mag. Juan Carlos Giraldo Cardozo |
+| **Archivos de Diapositivas** | `EduPulse_Desarrollo_y_Diseno_Final.pptx` / `EduPulse_Sustentacion_Final.pptx` (14 diapositivas panorámicas 16:9) |
+| **Entorno de Producción** | [edupulse-575b.onrender.com](https://edupulse-575b.onrender.com) |
+| **Tiempo Estimado de Exposición** | 15 a 18 minutos (más demostración en vivo y sesión de preguntas) |
 
 ---
 
 ## Índice y Distribución Temporal de Diapositivas
 
 ```text
-Diapositiva 01: Portada Institucional y Ficha Técnica                    [01:00 min]
-Diapositiva 02: Planteamiento del Problema y Justificación Epistémica     [01:30 min]
-Diapositiva 03: Pregunta Central y Objetivos de Investigación             [01:00 min]
-Diapositiva 04: Enfoque Metodológico Mixto Concurrente (QUAN + QUAL)      [01:30 min]
-Diapositiva 05: Génesis y Evolución de EduPulse (Fases 1 a 5)             [01:30 min]
-Diapositiva 06: El Modelo del Tutor: Cereza y Mediación Socrática        [02:00 min]
-Diapositiva 07: Arquitectura Pedagógica de los Cuatro Modelos            [01:30 min]
-Diapositiva 08: El Prompt Maestro y Framework ROCAS                       [01:30 min]
-Diapositiva 09: Innovaciones Técnicas de la Versión Final (v2.3)          [02:00 min]
-Diapositiva 10: Suite de Analítica Visual Tipo Google Forms               [01:30 min]
-Diapositiva 11: Gobernanza Ética, Seguridad y Google Cloud OAuth 2.0      [01:30 min]
-Diapositiva 12: Principales Hallazgos y Triangulación Metodológica        [02:00 min]
-Diapositiva 13: Conclusiones, Impacto Institucional y Aportes             [01:30 min]
-Diapositiva 14: Demostración en Vivo y Apertura al Jurado                 [01:00 min]
-                                                    TOTAL ESTIMADO: ~19:30 min
+Diapositiva 01: Portada Técnica e Identidad del Sistema                  [01:00 min]
+Diapositiva 02: Visión del Software y Retos de Ingeniería                [01:15 min]
+Diapositiva 03: Arquitectura Técnica Full-Stack y Ecosistema             [01:30 min]
+Diapositiva 04: Sistema de Diseño Frutiger Aero Modern Glassmorphism     [01:30 min]
+Diapositiva 05: Experiencia de Usuario (UX) Móvil y Ergonomía Reactiva   [01:15 min]
+Diapositiva 06: Diseño del Agente Conversacional: Cereza y Mediación     [01:45 min]
+Diapositiva 07: Ingeniería de Instrucciones: Framework ROCAS en Backend   [01:30 min]
+Diapositiva 08: Evolución del Desarrollo: Línea Temporal (Sprints 1 al 5) [01:15 min]
+Diapositiva 09: Evolución del Sistema de Audio: Motor de Voz Dual con IA [01:45 min]
+Diapositiva 10: Validación Interactiva de Cuestionarios Fila por Fila    [01:15 min]
+Diapositiva 11: Resiliencia de Datos: Eliminación de Condiciones de Carrera [01:30 min]
+Diapositiva 12: Suite de Analítica Visual Tipo Google Forms y Radar      [01:30 min]
+Diapositiva 13: Gobernanza de Datos, Seguridad RBAC y Google OAuth 2.0   [01:15 min]
+Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:15 min]
+                                                    TOTAL ESTIMADO: ~18:00 min
 ```
 
 ---
 
 ## Guion Detallado Diapositiva por Diapositiva
 
-### Diapositiva 01 · Portada Institucional y Ficha Técnica
+### Diapositiva 01 · Portada Técnica e Identidad del Sistema
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"Muy buenos días / tardes, respetado jurado calificador, profesor Juan Carlos Giraldo y comunidad académica presente. En el día de hoy tenemos el inmenso honor de presentar la sustentación final de nuestro trabajo de grado titulado: 'La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba'.  
-  > Como parte medular de este proceso, hemos desarrollado e implementado **EduPulse**, una plataforma y agente inteligente orientado a la recolección, diagnóstico y análisis mixto de datos para comprender cómo la IA generativa está reconfigurando la formación de los futuros licenciados en informática."*
+  > *"Muy buenos días / tardes, respetado jurado calificador, profesor Juan Carlos Giraldo y evaluadores. En el día de hoy nos complace presentar la sustentación técnica de **EduPulse v2.3**, una plataforma web reactiva y agente conversacional inteligente concebida y desarrollada desde cero para transformar la recolección, diagnóstico y análisis cualitativo y cuantitativo en la educación superior.  
+  > En esta exposición no nos limitaremos a hablar del contexto temático, sino que desglosaremos a fondo el proceso de ingeniería de software, las decisiones de arquitectura full-stack, el diseño de interfaz Frutiger Aero Modern Glassmorphism, la ingeniería del agente Cereza y las soluciones de resiliencia que permitieron llevar esta aplicación a producción real."*
 
 ---
 
-### Diapositiva 02 · El Problema de Investigación y Justificación Epistémica
+### Diapositiva 02 · Visión del Software y Retos de Ingeniería
 * **Voz sugerida (Investigador 2 / Jefersson):**
-  > *"El punto de partida de nuestra investigación radica en una contradicción evidente: la IA generativa irrumpió con fuerza masiva en la educación superior, transformando la planificación docente, la programación y el diseño de recursos. Sin embargo, este avance trajo consigo lo que Bastani y colaboradores denominan el 'efecto muleta' (crutch effect): el riesgo de que la máquina resuelva tareas mecánicamente, atrofiando el pensamiento crítico y la autonomía del futuro educador.  
-  > En nuestro territorio cordobés, donde conviven brechas de conectividad e infraestructura en Montería y los centros de tutoría de Lorica, Sahagún, Montelíbano y Planeta Rica, y en el marco de la reciente Ley 2626 de Educación Digital, nos preguntamos: ¿cómo mediar e investigar esta realidad sin caer en encuestas frías o cuestionarios protocolarios? De allí nace la urgencia de EduPulse."*
+  > *"¿Cuál fue el reto técnico que originó a EduPulse? Tradicionalmente, la recolección de percepciones complejas se ha realizado mediante formularios web estáticos (Google Forms, Typeform, etc.). Sin embargo, en el ámbito investigativo y educativo, estos instrumentos sufren de tres graves problemas de ingeniería: respuestas de manual con sesgo de deseabilidad social, abandono por fatiga cognitiva ante encuestas monótonas y cero capacidad de repregunta cuando una respuesta es ambigua o superficial.  
+  > La visión de ingeniería de EduPulse fue reemplazar el formulario frío por una experiencia dialógica interactiva: un agente conversacional capaz de razonar en tiempo real, identificar contradicciones, aplicar indagación reflexiva y sintetizar hallazgos de forma estructurada sin perder el rigor cuantitativo."*
 
 ---
 
-### Diapositiva 03 · Pregunta Central y Objetivos
+### Diapositiva 03 · Arquitectura Técnica Full-Stack y Ecosistema
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"Nuestra pregunta central orientó todo el desarrollo: ¿De qué manera los docentes en formación perciben, apropian e integran la IA en sus prácticas pedagógicas, y cómo la mediación dialógica inteligente facilita la comprensión de sus dilemas formativos?  
-  > Para responderla, nos trazamos como objetivo general desarrollar e implementar EduPulse. Esto se materializó en tres objetivos específicos: primero, diagnosticar cuantitativamente autoeficacia y familiaridad; segundo, diseñar a Cereza, un agente socrático que guía entrevistas en profundidad; y tercero, triangular concurrentemente estos datos para proponer lineamientos curriculares a nuestro programa."*
+  > *"La arquitectura de EduPulse se cimenta sobre un ecosistema full-stack moderno, modular y desacoplado:  
+  > * En el **Frontend**, implementamos React 19 con TypeScript estricto, Tailwind CSS v4 para diseño atómico y Lucide Icons, optimizado para empaquetado ultra-rápido mediante Vite 6.  
+  > * En el **Backend**, diseñamos un servidor en Node.js y Express que actúa como capa intermedia de seguridad y orquestación con la API de Google Gemini (utilizando la familia multimodal 2.5 Flash), manteniendo oculta la clave de API y gobernando la temperatura de inferencia a 0.4 para garantizar respuestas precisas.  
+  > * Para la **Persistencia**, combinamos Google Cloud Firestore en tiempo real con persistencia reactiva en `localStorage` offline-first.  
+  > * Y en **Integraciones Cloud**, integramos Google Cloud OAuth 2.0 para exportación directa a Google Sheets y Google Drive con tokens JWT."*
 
 ---
 
-### Diapositiva 04 · Enfoque Metodológico Multimétodo (QUAN + QUAL)
+### Diapositiva 04 · Sistema de Diseño Frutiger Aero Modern Glassmorphism
 * **Voz sugerida (Investigador 2 / Jefersson):**
-  > *"Metodológicamente, adoptamos un diseño mixto de triangulación concurrente (QUAN + QUAL), respaldado epistemológicamente en Creswell y Hernández-Sampieri. Sobre una población de aproximadamente 430 estudiantes activos, seleccionamos una muestra intencional de informantes clave en los tres momentos del currículo: fundamentación, desarrollo didáctico y práctica pedagógica.  
-  > La fase cuantitativa aplicó instrumentos tipo Likert y matrices de frecuencia con persistencia reactiva en Firestore; paralelamente, la fase cualitativa ejecutó entrevistas semiestructuradas con Cereza, alcanzando la saturación teórica y la pre-codificación de citas en tiempo real."*
+  > *"A nivel de diseño visual, rompimos deliberadamente con el 'Flat Design' corporativo y minimalista que predomina en las aplicaciones web actuales. Rescatamos y modernizamos la estética **Frutiger Aero** combinada con **Glassmorphism**:  
+  > * Definimos una paleta cromática inspirada en la atmósfera y el agua: Cyan espacial (`#06B6D4`), azul marino profundo (`#070D18`), esmeralda de validación (`#10B981`) y magenta de acento.  
+  > * Desarrollamos componentes con efecto de vidrio esmerilado translúcido utilizando `backdrop-blur-xl`, bordes bioluminiscentes con reflejos de luz y sombras sutiles.  
+  > * Integramos una identidad visual distintiva: el reloj de Umbra (*Umbran Watch*), un widget visual animado que simboliza el control temporal y la introspección académica, otorgando calidez y dinamismo a la interfaz sin sacrificar legibilidad."*
 
 ---
 
-### Diapositiva 05 · Génesis y Evolución de EduPulse (Fases 1 a 5)
+### Diapositiva 05 · Experiencia de Usuario (UX) Móvil y Ergonomía Reactiva
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"EduPulse no fue un software improvisado; es el fruto de un proceso evolutivo riguroso en cinco fases. Comenzó en la Fase 1 con la delimitación ontológica de saberes bajo los marcos TPACK y UNESCO. En la Fase 2 creamos a Cereza y el framework ROCAS. En la Fase 3 incorporamos la psicometría cuantitativa con autosave offline. En la Fase 4 dimos vida a la experiencia visual Frutiger Aero y la navegación táctil móvil. Y en esta Fase 5 final, alcanzamos la versión 2.3 con motor de voz dual neuronal, analítica visual tipo Google Forms e integración con Google Cloud OAuth 2.0."*
+  > *"Más del 75% de los informantes universitarios acceden desde sus teléfonos inteligentes. Por eso, diseñamos una ergonomía móvil de primer nivel:  
+  > * Implementamos una barra de navegación inferior fija (`MobileBottomNav`) con zonas táctiles amplias y retroalimentación háptica visual.  
+  > * Incorporamos botones de retorno explícitos en todas las vistas modales y paneles secundarios para evitar que el usuario se pierda.  
+  > * Añadimos una solución crítica de UX: el **atrapamiento de eventos `popstate`**. En dispositivos Android y iOS, el gesto de deslizamiento hacia atrás solía cerrar accidentalmente la entrevista en curso. Nuestro sistema intercepta el historial del navegador y muestra una confirmación flotante, protegiendo la sesión y evitando la pérdida accidental de datos."*
 
 ---
 
-### Diapositiva 06 · El Modelo del Tutor: Cereza y Mediación Socrática
+### Diapositiva 06 · Diseño del Agente Conversacional: Cereza y su Modelo Dialógico
 * **Voz sugerida (Investigador 2 / Jefersson):**
-  > *"El corazón cualitativo de EduPulse es su Modelo del Tutor, encarnado por Cereza. Rompiendo con los chatbots planos o serviles, Cereza posee aplomo, distinción e ingenio maduro (inspirada en la figura de Bayonetta). Cuando un estudiante responde con lugares comunes o respuestas 'políticamente correctas', Cereza aplica el probing socrático: sonríe cómplice y le pregunta: 'Vaya, qué respuesta tan correcta... pero entre tú y yo, colega: ¿fue una aliada didáctica o una muleta para salir del paso?'.  
-  > Además, Cereza no depende de un número fijo de preguntas: evalúa algorítmicamente la densidad discursiva y declara la saturación autónoma (isInterviewFinished) tras 6 a 8 turnos sustantivos."*
+  > *"El núcleo de la interacción es **Cereza**, nuestro agente conversacional socrático. A diferencia de los asistentes sumisos o genéricos (tipo ChatGPT o Siri), Cereza fue modelada con una personalidad distintiva, elegante y astuta (inspirada en la figura de Bayonetta):  
+  > * Emplea un tono cercano pero intelectualmente exigente, dirigiéndose al usuario de tú a tú como un colega en formación.  
+  > * Cuando el estudiante da una respuesta complaciente o teórica de manual, Cereza no se conforma: activa técnicas de **indagación de contraste (probing)** y repregunta buscando anécdotas vividas y dilemas reales.  
+  > * Utiliza la técnica del **eco reflexivo**, reflejando las propias palabras del estudiante para impulsarlo a profundizar.  
+  > * Y crucialmente, posee **criterio de saturación autónomo**: en lugar de ceñirse a un número estático de preguntas, analiza algorítmicamente la densidad y riqueza de las respuestas, marcando el fin de la entrevista (`isInterviewFinished: true`) de forma orgánica entre 6 y 8 turnos de diálogo sustantivos."*
 
 ---
 
-### Diapositiva 07 · Arquitectura Pedagógica de los Cuatro Modelos
+### Diapositiva 07 · Ingeniería de Instrucciones: Framework ROCAS en Backend
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"La plataforma se apoya en la clásica arquitectura de Sistemas Inteligentes en Educación, dividida en cuatro modelos articulados:  
-  > 1. El Modelo del Tutor: define el cómo guiar y la neutralidad axiológica.  
-  > 2. El Modelo del Conocimiento: define el qué investigar, con las tres categorías deductivas (IA, Formación Docente y Efectos).  
-  > 3. El Modelo del Alumno: gestiona a quién se guía, adaptando las pistas socráticas según el semestre del informante (1° al 10°).  
-  > 4. El Modelo del Mundo: el entorno visual translúcido, los controles móviles y la resiliencia técnica ante fluctuaciones de red."*
+  > *"Para gobernar el comportamiento de Cereza en cada turno de diálogo, diseñamos en `server.ts` un prompt de sistema estructurado bajo el framework **ROCAS**:  
+  > * **Rol:** Mentora reflexiva y aguda en educación y tecnologías computacionales.  
+  > * **Objetivo:** Explorar cómo la IA transforma la formación docente, detectando el 'efecto muleta' y la autonomía crítica.  
+  > * **Contexto:** Estudiantes de la Universidad de Córdoba en diversas sedes territoriales y semestres.  
+  > * **Acciones:** Indagación atómica, preguntas concisas de una sola idea y extracción concurrente de citas textuales.  
+  > * **Salida:** Un contrato JSON estricto (`reply`, `dimension`, `identifiedNeed`, `directQuote`, `isInterviewFinished`).  
+  > Gracias a la parametrización de temperatura en 0.4 y la cascada inteligente de modelos en Gemini 2.5 Flash, logramos tiempos de respuesta inferiores a 1.2 segundos con un 100% de cumplimiento del esquema JSON."*
 
 ---
 
-### Diapositiva 08 · El Prompt Maestro y Framework ROCAS
+### Diapositiva 08 · Evolución del Desarrollo: Línea Temporal y Sprints (1 al 5)
 * **Voz sugerida (Investigador 2 / Jefersson):**
-  > *"Para gobernar el comportamiento de la IA en tiempo de ejecución, formalizamos el Prompt Maestro bajo el framework ROCAS: Rol (Cereza como colega formativa), Objetivo (desentrañar vivencias reales), Contexto (Universidad de Córdoba), Acciones (preguntas atómicas y probing de contraste) y Salida (esquema JSON estricto).  
-  > El backend orquesta Google Gemini 2.5 Flash con una cascada inteligente y temperatura 0.4, ofreciendo bilingüismo nativo completo en español e inglés sin traducciones mecánicas."*
+  > *"El desarrollo de EduPulse siguió una metodología ágil iterativa a lo largo de 5 grandes Sprints:  
+  > * **Sprint 1:** Arquitectura base, configuración de TypeScript, Vite y conexión inicial con Google Gemini.  
+  > * **Sprint 2:** Modelado del agente Cereza, prompts socráticos y control de turnos en `ChatArea.tsx`.  
+  > * **Sprint 3:** Módulo psicométrico cuantitativo con persistencia reactiva en Cloud Firestore.  
+  > * **Sprint 4:** Rediseño completo bajo Frutiger Aero, navegación móvil y panel administrativo con PIN.  
+  > * **Sprint 5 (Versión Final 2.3):** Motor de voz dual multimodal, validación guiada fila por fila, fallback heurístico local para síntesis cualitativa y analítica visual tipo Google Forms."*
 
 ---
 
-### Diapositiva 09 · Innovaciones Técnicas de la Versión Final (v2.3)
+### Diapositiva 09 · Evolución del Sistema de Audio: Motor de Voz Dual con IA Multimodal
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"En esta versión final 2.3 que hoy presentamos, introdujimos cuatro avances técnicos decisivos:  
-  > Primero, el Motor de Voz Dual: un visualizador de ondas dinámicas en canvas que graba audio con MediaRecorder y lo transcribe en el backend con Gemini multimodal, superando las caídas de Web Speech API en celulares.  
-  > Segundo, el Motor de Síntesis Resiliente: un fallback determinista local que elimina condiciones de carrera y asegura que ninguna entrevista quede sin matriz de hallazgos.  
-  > Tercero, la Validación Interactiva Guiada: un banner con píldoras de salto y resaltado fila por fila en matrices para que los estudiantes nunca se queden bloqueados.  
-  > Y cuarto, la protección popstate que impide cierres accidentales al deslizar la pantalla del teléfono."*
+  > *"Uno de los desafíos de ingeniería más fascinantes fue la entrada de voz para los usuarios:  
+  > * Inicialmente, implementamos la API nativa del navegador `webkitSpeechRecognition`. Sin embargo, en pruebas de campo en teléfonos móviles y navegadores como Brave o Safari, la API fallaba frecuentemente por falta de soporte nativo o cortes por silencios prolongados.  
+  > * Para resolverlo de forma definitiva, diseñamos un **Motor de Voz Dual**:  
+  >   1. Desarrollamos el componente `LiveMicVisualizer` con la Web Audio API y Canvas HTML5, renderizando ondas sinusoidales dinámicas de amplitud y frecuencia en tiempo real.  
+  >   2. Capturamos el flujo de audio mediante `MediaRecorder` en formato comprimido webm/ogg.  
+  >   3. Enviamos el blob de audio al endpoint `/api/transcribe-audio` en nuestro backend, donde la API multimodal de Gemini lo transcribe con altísima precisión fonética, reconociendo modismos colombianos y terminología técnica sin cortes arbitrarios."*
 
 ---
 
-### Diapositiva 10 · Suite Analítica Visual Tipo Google Forms
+### Diapositiva 10 · Módulo de Cuestionarios: Validación Guiada Fila por Fila
 * **Voz sugerida (Investigador 2 / Jefersson):**
-  > *"Para procesar los datos con la máxima claridad visual, creamos una suite inspirada en la ergonomía de Google Forms:  
-  > A nivel general, despliega diagramas de dona con la distribución por semestres y sedes, además de barras horizontales de frecuencia porcentual.  
-  > A nivel individual, permite seleccionar a cualquier informante (E01 a E40) y traza su Radar de Competencias Tecno-pedagógicas, polaridad emocional dialógica y fichas con sus citas textuales más ricas. Todo esto blindado bajo control de acceso estricto solo para investigadores."*
+  > *"En el módulo cuantitativo (`InstrumentForm.tsx`), los informantes debían responder matrices Likert con múltiples criterios. En los formularios tradicionales, si un usuario olvida marcar una casilla en una tabla de 10 filas, el sistema se limita a arrojar un error genérico, obligando al usuario a buscar a ciegas cuál fila faltó.  
+  > En EduPulse implementamos una **validación guiada interactiva**:  
+  > * Si el usuario intenta enviar con campos incompletos, la vista no solo le informa cuántos ítems faltan, sino que despliega un banner superior interactivo con **píldoras de salto automático**.  
+  > * Cada píldora indica la fila exacta pendiente; al hacer clic, hace un scroll suave y resalta visualmente la fila con un aura de color ámbar.  
+  > * Además, incluimos un botón de consentimiento ético de 1-clic con guardado instantáneo en `localStorage`."*
 
 ---
 
-### Diapositiva 11 · Gobernanza Ética, Seguridad y Google Cloud OAuth 2.0
+### Diapositiva 11 · Resiliencia de Datos: Eliminación de Condiciones de Carrera
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"La seguridad en EduPulse es un imperativo ético bajo la Ley 1581 de 2012 de Habeas Data: todos los informantes están seudo-anonimizados con códigos alfanuméricos y no se captura ningún dato sensible.  
-  > Para los investigadores, implementamos autenticación de doble factor (Google OAuth en lista blanca institucional y PIN Maestro 0412). Además, integramos Google Cloud OAuth 2.0 en producción, permitiendo exportar con un solo clic libros de cálculo estructurados en tres pestañas directamente a Google Drive."*
+  > *"En la versión anterior, al finalizar la entrevista se presentaba un problema de sincronización: si el usuario cerraba la pestaña justo cuando la IA estaba calculando la matriz cualitativa, la síntesis podía quedar incompleta o entrar en una condición de carrera (*race condition*).  
+  > Para blindar la aplicación contra cualquier fallo de red o tiempo de espera, construimos el **Motor de Síntesis Cualitativa Resiliente (`qualitativeSynthesis.ts`)**:  
+  > * Si el backend por alguna razón tarda más de lo previsto o se interrumpe la conexión, el frontend activa de forma transparente un **algoritmo heurístico local determinista**.  
+  > * Este motor local analiza la transcripción completa, agrupa las intervenciones por dimensiones formativas, extrae las citas más relevantes y calcula los índices de necesidad y polaridad emocional.  
+  > * El resultado: **cero pérdida de datos** y disponibilidad garantizada del resumen investigativo en cualquier circunstancia."*
 
 ---
 
-### Diapositiva 12 · Hallazgos y Triangulación Metodológica
+### Diapositiva 12 · Suite de Analítica Visual Tipo Google Forms y Radar
 * **Voz sugerida (Investigador 2 / Jefersson):**
-  > *"Al cruzar las métricas cuantitativas con los diálogos de Cereza, obtuvimos tres grandes hallazgos:  
-  > Primero: Hay una alta adopción pragmática de herramientas de texto (82% usa ChatGPT), pero una escasa exploración de IA multimodal o generación de código.  
-  > Segundo: Existe una marcada conciencia del efecto muleta; el 85% de los informantes reconoce el riesgo de perder autonomía reflexiva si no median críticamente la herramienta.  
-  > Y tercero: La maduración formativa es palpable: en semestres iniciales la IA se percibe como ayuda para tareas, mientras que en la práctica docente avanzada se convierte en objeto de transposición didáctica reflexiva."*
+  > *"Para la visualización de los datos recopilados por EduPulse, desarrollamos una suite analítica completa inspirada en la familiaridad y ergonomía de Google Forms:  
+  > * **Nivel General:** Despliega gráficos interactivos SVG de dona para la distribución demográfica por sedes y semestres, y gráficos de barras horizontales porcentuales para el análisis comparativo de respuestas.  
+  > * **Nivel Individual:** Permite al investigador seleccionar cualquier código de informante (E01 a E40) y visualizar su **Radar de Competencias Tecno-pedagógicas**, el desglose turno por turno de su diálogo con Cereza y la matriz de citas pre-categorizadas.  
+  > * Esta suite incluye filtros reactivos por sede territorial y exportación de datos en un clic a formato TSV/CSV compatible directamente con Excel y Google Sheets."*
 
 ---
 
-### Diapositiva 13 · Conclusiones e Impacto Institucional
+### Diapositiva 13 · Gobernanza de Datos, Seguridad RBAC y Google OAuth 2.0
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"Como conclusiones fundamentales:  
-  > 1. Validamos que la IA puede actuar como una co-investigadora hermenéutica empática y rigurosa, transformando la recolección cualitativa.  
-  > 2. Demostramos la eficacia de la triangulación concurrente para sustentar con solidez empírica las reformas curriculares necesarias bajo la Ley 2626.  
-  > 3. Entregamos a la Universidad de Córdoba un software libre, probado en producción, modular y reutilizable para futuras tesis de la Facultad de Educación."*
+  > *"En materia de seguridad y gobernanza de la información, EduPulse implementa controles estrictos en todos los niveles:  
+  > * **Habeas Data y Anonimato:** Los estudiantes participan bajo anonimización completa; sus datos se asocian únicamente a códigos seudonimizados alfanuméricos y nunca a identificadores personales.  
+  > * **Control de Acceso de Doble Factor (RBAC):** La vista de investigación está restringida mediante validación de correos en lista blanca con Google OAuth y un **PIN Maestro de Validación Criptográfica (`0412`)** en memoria de sesión volátil.  
+  > * **Gobernanza Google Cloud OAuth 2.0:** Registramos los orígenes autorizados de JavaScript (`edupulse-575b.onrender.com` y `localhost`) bajo el cliente OAuth en Google Cloud Console, permitiendo que el endpoint `/api/export-sheets` exporte automáticamente libros de cálculo en tres pestañas organizadas (*Resumen Ejecutivo*, *Respuestas Estructuradas* y *Transcripción Turno a Turno*) directamente al Google Drive del investigador."*
 
 ---
 
-### Diapositiva 14 · Demostración en Vivo y Cierre
+### Diapositiva 14 · Demostración en Vivo en Producción y Cierre Técnico
 * **Voz sugerida (Investigadores 1 y 2):**
-  > *"EduPulse se encuentra actualmente desplegado y operativo en la nube en edupulse-575b.onrender.com.  
-  > Queremos expresar nuestro más sincero agradecimiento a nuestro director, Mag. Juan Carlos Giraldo Cardozo, a nuestros profesores y a los compañeros informantes de la Licenciatura.  
-  > Con esto concluimos nuestra exposición y quedamos a entera disposición del honorable jurado calificador para la sesión de preguntas y deliberación. Muchas gracias."*
+  > *"EduPulse no es un prototipo local de laboratorio; es una aplicación web en producción real, desplegada y disponible para la comunidad académica en la nube en **`https://edupulse-575b.onrender.com`**.  
+  > A continuación, procederemos a realizar una breve demostración en vivo de la interacción con Cereza, el funcionamiento del motor de voz con visualizador y la generación instantánea de la matriz de analítica.  
+  > Agradecemos profundamente a nuestro director de trabajo de grado, el Mag. Juan Carlos Giraldo Cardozo, a los docentes de la Licenciatura en Informática y a cada uno de los estudiantes que formaron parte de esta investigación.  
+  > Quedamos a total disposición del honorable jurado calificador para responder sus preguntas técnicas y pedagógicas. Muchas gracias."*
 
 ---
 
-## Preguntas Frecuentes del Jurado Calificador y Cómo Responderlas
+## Banco de Preguntas Técnicas y Respuestas para el Jurado
 
-1. **¿Por qué usar un agente conversacional (Cereza) en lugar de un formulario de Google tradicional?**
-   * *Respuesta:* Los formularios tradicionales capturan respuestas estáticas, superficiales y con alto sesgo de deseabilidad social. Cereza aplica *probing socrático*: cuando detecta una respuesta de manual, repregunta contextualmente sobre anécdotas reales y dilemas éticos, logrando una profundidad cualitativa equivalente a una entrevista cara a cara pero de forma estandarizada y escalable.
+1. **¿Cómo garantizan que Cereza no alucine o invente citas en la matriz final?**
+   * *Respuesta:* Las citas provienen exclusivamente de los mensajes emitidos por el estudiante en el chat. En cada turno, el backend extrae citas textuales literales bajo el contrato JSON estricto; además, nuestro motor de síntesis local auditado (`qualitativeSynthesis.ts`) realiza una validación cruzada determinista contrastando las cadenas de texto con la transcripción original antes de persistir los datos.
 
-2. **¿Cómo garantizan que la IA no invente o alucine las respuestas de los estudiantes?**
-   * *Respuesta:* El LLM no genera los datos del estudiante; el estudiante es quien habla. El rol de Gemini se limita a la mediación dialógica mediante el framework ROCAS (temperatura baja 0.4) y a la extracción de citas textuales verificables turno por turno. Además, contamos con el motor de síntesis local determinista (`qualitativeSynthesis.ts`) que audita y verifica las citas directamente sobre los mensajes originales.
+2. **¿Por qué crearon un motor de voz dual en lugar de usar librerías de terceros?**
+   * *Respuesta:* Las librerías de terceros suelen depender de servicios de pago o de la API `webkitSpeechRecognition`, la cual es inconsistente entre navegadores móviles (especialmente en Android/Brave o iOS). Con nuestro motor dual (`MediaRecorder` + Gemini Multimodal en `/api/transcribe-audio`), tenemos control total del procesamiento, cancelamos ruido mediante visualización de ondas y logramos transcripciones precisas con cero costo adicional.
 
-3. **¿Cómo se articuló la Ley 2626 de 2026 en el instrumento?**
-   * *Respuesta:* La Ley de Educación Digital exige que la formación docente no se limite al uso técnico de herramientas, sino que desarrolle ciudadanía digital, pensamiento crítico y ética algorítmica. Nuestras dimensiones cuantitativas y las pistas socráticas de Cereza indagan específicamente si el estudiante comprende el impacto territorial y curricular de esta normativa en los colegios de Córdoba.
+3. **¿Qué medidas de seguridad previenen el acceso no autorizado a los datos de los estudiantes?**
+   * *Respuesta:* Implementamos tres capas de protección: primero, reglas declarativas en Cloud Firestore que solo permiten escritura anónima de respuestas y lectura exclusiva a usuarios autenticados; segundo, lista blanca de correos autorizados en Firebase Auth; y tercero, el PIN Maestro criptográfico para activar los paneles de visualización.
 
-4. **¿Qué sucede si un estudiante en zona rural no tiene buena conexión a internet?**
-   * *Respuesta:* EduPulse fue diseñado con resiliencia regional: implementa guardado automático reactivo en `localStorage`, motor de voz dual para dictar con audio nativo sin requerir servidores de reconocimiento continuo de Google, y manejo de reconexión transparente que permite reanudar la entrevista en el turno exacto sin perder información.
+4. **¿Cómo maneja la aplicación caídas repentinas de conexión a internet?**
+   * *Respuesta:* EduPulse implementa arquitectura *offline-first* con persistencia reactiva automática en `localStorage`. Si la conexión se pierde durante una entrevista o cuestionario, los turnos y selecciones permanecen intactos en el dispositivo, reanudando la sincronización en tiempo real tan pronto se restablece la red.

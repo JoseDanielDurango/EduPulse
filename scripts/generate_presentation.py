@@ -12,27 +12,27 @@ prs.slide_width = Inches(13.333)
 prs.slide_height = Inches(7.5)
 blank_slide_layout = prs.slide_layouts[6]
 
-# Color Palette: Frutiger Aero Academic Dark Palette
-C_BG_DARK = RGBColor(7, 13, 24)        # #070D18
-C_BG_CARD = RGBColor(16, 28, 48)       # #101C30
-C_BG_CARD_ALT = RGBColor(12, 22, 38)   # #0C1626
-C_CYAN_ACCENT = RGBColor(6, 182, 212)  # #06B6D4
-C_CYAN_LIGHT = RGBColor(56, 189, 248)  # #38BDF8
-C_EMERALD = RGBColor(16, 185, 129)     # #10B981
+# Color Palette: Frutiger Aero Modern Software Design Palette
+C_BG_DARK = RGBColor(7, 13, 24)          # #070D18
+C_BG_CARD = RGBColor(16, 28, 48)         # #101C30
+C_BG_CARD_ALT = RGBColor(12, 22, 38)     # #0C1626
+C_CYAN_ACCENT = RGBColor(6, 182, 212)    # #06B6D4
+C_CYAN_LIGHT = RGBColor(56, 189, 248)    # #38BDF8
+C_EMERALD = RGBColor(16, 185, 129)       # #10B981
 C_EMERALD_LIGHT = RGBColor(52, 211, 153) # #34D399
-C_AMBER = RGBColor(245, 158, 11)       # #F59E0B
+C_AMBER = RGBColor(245, 158, 11)         # #F59E0B
+C_PURPLE = RGBColor(168, 85, 247)        # #A855F7
 C_WHITE = RGBColor(255, 255, 255)
-C_TEXT_LIGHT = RGBColor(226, 232, 240) # #E2E8F0
-C_TEXT_MUTED = RGBColor(148, 163, 184) # #94A3B8
-C_BORDER = RGBColor(30, 58, 95)        # #1E3A5F
-C_BORDER_ACCENT = RGBColor(14, 116, 144)
+C_TEXT_LIGHT = RGBColor(226, 232, 240)   # #E2E8F0
+C_TEXT_MUTED = RGBColor(148, 163, 184)   # #94A3B8
+C_BORDER = RGBColor(30, 58, 95)          # #1E3A5F
 
 # Paths to visual assets
 ASSET_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public"))
 IMG_AVATAR = os.path.join(ASSET_DIR, "cereza-avatar.png")
 IMG_ICON = os.path.join(ASSET_DIR, "umbran-watch-icon.png")
 
-def create_base_slide(badge_text="EDUPULSE · UNIVERSIDAD DE CÓRDOBA", title_text=""):
+def create_base_slide(badge_text="EDUPULSE · INGENIERÍA DE SOFTWARE Y DISEÑO", title_text=""):
     slide = prs.slides.add_slide(blank_slide_layout)
     
     # 1. Background rectangle
@@ -43,7 +43,7 @@ def create_base_slide(badge_text="EDUPULSE · UNIVERSIDAD DE CÓRDOBA", title_te
     
     # 2. Header Category Badge
     if badge_text:
-        badge = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.4), Inches(4.5), Inches(0.35))
+        badge = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.38), Inches(5.2), Inches(0.35))
         badge.fill.solid()
         badge.fill.fore_color.rgb = RGBColor(12, 36, 60)
         badge.line.color.rgb = C_CYAN_ACCENT
@@ -56,7 +56,7 @@ def create_base_slide(badge_text="EDUPULSE · UNIVERSIDAD DE CÓRDOBA", title_te
         run = p.add_run()
         run.text = badge_text.upper()
         run.font.name = "Segoe UI"
-        run.font.size = Pt(10)
+        run.font.size = Pt(9.5)
         run.font.bold = True
         run.font.color.rgb = C_CYAN_LIGHT
 
@@ -70,7 +70,7 @@ def create_base_slide(badge_text="EDUPULSE · UNIVERSIDAD DE CÓRDOBA", title_te
         run = p.add_run()
         run.text = title_text
         run.font.name = "Segoe UI"
-        run.font.size = Pt(22)
+        run.font.size = Pt(21)
         run.font.bold = True
         run.font.color.rgb = C_WHITE
 
@@ -81,7 +81,7 @@ def create_base_slide(badge_text="EDUPULSE · UNIVERSIDAD DE CÓRDOBA", title_te
     p_f = tf_f.paragraphs[0]
     p_f.alignment = PP_ALIGN.RIGHT
     run_f = p_f.add_run()
-    run_f.text = "EduPulse v2.3 · Licenciatura en Informática · Universidad de Córdoba · Sustentación Final"
+    run_f.text = "EduPulse v2.3 · Arquitectura de Software, UX/UI y Agente Cereza · Presentación Técnica Final"
     run_f.font.name = "Segoe UI"
     run_f.font.size = Pt(9)
     run_f.font.color.rgb = C_TEXT_MUTED
@@ -105,7 +105,7 @@ def add_card(slide, left, top, width, height, title, items, subtitle=None, borde
     r_t = p_t.add_run()
     r_t.text = title
     r_t.font.name = "Segoe UI"
-    r_t.font.size = Pt(14)
+    r_t.font.size = Pt(13)
     r_t.font.bold = True
     r_t.font.color.rgb = header_color
     
@@ -118,30 +118,30 @@ def add_card(slide, left, top, width, height, title, items, subtitle=None, borde
         r_sub.font.size = Pt(10)
         r_sub.font.italic = True
         r_sub.font.color.rgb = C_TEXT_MUTED
-        p_sub.space_after = Pt(6)
+        p_sub.space_after = Pt(4)
 
     # Bullet items or description
     for item in items:
         p_item = tf.add_paragraph()
-        p_item.space_before = Pt(4)
+        p_item.space_before = Pt(3.5)
         if isinstance(item, tuple):
             r_bold = p_item.add_run()
             r_bold.text = item[0] + " "
             r_bold.font.name = "Segoe UI"
-            r_bold.font.size = Pt(11)
+            r_bold.font.size = Pt(10.5)
             r_bold.font.bold = True
             r_bold.font.color.rgb = C_WHITE
             
             r_text = p_item.add_run()
             r_text.text = item[1]
             r_text.font.name = "Segoe UI"
-            r_text.font.size = Pt(10.5)
+            r_text.font.size = Pt(10)
             r_text.font.color.rgb = C_TEXT_LIGHT
         else:
             r_text = p_item.add_run()
             r_text.text = item
             r_text.font.name = "Segoe UI"
-            r_text.font.size = Pt(10.5)
+            r_text.font.size = Pt(10)
             r_text.font.color.rgb = C_TEXT_LIGHT
 
 def add_stat_box(slide, left, top, width, height, stat_num, stat_title, stat_desc, color=C_CYAN_LIGHT):
@@ -160,7 +160,7 @@ def add_stat_box(slide, left, top, width, height, stat_num, stat_title, stat_des
     r_num = p_num.add_run()
     r_num.text = stat_num
     r_num.font.name = "Segoe UI"
-    r_num.font.size = Pt(24)
+    r_num.font.size = Pt(22)
     r_num.font.bold = True
     r_num.font.color.rgb = color
     
@@ -179,54 +179,55 @@ def add_stat_box(slide, left, top, width, height, stat_num, stat_title, stat_des
     r_d.font.size = Pt(9.5)
     r_d.font.color.rgb = C_TEXT_MUTED
 
+
 # ==========================================
-# SLIDE 1: PORTADA (TITLE SLIDE)
+# SLIDE 1: PORTADA TÉCNICA (TITLE SLIDE)
 # ==========================================
-slide1 = prs.slides.add_slide(blank_slide_layout)
-bg1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, prs.slide_height)
+s1 = prs.slides.add_slide(blank_slide_layout)
+bg1 = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, prs.slide_height)
 bg1.fill.solid()
 bg1.fill.fore_color.rgb = C_BG_DARK
 bg1.line.color.rgb = C_BG_DARK
 
 # Header Badge
-badge1 = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.0), Inches(0.8), Inches(5.8), Inches(0.4))
+badge1 = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.0), Inches(0.8), Inches(6.0), Inches(0.4))
 badge1.fill.solid()
 badge1.fill.fore_color.rgb = RGBColor(12, 36, 60)
 badge1.line.color.rgb = C_CYAN_ACCENT
 tf_b1 = badge1.text_frame
-tf_b1.margin_left = tf_b1.margin_top = tf_b1.margin_right = tf_b1.margin_bottom = 0
 p_b1 = tf_b1.paragraphs[0]
 p_b1.alignment = PP_ALIGN.CENTER
 r_b1 = p_b1.add_run()
-r_b1.text = "UNIVERSIDAD DE CÓRDOBA · SUSTENTACIÓN FINAL DE TRABAJO DE GRADO"
+r_b1.text = "DESARROLLO DE SOFTWARE · ARQUITECTURA WEB Y AGENTE IA"
 r_b1.font.name = "Segoe UI"
 r_b1.font.size = Pt(10)
 r_b1.font.bold = True
 r_b1.font.color.rgb = C_CYAN_LIGHT
 
 # Title
-t_box1 = slide1.shapes.add_textbox(Inches(1.0), Inches(1.4), Inches(8.5), Inches(2.2))
+t_box1 = s1.shapes.add_textbox(Inches(1.0), Inches(1.4), Inches(8.8), Inches(2.3))
 tf1 = t_box1.text_frame
 tf1.word_wrap = True
 tf1.margin_left = tf1.margin_top = tf1.margin_right = tf1.margin_bottom = 0
+
 p1 = tf1.paragraphs[0]
 r1 = p1.add_run()
-r1.text = "La Formación Docente en la Era de la Inteligencia Artificial"
+r1.text = "EduPulse v2.3: Desarrollo de la Plataforma Web y Agente Inteligente"
 r1.font.name = "Segoe UI"
-r1.font.size = Pt(30)
+r1.font.size = Pt(28)
 r1.font.bold = True
 r1.font.color.rgb = C_WHITE
 
 p1_sub = tf1.add_paragraph()
 p1_sub.space_before = Pt(8)
 r1_sub = p1_sub.add_run()
-r1_sub.text = "Desafíos, Perspectivas y Mediación Tecnopedagógica en la Licenciatura en Informática"
+r1_sub.text = "Ingeniería de Software, Diseño Frutiger Aero Glassmorphism, Motor de Voz Dual y Cereza"
 r1_sub.font.name = "Segoe UI"
-r1_sub.font.size = Pt(18)
+r1_sub.font.size = Pt(16)
 r1_sub.font.color.rgb = C_CYAN_LIGHT
 
-# Platform Pill
-plat_box = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.0), Inches(3.9), Inches(8.5), Inches(0.85))
+# Version Tag Pill
+plat_box = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.0), Inches(4.0), Inches(8.8), Inches(0.8))
 plat_box.fill.solid()
 plat_box.fill.fore_color.rgb = C_BG_CARD
 plat_box.line.color.rgb = C_EMERALD
@@ -236,30 +237,30 @@ tf_plat.margin_left = Inches(0.25)
 tf_plat.margin_top = Inches(0.12)
 p_plat = tf_plat.paragraphs[0]
 r_p1 = p_plat.add_run()
-r_p1.text = "EduPulse v2.3  |  "
+r_p1.text = "RELEASE FINAL v2.3  |  "
 r_p1.font.name = "Segoe UI"
-r_p1.font.size = Pt(15)
+r_p1.font.size = Pt(14)
 r_p1.font.bold = True
 r_p1.font.color.rgb = C_EMERALD_LIGHT
 
 r_p2 = p_plat.add_run()
-r_p2.text = "Plataforma Inteligente y Agente Socrático (Cereza) para la Investigación Mixta"
+r_p2.text = "React 19 · Node Express · Gemini 2.5 Flash · Firestore · OAuth 2.0"
 r_p2.font.name = "Segoe UI"
 r_p2.font.size = Pt(13)
 r_p2.font.color.rgb = C_TEXT_LIGHT
 
-# Metadata Box (Authors, Director, University)
-meta_card = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.0), Inches(5.0), Inches(8.5), Inches(1.8))
+# Metadata Box
+meta_card = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.0), Inches(5.05), Inches(8.8), Inches(1.75))
 meta_card.fill.solid()
 meta_card.fill.fore_color.rgb = C_BG_CARD_ALT
 meta_card.line.color.rgb = C_BORDER
 tf_meta = meta_card.text_frame
 tf_meta.margin_left = Inches(0.25)
-tf_meta.margin_top = Inches(0.2)
+tf_meta.margin_top = Inches(0.15)
 
 p_m1 = tf_meta.paragraphs[0]
 r_m1_b = p_m1.add_run()
-r_m1_b.text = "Investigadores (Autores): "
+r_m1_b.text = "Desarrolladores de la Plataforma: "
 r_m1_b.font.bold = True
 r_m1_b.font.color.rgb = C_CYAN_LIGHT
 r_m1_t = p_m1.add_run()
@@ -277,310 +278,322 @@ r_m2_t.font.color.rgb = C_WHITE
 
 p_m3 = tf_meta.add_paragraph()
 r_m3_b = p_m3.add_run()
-r_m3_b.text = "Institución y Programa: "
+r_m3_b.text = "Programa Académico: "
 r_m3_b.font.bold = True
 r_m3_b.font.color.rgb = C_CYAN_LIGHT
 r_m3_t = p_m3.add_run()
-r_m3_t.text = "Universidad de Córdoba · Facultad de Educación · Licenciatura en Informática (2026)"
+r_m3_t.text = "Licenciatura en Informática · Universidad de Córdoba · Noviembre 2026"
 r_m3_t.font.color.rgb = C_WHITE
 
-# Add Cereza Avatar on right
+# Add Cereza Avatar & Watch Icon on right
 if os.path.exists(IMG_AVATAR):
-    slide1.shapes.add_picture(IMG_AVATAR, Inches(10.1), Inches(1.5), Inches(2.4), Inches(2.4))
+    s1.shapes.add_picture(IMG_AVATAR, Inches(10.2), Inches(1.5), Inches(2.4), Inches(2.4))
 
 if os.path.exists(IMG_ICON):
-    slide1.shapes.add_picture(IMG_ICON, Inches(10.3), Inches(4.5), Inches(2.0), Inches(2.0))
+    s1.shapes.add_picture(IMG_ICON, Inches(10.4), Inches(4.5), Inches(2.0), Inches(2.0))
 
 
 # ==========================================
-# SLIDE 2: EL PROBLEMA DE INVESTIGACIÓN
+# SLIDE 2: VISIÓN DEL PRODUCTO DE SOFTWARE
 # ==========================================
-s2 = create_base_slide("CAPÍTULO 1 · PLANTEAMIENTO DEL PROBLEMA", "El Problema de Investigación y Justificación Epistémica")
+s2 = create_base_slide("INGENIERÍA DE SOFTWARE · CONCEPTO DEL PRODUCTO", "Visión del Software: De Formularios Estáticos a Entorno Inteligente")
 
-add_card(s2, 0.8, 1.8, 3.7, 4.9, "1. La Irrupción de la IA Generativa", [
-    ("Revolución Tecnológica:", "Adopción acelerada de LLMs (ChatGPT, Claude, Gemini) en la educación superior sin formación docente previa."),
-    ("Transformación Didáctica:", "La planificación de clases, elaboración de talleres y generación de código ahora se ejecutan en segundos."),
-    ("Transición Normativa:", "Exigencia de cumplimiento de la Ley 2626 de 2026 (Educación Digital en Colombia) y directrices de la UNESCO.")
-], border_color=C_CYAN_ACCENT)
-
-add_card(s2, 4.8, 1.8, 3.7, 4.9, "2. El 'Efecto Muleta' vs. Autonomía", [
-    ("Efecto Muleta (Crutch Effect):", "Bastani et al. (2024) demuestran que el uso desregulado de IA reduce el esfuerzo cognitivo y la autoría crítica."),
-    ("Dilema Pedagógico:", "¿Estamos formando educadores autónomos con criterio didáctico propio o meros operadores pasivos de algoritmos?"),
-    ("Integridad Académica:", "Tensión entre la agilidad operativa y la pérdida de comprensión profunda en programación y pedagogía.")
+add_card(s2, 0.8, 1.8, 3.7, 4.9, "1. El Problema del Software Clásico", [
+    ("Formularios Aburridos:", "Las herramientas tradicionales (Google Forms, Typeform) son rígidas y reciben respuestas telegráficas o evasivas."),
+    ("Falta de Interactividad:", "No son capaces de repreguntar ni profundizar cuando una respuesta es incompleta o contradictoria."),
+    ("Chatbots Genéricos:", "Los bots comerciales convencionales suenan planos, sumisos y no tienen contexto pedagógico.")
 ], border_color=C_AMBER, header_color=C_AMBER)
 
-add_card(s2, 8.8, 1.8, 3.7, 4.9, "3. El Contexto Regional de Córdoba", [
-    ("Brecha de Conectividad:", "Realidades de infraestructura en Montería y sedes regionales (Lorica, Sahagún, Montelíbano, Planeta Rica)."),
-    ("Vacío Metodológico:", "Carencia de instrumentos dialógicos que capturen la vivencia íntima del estudiante sin coerción evaluativa."),
-    ("La Necesidad:", "Construir una plataforma inteligente para diagnosticar, mediar socráticamente y triangular hallazgos reales.")
+add_card(s2, 4.8, 1.8, 3.7, 4.9, "2. La Solución: EduPulse Web App", [
+    ("Plataforma Híbrida:", "Combina diálogo inteligente socrático en profundidad con formularios cuantitativos guiados."),
+    ("Agente con Identidad:", "Cereza, dotada de personalidad magnética y sofisticada que desata la conversación real."),
+    ("Sincronización Total:", "Base de datos reactiva en tiempo real (Cloud Firestore) y resiliencia offline ante caídas de red.")
+], border_color=C_CYAN_ACCENT)
+
+add_card(s2, 8.8, 1.8, 3.7, 4.9, "3. Desafíos de Ingeniería Superados", [
+    ("Latencia de Inferencia:", "Respuestas rápidas de LLM (<1.5s) con feedback visual y microestados informativos."),
+    ("Audio en Dispositivos Móviles:", "Reemplazo de la inestable Web Speech API por grabación nativa y Gemini multimodal."),
+    ("Cero Pérdida de Datos:", "Guardado en caliente de turnos y borradores para reanudar sesiones interrumpidas.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
 
 # ==========================================
-# SLIDE 3: PREGUNTA Y OBJETIVOS
+# SLIDE 3: ARQUITECTURA TÉCNICA Y STACK
 # ==========================================
-s3 = create_base_slide("MARCO METODOLÓGICO · HORIZONTE DE LA INVESTIGACIÓN", "Pregunta Central y Objetivos de la Investigación")
+s3 = create_base_slide("ARQUITECTURA DE SOFTWARE · STACK TECNOLÓGICO", "Arquitectura Full-Stack y Ecosistema de Tecnologías")
 
-# Central Question Card (Top Full Width)
-add_card(s3, 0.8, 1.8, 11.7, 1.6, "Pregunta Central de Investigación", [
-    ("Interrogante Epistemológico:", "¿De qué manera los docentes en formación de la Licenciatura en Informática de la Universidad de Córdoba perciben, apropian e integran la inteligencia artificial generativa en sus prácticas pedagógicas, y cómo la mediación dialógica inteligente facilita la comprensión de sus dilemas éticos y formativos?")
+add_card(s3, 0.8, 1.8, 3.7, 4.9, "Frontend (Cliente)", [
+    ("React 19 + TypeScript:", "Tipado estricto, componentes funcionales reactivos y modularidad limpia."),
+    ("Vite 8.3:", "Empaquetador ultra-rápido con Hot Module Replacement y build optimizado."),
+    ("Tailwind CSS v4:", "Estilizado atómico moderno, utilidades Frutiger Aero y diseño responsive."),
+    ("Lucide React:", "Iconografía vectorizada limpia y accesible en toda la interfaz."),
+    ("Web Audio API:", "Captura espectral con AnalyserNode para visualizador de micrófono en vivo.")
 ], border_color=C_CYAN_ACCENT)
 
-# General Objective
-add_card(s3, 0.8, 3.6, 5.7, 3.1, "Objetivo General", [
-    ("Propósito Central:", "Desarrollar e implementar la plataforma y agente inteligente EduPulse como instrumento de recolección y análisis mixto para caracterizar las prácticas, percepciones y mediaciones tecnopedagógicas en los estudiantes de la Licenciatura en Informática de la Universidad de Córdoba frente a la IA generativa.")
+add_card(s3, 4.8, 1.8, 3.7, 4.9, "Backend (Servidor Express)", [
+    ("Node.js + Express (tsx):", "Servidor ligero en TypeScript para API REST segura y endpoints especializados."),
+    ("Pipeline de Inferencia IA:", "Orquestación del SDK oficial Google GenAI con temperatura controlada (0.4)."),
+    ("Endpoints Principales:", "• /api/chat (diálogo interactivo)\n• /api/transcribe-audio (voz a texto)\n• /api/analyze-interview (síntesis)\n• /api/export-sheets (Google Sheets)"),
+    ("Seguridad de Secretos:", "La clave GEMINI_API_KEY nunca se expone al cliente.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
-# Specific Objectives
-add_card(s3, 6.8, 3.6, 5.7, 3.1, "Objetivos Específicos", [
-    ("1. Diagnosticar:", "Caracterizar los niveles de familiaridad, autoeficacia y uso de IA mediante instrumentos cuantitativos tipo Likert."),
-    ("2. Mediar y Recolectar:", "Diseñar e implementar al agente socrático Cereza bajo el framework ROCAS para guiar entrevistas cualitativas en profundidad."),
-    ("3. Triangular y Proponer:", "Triangular concurrentemente las métricas estadísticas y los códigos hermenéuticos para generar lineamientos curriculares.")
-], border_color=C_CYAN_ACCENT)
+add_card(s3, 8.8, 1.8, 3.7, 4.9, "Nube, Base de Datos y Auth", [
+    ("Google Cloud Firestore:", "Base de datos NoSQL reactiva en tiempo real para sesiones y cuestionarios."),
+    ("Firebase Authentication:", "Control de acceso con Google Identity Services y reglas de seguridad declarativas."),
+    ("Google Cloud OAuth 2.0:", "Integración autorizada con Google Sheets API v4 para generar libros estructurados."),
+    ("Render Hosting:", "Despliegue automatizado continuo en la nube (CI/CD conectado a GitHub).")
+], border_color=C_PURPLE, header_color=C_PURPLE)
 
 
 # ==========================================
-# SLIDE 4: DISEÑO METODOLÓGICO MIXTO (QUAN + QUAL)
+# SLIDE 4: DISEÑO FRUTIGER AERO GLASSMORPHISM
 # ==========================================
-s4 = create_base_slide("DISEÑO METODOLÓGICO · TRIANGULACIÓN CONCURRENTE", "Enfoque Metodológico Multimétodo (QUAN + QUAL)")
+s4 = create_base_slide("DISEÑO DE INTERFAZ (UI) · IDENTIDAD VISUAL", "Diseño de Interfaz: Estética Frutiger Aero Modern Glassmorphism")
 
-add_card(s4, 0.8, 1.8, 3.7, 4.9, "1. Paradigma y Enfoque", [
-    ("Paradigma:", "Hermenéutico-Interpretativo complementado con Enfoque Cuantitativo Descriptivo."),
-    ("Diseño de Investigación:", "Diseño Mixto Concurrente de Triangulación (Creswell & Creswell, 2018; Hernández-Sampieri, 2014)."),
-    ("Población Total:", "~430 estudiantes activos matriculados en la Licenciatura en Informática."),
-    ("Muestra Intencional:", "20 a 40 informantes clave distribuidos en las tres etapas curriculares del programa.")
+add_card(s4, 0.8, 1.8, 3.7, 4.9, "1. Filosofía Visual Frutiger Aero", [
+    ("Retrofuturismo Limpio:", "Inspirado en la estética tecnológica optimista de los 2000s: luz, transparencias, dinamismo y frescura visual."),
+    ("Contraste Elegante:", "Fondo oscuro azul medianoche (#070D18) que resalta elementos bioluminiscentes sin fatiga visual."),
+    ("Microinteracciones:", "Botones con efectos glossy, brillos dinámicos y retroalimentación táctil suave.")
 ], border_color=C_CYAN_ACCENT)
 
-add_card(s4, 4.8, 1.8, 3.7, 4.9, "2. Fase Cuantitativa (QUAN)", [
-    ("Instrumento 1 (Diagnóstico):", "Percepciones, frecuencia de uso y conocimiento previo de herramientas de IA."),
-    ("Instrumento 2 (Prácticas):", "Experiencias de aula, visión institucional docente y brecha digital territorial."),
-    ("Escalas y Matrices:", "Escala Likert de 5 puntos y tablas matriciales de frecuencia de uso (textos, imágenes, código)."),
-    ("Persistencia Reactiva:", "Cloud Firestore con autosave offline para evitar pérdidas de datos.")
-], border_color=C_AMBER, header_color=C_AMBER)
-
-add_card(s4, 8.8, 1.8, 3.7, 4.9, "3. Fase Cualitativa (QUAL)", [
-    ("Técnica Dialógica:", "Entrevista semiestructurada socrática mediada por el agente conversacional Cereza."),
-    ("Protocolo de Probing:", "Preguntas de contrastación reflexiva para desarmar la deseabilidad social y clichés."),
-    ("Saturación Teórica:", "Decisión algorítmica de cierre autónomo tras 6 a 8 turnos de habla maduros."),
-    ("Pre-codificación:", "Extracción en tiempo real de citas textuales sobre IA, Formación y Efectos.")
+add_card(s4, 4.8, 1.8, 3.7, 4.9, "2. Capas Glassmorphic Translúcidas", [
+    ("Backdrop Blur (Desenfoque):", "Efectos CSS backdrop-blur-md que simulan cristal orgánico sobre fondos degradados."),
+    ("Bordes Luminiscentes:", "Delimitaciones sutiles border-white/10 y border-cyan-500/20 que aportan profundidad 3D."),
+    ("Cards Flotantes (aero-card):", "Tarjetas elevadas con sombras difusas multicapa (shadow-lg) para jerarquizar el contenido.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
-
-# ==========================================
-# SLIDE 5: EVOLUCIÓN HISTÓRICA DE EDUPULSE
-# ==========================================
-s5 = create_base_slide("DESARROLLO DE SOFTWARE · LÍNEA TEMPORAL", "Génesis y Evolución de EduPulse: De la Idea a la Versión Final")
-
-add_stat_box(s5, 0.8, 1.8, 2.1, 4.9, "FASE 1", "Concepción", "• Delimitación ontológica (IA, Docencia, Efectos)\n• Guion curricular de preguntas abiertas\n• Marcos UNESCO y TPACK", color=C_CYAN_LIGHT)
-add_stat_box(s5, 3.2, 1.8, 2.1, 4.9, "FASE 2", "Agente Cereza", "• Nacimiento del agente socrático\n• Personalidad audaz y magnética\n• Framework ROCAS con Google Gemini", color=C_EMERALD_LIGHT)
-add_stat_box(s5, 5.6, 1.8, 2.1, 4.9, "FASE 3", "Cuantitativo", "• Cuestionarios psicométricos Likert\n• Autosave offline (localStorage)\n• Persistencia en Cloud Firestore", color=C_AMBER)
-add_stat_box(s5, 8.0, 1.8, 2.1, 4.9, "FASE 4", "UX Móvil Glass", "• Estética Frutiger Aero moderna\n• MobileBottomNav para smartphones\n• Protección popstate contra cierres", color=C_CYAN_LIGHT)
-add_stat_box(s5, 10.4, 1.8, 2.1, 4.9, "FASE 5", "Versión 2.3", "• Voz dual con Gemini multimodal\n• Google Forms Analytics visual\n• Google OAuth 2.0 y Sheets en 3 tabs", color=C_EMERALD_LIGHT)
+add_card(s4, 8.8, 1.8, 3.7, 4.9, "3. Identidad Simbólica de Marca", [
+    ("El Reloj de Umbra:", "Sello místico refinado con resplandores aguamarina que acompaña la presencia de Cereza."),
+    ("Avatar Interactivo:", "Representación visual de Cereza con animaciones de pulso y estados de escucha activa."),
+    ("Bilingüismo Instantáneo:", "Conmutador fluido de idioma (ES/EN) en la barra superior sin recargar la página.")
+], border_color=C_PURPLE, header_color=C_PURPLE)
 
 
 # ==========================================
-# SLIDE 6: EL MODELO DEL TUTOR: CEREZA
+# SLIDE 5: EXPERIENCIA MÓVIL Y PREVENCIÓN DE ERRORES
 # ==========================================
-s6 = create_base_slide("MODELO PEDAGÓGICO · DOCUMENTO 01", "El Modelo del Tutor: Cereza y la Mediación Socrática")
+s5 = create_base_slide("EXPERIENCIA DE USUARIO (UX) · MOBILE-FIRST", "Diseño Mobile-First, Ergonomía Táctil y Prevención de Cierres")
 
-add_card(s6, 0.8, 1.8, 4.0, 4.9, "Personalidad Magnética e Ingenio", [
-    ("Inspiración Estética:", "Aplomo, distinción e ingenio maduro inspirados en la icónica bruja Bayonetta."),
-    ("Rechazo a la Sumisión:", "No suena como un chatbot burocrático ni servil. Habla como una mentora y colega formativa."),
-    ("Combate al Cliché:", "Si el informante responde con evasivas de manual, Cereza interviene con una sonrisa cómplice e irónica."),
-    ("Cita Típica:", "\"Vaya, qué respuesta tan correcta... pero entre tú y yo, colega: ¿fue una aliada didáctica o una muleta para salir del paso?\"")
+add_card(s5, 0.8, 1.8, 3.7, 4.9, "1. Mobile Bottom Navigation", [
+    ("Componente MobileBottomNav:", "Barra flotante inferior anclada ergonómicamente al alcance natural del pulgar."),
+    ("Accesos Directos Táctiles:", "Botones táctiles grandes para Chat, Instrumentos, Nueva Sesión e Idioma."),
+    ("Indicadores Activos Luminosos:", "Resplandor cian sobre la sección seleccionada para guiar al usuario.")
 ], border_color=C_CYAN_ACCENT)
 
-add_card(s6, 5.1, 1.8, 4.0, 4.9, "Protocolo de Probing Hermenéutico", [
-    ("Escucha Activa y Eco Reflexivo:", "Retoma términos clave del informante (Mirroring dialéctico, Schön, 1983)."),
-    ("Probing de Ejemplificación:", "Pide situaciones concretas en microclases o talleres de programación en Córdoba."),
-    ("Probing de Tensión Ética:", "Explora la transparencia con el docente titular al usar código o textos generados."),
-    ("Preguntas Atómicas:", "Estricta restricción de UNA sola pregunta por turno de habla para asegurar respuestas ricas.")
+add_card(s5, 4.8, 1.8, 3.7, 4.9, "2. Botones de Retorno en Pantalla", [
+    ("Go-Back Arrows (ArrowLeft):", "Botones de retorno explícitos integrados dentro de la aplicación."),
+    ("Protección Universal:", "Permite volver a la pantalla principal o cambiar de sección sin recurrir a controles externos del navegador."),
+    ("Consistencia:", "Presente en la sala de chat, cuestionarios diagnósticos y matrices de resultados.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
-add_card(s6, 9.4, 1.8, 3.1, 4.9, "Criterio de Saturación", [
-    ("Autonomía Algorítmica:", "Cereza decide el cierre sin número rígido de preguntas preestablecido."),
-    ("participantTurns < 5:", "Saturación insuficiente; profundiza en dimensiones pendientes."),
-    ("participantTurns >= 6:", "Evalúa madurez de reflexión; agradece y declara isInterviewFinished: true."),
-    ("participantTurns >= 9:", "Cierre imperativo para prevenir fatiga cognitiva.")
+add_card(s5, 8.8, 1.8, 3.7, 4.9, "3. Blindaje Contra Gestos (popstate)", [
+    ("El Problema del 'Swiping':", "En celulares Android/iOS, deslizar la pantalla hacia atrás cerraba la entrevista por error."),
+    ("Intercepción de Historial:", "Uso de window.history.pushState y escucha del evento popstate para atrapar la salida."),
+    ("Modal de Confirmación:", "Alerta preventiva para pausar y guardar la conversación de forma segura.")
 ], border_color=C_AMBER, header_color=C_AMBER)
 
 
 # ==========================================
-# SLIDE 7: ARQUITECTURA PEDAGÓGICA (4 MODELOS)
+# SLIDE 6: DISEÑO DEL AGENTE CONVERSACIONAL (CEREZA)
 # ==========================================
-s7 = create_base_slide("ARQUITECTURA CONCEPTUAL · SUITE DOCUMENTAL", "La Arquitectura de los Cuatro Modelos Inteligentes")
+s6 = create_base_slide("DISEÑO DEL AGENTE IA · PERSONALIDAD Y COMPORTAMIENTO", "El Agente Conversacional: Cereza y su Lógica de Mediación")
 
-add_card(s7, 0.8, 1.8, 5.7, 2.3, "1. Modelo del Tutor (Doc 01)", [
-    ("Rol Pedagógico:", "Cómo guiar el diálogo. Rige la personalidad de Cereza, el probing socrático, la no directividad y la neutralidad axiológica sin calificar.")
+add_card(s6, 0.8, 1.8, 4.0, 4.9, "Personalidad Magnética (Bayonetta)", [
+    ("Cero Sumisión Burocrática:", "Cereza no dice '¿En qué puedo ayudarte hoy?'. Habla con aplomo aristocrático, madurez e ingenio."),
+    ("Horizontalidad Colegial:", "Trata al estudiante como un futuro colega educador, generando confianza y apertura inmediata."),
+    ("Ingenio y Toque Mordaz:", "Si el usuario responde con frases de manual o clichés, Cereza lo interpela con simpatía: 'Vaya jugada... pero cuéntame la verdad: ¿fue tu aliada o tu muleta?'."),
+    ("Voz Impecable:", "Respeto universitario estricto sin perder su chispa lúdica.")
 ], border_color=C_CYAN_ACCENT)
 
-add_card(s7, 6.8, 1.8, 5.7, 2.3, "2. Modelo del Conocimiento (Doc 02)", [
-    ("Ontología y Saberes:", "Qué investigar. Estructura las tres categorías deductivas (IA, Formación Docente, Efectos), TPACK, DigCompEdu y la Ley 2626.")
+add_card(s6, 5.1, 1.8, 4.0, 4.9, "Mecanismo de Escucha y Probing", [
+    ("Mirroring Dialéctico (Eco Reflexivo):", "Retoma conceptos clave expresados por el usuario para construir puentes cognitivos."),
+    ("Preguntas Atómicas:", "Estricta restricción de UNA sola pregunta por turno para evitar dispersión."),
+    ("Probing de Ejemplificación:", "Obliga a relatar anécdotas situadas en microclases y talleres de programación."),
+    ("Combate al Efecto Muleta:", "Estimula permanentemente el juicio pedagógico y la autoría crítica del futuro docente.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
-add_card(s7, 0.8, 4.4, 5.7, 2.3, "3. Modelo del Alumno (Doc 03)", [
-    ("Perfil del Informante:", "A quién guiar. Rastrea el semestre (1°-10°), adapta el diálogo a las 3 etapas curriculares y audita el consentimiento informado digital.")
+add_card(s6, 9.4, 1.8, 3.1, 4.9, "Cierre Autónomo", [
+    ("Saturación Inteligente:", "Decide cuándo concluir sin número rígido de preguntas."),
+    ("Turns < 5:", "Continúa explorando dimensiones."),
+    ("Turns >= 6:", "Sintetiza aprendizajes y declara isInterviewFinished: true."),
+    ("Turns >= 9:", "Cierre para evitar fatiga.")
 ], border_color=C_AMBER, header_color=C_AMBER)
 
-add_card(s7, 6.8, 4.4, 5.7, 2.3, "4. Modelo del Mundo (Doc 04)", [
-    ("Ecosistema UX/UI:", "Dónde interactuar. Interfaz Frutiger Aero glassmorphism, MobileBottomNav, visualizador de audio en vivo y resiliencia territorial.")
-], border_color=C_CYAN_LIGHT, header_color=C_CYAN_LIGHT)
-
 
 # ==========================================
-# SLIDE 8: EL PROMPT MAESTRO Y FRAMEWORK ROCAS
+# SLIDE 7: EL PROMPT MAESTRO (FRAMEWORK ROCAS)
 # ==========================================
-s8 = create_base_slide("INGENIERÍA DE INSTRUCCIONES · DOCUMENTO 05", "El Prompt Maestro y la Metodología ROCAS")
+s7 = create_base_slide("INGENIERÍA DE PROMPTS · FRAMEWORK ROCAS", "Ingeniería de Instrucciones: El Framework ROCAS en Tiempo Real")
 
-add_card(s8, 0.8, 1.8, 7.8, 4.9, "Componentes del Framework ROCAS", [
-    ("R — Rol:", "Cereza: entrevistadora cualitativa refinada, ingeniosa, empática y de alto rigor académico."),
-    ("O — Objetivo:", "Recolectar vivencias auténticas y desarmar la deseabilidad social sobre el uso de IA."),
-    ("C — Contexto:", "Licenciatura en Informática, Universidad de Córdoba (Montería y sedes regionales)."),
-    ("A — Acciones:", "Probing socrático, espejo reflexivo, prevención del efecto muleta y preguntas atómicas."),
-    ("S — Salida:", "Esquema JSON estricto con campos: reply, isInterviewFinished, category, extractedInsight.")
+add_card(s7, 0.8, 1.8, 7.8, 4.9, "Estructura del Prompt Maestro en server.ts", [
+    ("R — Rol:", "Cereza: entrevistadora cualitativa refinada, ingeniosa, empática y de alto rigor técnico."),
+    ("O — Objetivo:", "Sostener una conversación auténtica que revele prácticas reales y dilemas con la IA."),
+    ("C — Contexto:", "Licenciatura en Informática, Universidad de Córdoba (Montería y sedes de la región)."),
+    ("A — Acciones:", "Probing agudo, repreguntas atómicas, no directividad y prohibición de emitir calificaciones."),
+    ("S — Salida:", "Contrato JSON estricto con campos validados: reply, isInterviewFinished, category, extractedInsight.")
 ], border_color=C_CYAN_ACCENT)
 
-add_card(s8, 8.9, 1.8, 3.6, 4.9, "Inferencia y Resiliencia", [
-    ("Motor Primario:", "Google Gemini 2.5 Flash optimizado para baja latencia."),
-    ("Cascada Inteligente:", "Conmutación automática ante errores 503 o límites de cuota."),
-    ("Paridad Bilingüe:", "Razonamiento y diálogo nativo en Español e Inglés sin traducción mecánica."),
-    ("Temperatura 0.4:", "Equilibrio ideal entre creatividad discursiva y fidelidad al guion.")
+add_card(s7, 8.9, 1.8, 3.6, 4.9, "Parámetros y Calibración", [
+    ("Modelo de Inferencia:", "Google Gemini 2.5 Flash en streaming y JSON mode."),
+    ("Temperatura 0.4:", "Control fino: creatividad conversacional sin alucinaciones técnicas."),
+    ("Bilingüismo Dual:", "Prompts en espejo (ES y EN) inyectados según la preferencia del usuario."),
+    ("Esquema Zod/JSON:", "Validación de tipos para prevenir fallos de renderizado en React.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
 
 # ==========================================
-# SLIDE 9: INNOVACIONES TÉCNICAS VERSIÓN 2.3
+# SLIDE 8: LÍNEA TEMPORAL DEL DESARROLLO (SPRINTS 1 AL 5)
 # ==========================================
-s9 = create_base_slide("INNOVACIONES TÉCNICAS · VERSIÓN FINAL 2.3", "Innovaciones Técnicas de la Versión Final")
+s8 = create_base_slide("PROCESO DE DESARROLLO · LÍNEA TEMPORAL", "Evolución del Desarrollo de EduPulse: Del Prototipo a la Versión 2.3")
 
-add_card(s9, 0.8, 1.8, 5.7, 2.3, "1. Motor de Voz Dual con IA Multimodal", [
-    ("MediaRecorder + Gemini:", "Grabación nativa de audio con Web Audio API y transcripción en /api/transcribe-audio con Gemini, superando fallos de Web Speech API en móviles.")
-], border_color=C_CYAN_ACCENT)
+add_stat_box(s8, 0.8, 1.8, 2.1, 4.9, "SPRINT 1", "Fundación", "• Setup React 19 + Express\n• Conexión con Gemini API\n• Primera sala de chat básica\n• Definición de guiones", color=C_CYAN_LIGHT)
+add_stat_box(s8, 3.2, 1.8, 2.1, 4.9, "SPRINT 2", "Agente Cereza", "• Nacimiento de Cereza\n• Framework ROCAS\n• Contrato JSON estructurado\n• Probing hermenéutico", color=C_EMERALD_LIGHT)
+add_stat_box(s8, 5.6, 1.8, 2.1, 4.9, "SPRINT 3", "Cuantitativo", "• Cuestionarios psicométricos\n• Firestore persistencia reactiva\n• Borradores autosave offline\n• Admin login básico", color=C_AMBER)
+add_stat_box(s8, 8.0, 1.8, 2.1, 4.9, "SPRINT 4", "UX Móvil Glass", "• Rediseño Frutiger Aero\n• MobileBottomNav táctil\n• Botones de retorno universales\n• Guarda popstate móvil", color=C_CYAN_LIGHT)
+add_stat_box(s8, 10.4, 1.8, 2.1, 4.9, "SPRINT 5", "Versión 2.3", "• Motor de voz dual multimodal\n• Google Forms Analytics visual\n• Google Sheets OAuth 2.0\n• Síntesis resiliente fallback", color=C_EMERALD_LIGHT)
 
-add_card(s9, 6.8, 1.8, 5.7, 2.3, "2. Síntesis Cualitativa Resiliente", [
-    ("qualitativeSynthesis.ts:", "Eliminación de condiciones de carrera en cierre y fallback determinista que garantiza citas y matriz de hallazgos ante fallas de red.")
-], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
-add_card(s9, 0.8, 4.4, 5.7, 2.3, "3. Validación Interactiva Guiada", [
-    ("InstrumentForm.tsx:", "Banner con píldoras de salto, animación luminiscente en campos vacíos, detección fila por fila en matrices y aceptación de ética en 1 clic.")
+# ==========================================
+# SLIDE 9: EVOLUCIÓN DEL SISTEMA DE AUDIO
+# ==========================================
+s9 = create_base_slide("EVOLUCIÓN TÉCNICA · SISTEMA DE VOZ", "Evolución de Audio: Del Web Speech API al Motor de Voz Dual con IA")
+
+add_card(s9, 0.8, 1.8, 3.7, 4.9, "1. La Fragilidad del Web Speech API", [
+    ("Incompatibilidad Móvil:", "webkitSpeechRecognition falla con frecuencia en iOS Safari, Android Brave y Firefox."),
+    ("Corte por Silencios:", "El navegador cerraba el micrófono intempestivamente si el estudiante se detenía a pensar."),
+    ("Falta de Retroalimentación:", "El usuario no sabía si el micrófono realmente estaba capturando su voz.")
 ], border_color=C_AMBER, header_color=C_AMBER)
 
-add_card(s9, 6.8, 4.4, 5.7, 2.3, "4. Protección de Navegación Móvil", [
-    ("popstate & Back Buttons:", "Prevención de cierres accidentales al deslizar la pantalla del smartphone y botones universales de retorno en pantalla.")
-], border_color=C_CYAN_LIGHT, header_color=C_CYAN_LIGHT)
-
-
-# ==========================================
-# SLIDE 10: SUITE ANALÍTICA TIPO GOOGLE FORMS
-# ==========================================
-s10 = create_base_slide("ANALÍTICA DE DATOS · DOCUMENTO 07", "Suite de Analítica Visual Tipo Google Forms (General e Individual)")
-
-add_card(s10, 0.8, 1.8, 5.7, 4.9, "Panel General Cuantitativo", [
-    ("GoogleFormsCharts.tsx:", "Visualización agregada inspirada en la familiaridad y claridad de Google Forms."),
-    ("Diagramas de Dona Demográficos:", "Distribución porcentual de participantes por semestre (1° a 10°) y sedes universitarias."),
-    ("Barras Horizontales con Frecuencia:", "Mapeo porcentual en tiempo real para preguntas de opción múltiple y matrices Likert."),
-    ("Medidas Descriptivas:", "Cálculo instantáneo de medias (x̄) y desviaciones estándar (σ) por ítem.")
+add_card(s9, 4.8, 1.8, 3.7, 4.9, "2. Grabación Nativa y Visualizador", [
+    ("MediaRecorder Nativo:", "Captura directa del flujo de audio del hardware en formatos webm/mp4/wav."),
+    ("LiveMicVisualizer (Canvas):", "Componente reactivo que procesa AudioContext y AnalyserNode en tiempo real."),
+    ("Ondas Dinámicas:", "Animación de ondas sonoras color cian/esmeralda que reaccionan a la amplitud de la voz.")
 ], border_color=C_CYAN_ACCENT)
 
-add_card(s10, 6.8, 1.8, 5.7, 4.9, "Analítica Cualitativa Individual", [
-    ("InterviewsAnalyticsView.tsx:", "Panel hermenéutico de diagnóstico individualizado por informante (E01...E40)."),
-    ("Radar de Competencias:", "Mapeo multieje de autonomía cognitiva, transposición didáctica y solvencia técnica."),
-    ("Desglose Emocional:", "Proporción de reflexiones entusiastas, críticas o de cautela metodológica frente a la IA."),
-    ("Fichas de Citas Categorizadas:", "Testimonios directos listos para su citación en los capítulos 4 y 5 de la tesis.")
+add_card(s9, 8.8, 1.8, 3.7, 4.9, "3. Transcripción Multimodal en Backend", [
+    ("Endpoint /api/transcribe-audio:", "Envía los bytes grabados al servidor Express."),
+    ("Gemini Multimodal Audio:", "Google Gemini 2.5 Flash procesa el archivo de audio directamente."),
+    ("Transcripción Perfecta:", "Puntuación correcta, comprensión de modismos cordobeses y 100% compatible con cualquier celular.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
 
 # ==========================================
-# SLIDE 11: SEGURIDAD, RBAC Y GOOGLE OAUTH 2.0
+# SLIDE 10: VALIDACIÓN INTERACTIVA DE CUESTIONARIOS
 # ==========================================
-s11 = create_base_slide("SEGURIDAD Y GOBERNANZA · DOCUMENTO 08", "Gobernanza Ética, Seguridad y Google Cloud OAuth 2.0")
+s10 = create_base_slide("INGENIERÍA FRONTEND · ACCESIBILIDAD Y FORMULARIOS", "Módulo de Cuestionarios: Validación Guiada Fila por Fila")
 
-add_card(s11, 0.8, 1.8, 3.7, 4.9, "1. Anonimización y Habeas Data", [
-    ("Ley 1581 de 2012:", "Estricto cumplimiento de la normativa colombiana de protección de datos personales."),
-    ("Códigos E01...E40:", "Desidentificación inmediata en transcripciones y bases de datos."),
-    ("Sin Datos Sensibles:", "Prohibición absoluta de capturar cédulas, teléfonos o notas institucionales."),
-    ("Enmascaramiento:", "Supresión de correos personales en la interfaz pública.")
-], border_color=C_CYAN_ACCENT)
-
-add_card(s11, 4.8, 1.8, 3.7, 4.9, "2. Autenticación de Doble Factor", [
-    ("Factor 1 (Google OAuth):", "Verificación federada contra lista blanca estricta de investigadores autorizados."),
-    ("Factor 2 (PIN Maestro):", "Ingreso del PIN '0412' en memoria volátil de sesión para prevenir accesos indebidos."),
-    ("Acceso RBAC:", "Gráficas, transcripciones crudas y gestión de guiones reservadas exclusivamente al equipo investigador.")
+add_card(s10, 0.8, 1.8, 3.7, 4.9, "1. El Problema del Bloqueo Silencioso", [
+    ("Frustración del Usuario:", "Al enviar cuestionarios largos, un error genérico impedía el envío sin indicar el campo exacto."),
+    ("Desorientación en Celular:", "El usuario pensaba que el botón estaba roto porque no veía qué pregunta le faltaba."),
+    ("Casilla de Ética Omitida:", "Muchos participantes llenaban las preguntas pero olvidaban la casilla de consentimiento.")
 ], border_color=C_AMBER, header_color=C_AMBER)
 
-add_card(s11, 8.8, 1.8, 3.7, 4.9, "3. Google Cloud OAuth 2.0", [
-    ("Google Identity Services:", "Integración autorizada en Google Cloud Console para el dominio de Render."),
-    ("Exportación en 1 Clic:", "Generación automatizada de libros de cálculo en Google Sheets con 3 pestañas: Ficha, Citas y Transcripción."),
-    ("Resiliencia de Exportación:", "Botones directos de descarga en CSV y JSON como alternativa inmediata sin esperas.")
+add_card(s10, 4.8, 1.8, 3.7, 4.9, "2. Banner Interactivo de Salto Dinámico", [
+    ("Píldoras Dinámicas (missingFieldsList):", "Desglose visual con botones para cada ítem pendiente ([Consentimiento], [Pregunta 5], etc.)."),
+    ("Scroll Fluido (scrollIntoView):", "Al tocar una píldora, la pantalla salta directo al campo omitido."),
+    ("Anillo de Resplandor Animado:", "Aplica un resplandor luminiscente de 3 segundos para ubicar la pregunta al instante.")
+], border_color=C_CYAN_ACCENT)
+
+add_card(s10, 8.8, 1.8, 3.7, 4.9, "3. Resaltado Fila por Fila en Matrices", [
+    ("Tablas matrix_grid Guiadas:", "Cada fila sin responder se resalta en rojo/ámbar con una etiqueta 'Falta responder'."),
+    ("Aceptación en 1 Clic:", "La tarjeta de ética incluye el botón directo 'Aceptar Consentimiento Ahora'."),
+    ("Resumen Inferior:", "Aviso previo al botón de envío para no tener que subir hasta el tope de la página.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
 
 # ==========================================
-# SLIDE 12: HALLAZGOS Y TRIANGULACIÓN PRELIMINAR
+# SLIDE 11: MOTOR DE SÍNTESIS CUALITATIVA RESILIENTE
 # ==========================================
-s12 = create_base_slide("ANÁLISIS DE RESULTADOS · CAPÍTULOS 4 Y 5", "Principales Hallazgos y Triangulación Metodológica")
+s11 = create_base_slide("RESILIENCIA DE DATOS · QUALITATIVE SYNTHESIS", "Resiliencia de Datos: Eliminación de Condiciones de Carrera y Fallback")
 
-add_card(s12, 0.8, 1.8, 3.7, 4.9, "Hallazgo 1: Adopción Pragmática", [
-    ("Uso Textual Predominante:", "El 82% de los informantes utiliza ChatGPT para resúmenes y consultas teóricas."),
-    ("Baja Apropiación Multimodal:", "Solo el 24% ha explorado generación de imágenes o automatización para clases."),
-    ("Voz del Informante (E03):", "\"Es excelente para salir del paso con la teoría, pero en la práctica pedagógica real pocos sabemos cómo llevarla al colegio.\"")
-], border_color=C_CYAN_ACCENT)
-
-add_card(s12, 4.8, 1.8, 3.7, 4.9, "Hallazgo 2: Conciencia del Efecto Muleta", [
-    ("Alerta Cognitiva:", "El 85% reconoce el temor a perder habilidades de resolución autónoma de problemas."),
-    ("Vigilancia Epistemológica:", "Los estudiantes más avanzados imponen límites deliberados al uso de la IA."),
-    ("Voz del Informante (E11):", "\"Si dejas que la máquina programe todo por ti, cuando un alumno te pregunte la lógica del código quedas en ridículo.\"")
+add_card(s11, 0.8, 1.8, 3.7, 4.9, "1. Condición de Carrera en el Cierre", [
+    ("El Problema Detectado:", "Al presionar 'Finalizar Entrevista', React desmontaba la sala antes de que el backend devolviera el análisis."),
+    ("Riesgo:", "La matriz cualitativa quedaba en blanco o la sesión se guardaba incompleta."),
+    ("La Solución:", "Bloqueo asíncrono estricto con await en handleTriggerFullSynthesis y estado de carga informativo.")
 ], border_color=C_AMBER, header_color=C_AMBER)
 
-add_card(s12, 8.8, 1.8, 3.7, 4.9, "Hallazgo 3: Maduración Curricular", [
-    ("Semestres 1°-3°:", "Uso enfocado en resolver tareas y dudas de algoritmos universitarios."),
-    ("Semestres 4°-6°:", "Incursión en diseño de material didáctico y debates sobre plagio."),
-    ("Semestres 7°-10°:", "Apropiación reflexiva para transposición didáctica contextualizada en colegios de Córdoba.")
-], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
-
-
-# ==========================================
-# SLIDE 13: CONCLUSIONES E IMPACTO INSTITUCIONAL
-# ==========================================
-s13 = create_base_slide("IMPACTO Y TRABAJO A FUTURO · CAPÍTULO 5", "Conclusiones, Impacto Institucional y Aportes a UniCórdoba")
-
-add_card(s13, 0.8, 1.8, 5.7, 4.9, "Conclusiones Académicas y Tecnológicas", [
-    ("1. Validación del Agente Socrático:", "Cereza demostró que la IA puede operar como co-investigadora hermenéutica empática, superando la frialdad de encuestas tradicionales."),
-    ("2. Triangulación Rigurosa:", "La integración QUAN + QUAL permitió contrastar cuantitativamente las tendencias de autoeficacia con relatos biográficos situados."),
-    ("3. Resiliencia Comprobada:", "La plataforma operó con total solvencia bajo condiciones de conectividad fluctuante gracias al motor dual y autosave.")
+add_card(s11, 4.8, 1.8, 3.7, 4.9, "2. Fallback Heurístico Local", [
+    ("Módulo qualitativeSynthesis.ts:", "Motor determinista que opera como red de seguridad si la API neuronal falla o satura."),
+    ("Extracción de Citas:", "Escanea los mensajes del usuario, detecta oraciones clave y las clasifica en los tres ejes deductivos."),
+    ("Cálculo de Sentimiento:", "Determina si el tono fue positivo, crítico o cauteloso analizando el léxico pedagógico empleado.")
 ], border_color=C_CYAN_ACCENT)
 
-add_card(s13, 6.8, 1.8, 5.7, 4.9, "Aportes para la Universidad de Córdoba", [
-    ("Insumos para el Rediseño Curricular:", "Evidencias empíricas para la articulación de la Ley 2626 de 2026 en el plan de estudios de la Licenciatura en Informática."),
-    ("Plataforma Libre y Reutilizable:", "EduPulse queda como software institucional transferible para futuras investigaciones de grado en la Facultad de Educación."),
-    ("Interoperabilidad Científica:", "Exportación estandarizada hacia software CAQDAS (ATLAS.ti y NVivo) y ecosistema Google Cloud.")
+add_card(s11, 8.8, 1.8, 3.7, 4.9, "3. Reanudación Transparente en Home", [
+    ("Detección de Sesión Abierta:", "Si la página se recarga o se pierde la conexión, el Home detecta la entrevista en curso."),
+    ("Banner de Recuperación:", "Botones destacados: 'Continuar Entrevista con Cereza' o 'Ver Matriz de Resultados'."),
+    ("Cero Pérdida:", "El trabajo del informante queda 100% a salvo en localStorage y Firestore.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
 
 # ==========================================
-# SLIDE 14: DEMOSTRACIÓN EN VIVO Y AGRADECIMIENTOS
+# SLIDE 12: SUITE DE ANALÍTICA TIPO GOOGLE FORMS
 # ==========================================
-s14 = create_base_slide("SUSTENTACIÓN FINAL · CIERRE Y PREGUNTAS", "Demostración en Vivo, Agradecimientos y Cierre")
+s12 = create_base_slide("VISUALIZACIÓN DE DATOS · COMPONENTES ANALÍTICOS", "Suite de Analítica Visual: Paneles Generales e Individuales")
+
+add_card(s12, 0.8, 1.8, 5.7, 4.9, "Dashboard General (GoogleFormsCharts.tsx)", [
+    ("Inspirado en Google Forms:", "Diseño gráfico limpio, intuitivo y de lectura instantánea de resultados agregados."),
+    ("Diagramas Circulares de Dona:", "Proporciones porcentuales de informantes por semestre (1° a 10°) y por sede universitaria."),
+    ("Barras Horizontales con Porcentajes:", "Frecuencias relativas y conteo absoluto de opciones en preguntas múltiples y Likert."),
+    ("Estadística Descriptiva en Vivo:", "Cálculo reactivo de medias aritméticas (x̄) y desviaciones estándar (σ).")
+], border_color=C_CYAN_ACCENT)
+
+add_card(s12, 6.8, 1.8, 5.7, 4.9, "Analítica Individual (InterviewsAnalyticsView.tsx)", [
+    ("Selector de Informante (E01...E40):", "Inspección detallada y personalizada de cada participante del estudio."),
+    ("Radar de Competencias Tecno-pedagógicas:", "Gráfico poligonal multieje: autonomía crítica, didáctica y competencia técnica."),
+    ("Desglose Emocional:", "Proporción de reflexiones entusiastas, cautelosas o de rechazo frente a la IA."),
+    ("Tarjetas de Citas Categorizadas:", "Evidencias textuales clasificadas con botón de copia rápida al portapapeles.")
+], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
+
+
+# ==========================================
+# SLIDE 13: GOBERNANZA, SEGURIDAD Y OAUTH 2.0
+# ==========================================
+s13 = create_base_slide("SEGURIDAD Y CLOUD INTEGRATION · DOCUMENTO 08", "Gobernanza de Datos, Seguridad RBAC y Google Cloud OAuth 2.0")
+
+add_card(s13, 0.8, 1.8, 3.7, 4.9, "1. Control de Acceso RBAC y 2FA", [
+    ("Doble Factor para Investigadores:", "Inicio con Google OAuth verificado contra lista blanca + PIN Maestro '0412'."),
+    ("Ocultamiento de Datos Crudos:", "Los estudiantes jamás acceden a las transcripciones ni gráficas de sus pares."),
+    ("Enmascaramiento PII:", "Los botones públicos dicen 'Enviar a investigadores', protegiendo los correos del equipo.")
+], border_color=C_CYAN_ACCENT)
+
+add_card(s13, 4.8, 1.8, 3.7, 4.9, "2. Integración Google Cloud OAuth 2.0", [
+    ("Resolución de origin_mismatch:", "Registro de orígenes autorizados de JavaScript en Google Cloud Console para producción Render."),
+    ("Google Identity Services (GIS):", "Ventana oficial de consentimiento seguro sin exponer credenciales."),
+    ("Permisos Estrictos:", "Alcances específicos para crear archivos sin invadir el Drive personal del usuario.")
+], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
+
+add_card(s13, 8.8, 1.8, 3.7, 4.9, "3. Exportación en 3 Pestañas (/api/export-sheets)", [
+    ("Generación Automatizada:", "Crea un libro de cálculo en Google Drive con 1 solo clic."),
+    ("Pestaña 1 (Ficha):", "Metadatos, caracterización y consentimiento ético."),
+    ("Pestaña 2 (Citas):", "Matriz cualitativa clasificada por categorías de la tesis."),
+    ("Pestaña 3 (Transcripción):", "Diálogo íntegro turno a turno entre Cereza y el docente.")
+], border_color=C_PURPLE, header_color=C_PURPLE)
+
+
+# ==========================================
+# SLIDE 14: DEMOSTRACIÓN EN VIVO Y CIERRE TÉCNICO
+# ==========================================
+s14 = create_base_slide("LANZAMIENTO FINAL · DEMOSTRACIÓN EN VIVO", "Demostración en Vivo de EduPulse y Cierre Técnico")
 
 add_card(s14, 0.8, 1.8, 6.5, 4.9, "EduPulse Desplegado en Producción", [
-    ("URL Pública de Producción:", "https://edupulse-575b.onrender.com"),
-    ("Repositorio de Código Abierto:", "GitHub: JoseDanielDurango / EduPulse"),
-    ("Módulos Disponibles para la Demostración:", ""),
-    ("  • Sala de Diálogo Reflexivo:", "Interacción en vivo por voz y texto con Cereza."),
-    ("  • Cuestionarios Diagnósticos:", "Validación guiada y persistencia en Cloud Firestore."),
-    ("  • Portal de Investigación (2FA):", "PIN Maestro y Google OAuth 2.0."),
-    ("  • Suite Analítica Visual:", "Gráficos de dona, barras y radar hermenéutico individual."),
-    ("  • Exportación Automatizada:", "Generación instantánea de Google Sheets en 3 pestañas.")
+    ("URL Pública Oficial:", "https://edupulse-575b.onrender.com"),
+    ("Repositorio GitHub:", "JoseDanielDurango / EduPulse (Licencia de Código Abierto)"),
+    ("Flujo de Demostración en Vivo:", ""),
+    ("  1. Navegación Móvil y Estética Glass:", "Demostración de fluidez, temas y ergonomía táctil."),
+    ("  2. Entrada de Voz Dual:", "Prueba de grabación en vivo con el canvas animado LiveMicVisualizer."),
+    ("  3. Conversación Socrática con Cereza:", "Observación de probing agudo, eco reflexivo y cierre autónomo."),
+    ("  4. Cuestionarios Diagnósticos:", "Demostración de validación interactiva guiada y autosave."),
+    ("  5. Portal de Investigación 2FA:", "Visualización de gráficos tipo Google Forms, radar y exportación a Sheets.")
 ], border_color=C_EMERALD, header_color=C_EMERALD_LIGHT)
 
-add_card(s14, 7.6, 1.8, 4.9, 4.9, "Agradecimientos y Apertura al Jurado", [
-    ("Director de Proyecto:", "Mag. Juan Carlos Giraldo Cardozo, por su invaluable guía epistemológica, metodológica y rigor investigativo."),
-    ("Cuerpo Docente:", "Profesores y directivas de la Licenciatura en Informática y la Facultad de Educación y Ciencias Humanas."),
-    ("Compañeros Informantes:", "A los estudiantes que compartieron generosamente sus vivencias y dilemas éticos con Cereza."),
-    ("Apertura al Jurado:", "Agradecemos la atención prestada y quedamos a total disposición del honorable jurado calificador para la sesión de preguntas.")
+add_card(s14, 7.6, 1.8, 4.9, 4.9, "Logros de Ingeniería y Agradecimientos", [
+    ("Arquitectura Completa:", "100% reactiva, resiliente, segura y probada en producción."),
+    ("Agradecimiento Especial:", "A nuestro director Mag. Juan Carlos Giraldo Cardozo por su liderazgo y apoyo continuo."),
+    ("A los Profesores y Compañeros:", "De la Licenciatura en Informática por su valiosa retroalimentación durante el desarrollo."),
+    ("Sesión de Preguntas:", "Quedamos a disposición del honorable jurado calificador para la demostración y deliberación.")
 ], border_color=C_CYAN_ACCENT)
 
 # Output path
-output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Sustentacion_Final.pptx"))
+output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Desarrollo_y_Diseno_Final.pptx"))
 prs.save(output_path)
 print(f"Presentation successfully created at: {output_path}")

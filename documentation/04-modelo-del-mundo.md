@@ -2,7 +2,7 @@ DOCUMENTO 04 | MODELO DEL MUNDO (DESIGN.MD): INTERFAZ Y ECOSISTEMA CONVERSACIONA
 
 # DOCUMENTO — 04
 # Modelo del Mundo (DESIGN.md): Interfaz y Ecosistema Conversacional
-### Diseño de Interacción Humano-Computador, Estética Glassmorphic y UX Móvil · Versión 2.0
+### Diseño de Interacción Humano-Computador, Estética Glassmorphic y UX Móvil · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -10,8 +10,8 @@ DOCUMENTO 04 | MODELO DEL MUNDO (DESIGN.MD): INTERFAZ Y ECOSISTEMA CONVERSACIONA
 | **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
-| **Componente documentado** | Modelo del Mundo (DESIGN.md: Interfaz gráfica, metáfora del diálogo reflexivo, diseño responsive móvil, navegación por gestos, inventario de vistas y resiliencia técnica) |
-| **Documento** | 04 — Modelo del Mundo (Versión 2.0) |
+| **Componente documentado** | Modelo del Mundo (DESIGN.md: Interfaz gráfica, metáfora del diálogo reflexivo, diseño responsive móvil, navegación por gestos, motor de voz dual, validación interactiva, analítica visual tipo Google Forms e inventario de vistas) |
+| **Documento** | 04 — Modelo del Mundo (Versión 2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico para la especificación del entorno visual, metáfora de interfaz, arquitectura móvil, resiliencia contextual y flujo HCI de EduPulse.*
@@ -43,14 +43,26 @@ El diseño de interacción se fundamenta en las condiciones reales de conectivid
 * **Persistencia local inmediata:** Los mensajes e instrumentos se persisten localmente en memoria reactiva y `localStorage` antes de la confirmación remota en Firestore, impidiendo la pérdida de datos ante cortes eléctricos o pérdidas de señal celular.
 * **Cascada de Modelos y Reintento Automático:** El backend orquesta un mecanismo de reintento suave que conmuta transparentemente entre modelos (`gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.8-flash`) en caso de saturación 503, emitiendo mensajes de contingencia elegantes si la red colapsa temporalmente.
 
-### 2.2 Enfoque Multimodal Accesible (Voz y Texto)
-* **Entrada por Voz (Web Speech API):** Los estudiantes pueden dictar sus testimonios mediante reconocimiento de voz integrado en el navegador, promoviendo respuestas orales más espontáneas y ricas en anécdotas.
-* **Síntesis de Voz (Text-to-Speech):** Reproducción de voz artificial modulada para escuchar las intervenciones de Cereza.
-* **Prioridad Textual (*Text-First*):** Operatividad plena mediante teclado para salas de informática ruidosas o equipos sin micrófono.
+### 2.2 Enfoque Multimodal Accesible: Motor de Voz Dual con IA Multimodal
+La interacción oral constituye una vía esencial para obtener relatos espontáneos y fluidos de los futuros educadores. Para superar la histórica fragilidad del reconocimiento de voz nativo en navegadores móviles (donde `webkitSpeechRecognition` suele estar deshabilitado o fallar en iOS Safari, Android Brave y Firefox), EduPulse implementa una **arquitectura de voz dual de dos motores**:
+
+1. **Motor A: Grabación Nativa con MediaRecorder y Visualizador en Vivo (`LiveMicVisualizer`):**
+   * El cliente solicita acceso al micrófono mediante `navigator.mediaDevices.getUserMedia({ audio: true })`.
+   * Captura el flujo de audio puro en contenedores estándar (`audio/webm`, `audio/mp4`, `audio/ogg` o `audio/wav`).
+   * Un canvas interactivo (`LiveMicVisualizer`) procesa en tiempo real el espectro de frecuencias mediante la Web Audio API (`AudioContext` y `AnalyserNode`), renderizando ondas sonoras dinámicas color esmeralda/cian que ofrecen retroalimentación háptica y visual inmediata al estudiante.
+2. **Transcripción Neuronal en Backend (`/api/transcribe-audio`):**
+   * Al detener la grabación, el blob de audio se envía mediante `POST` al servidor Express.
+   * El endpoint procesa los bytes con Google Gemini 2.5 Flash en modalidad multimodal de audio, transcribiendo fielmente el testimonio en español (o inglés), con puntuación correcta y comprensión contextual de modismos universitarios cordobeses.
+3. **Motor B: Reconocimiento del Navegador (*Web Speech API Fallback*):**
+   * Utilizado como alternativa complementaria instantánea en equipos de escritorio compatibles con Google Chrome.
+4. **Síntesis de Voz (Text-to-Speech):**
+   * Reproducción modulada de voz artificial para escuchar las intervenciones orales de Cereza con modulación pausada y refinada.
+5. **Prioridad Textual (*Text-First*):**
+   * Operatividad plena e ininterrumpida mediante teclado para salas de informática universitarias con ruido ambiental o equipos sin periféricos de entrada.
 
 ---
 
-## 3. Arquitectura de Navegación y Soporte Móvil Integral
+## 3. Arquitectura de Navegación, Soporte Móvil y Validación Guiada
 
 ### 3.1 Barra de Navegación Móvil Inferior (`MobileBottomNav.tsx`)
 Para resolver la ergonomía en dispositivos móviles (smartphones y pantallas táctiles), se desarrolló un componente de navegación flotante inferior adaptado al área del pulgar:
@@ -66,6 +78,14 @@ Tanto en la versión web como en la móvil, se han incorporado botones explícit
 Un problema recurrente en navegadores móviles (Chrome Android, Safari iOS) es el cierre involuntario de sesiones al deslizar el dedo desde el borde de la pantalla:
 * **Gestión del Historial HTML5 (`window.history.pushState`):** Al ingresar a la sala de entrevista, el sistema inyecta un estado en el historial. Si el informante activa el gesto o presiona el botón físico de retroceso, el evento `popstate` intercepta la acción, desplegando un cuadro modal de confirmación (*"¿Deseas pausar la conversación? Tus reflexiones se guardarán de forma segura"*).
 * **Guarda de Seguridad `beforeunload`:** Bloquea la recarga o salida accidental si hay un turno de conversación activo en proceso de redacción o inferencia.
+
+### 3.4 Banner de Validación Interactiva y Accesibilidad Fila por Fila (`InstrumentForm.tsx`)
+Para evitar que los estudiantes queden bloqueados o desorientados al diligenciar los cuestionarios diagnósticos:
+* **Lista Dinámica de Campos Pendientes:** El banner superior no se limita a un texto estático de error; calcula y desglosa en tiempo real una serie de botones o píldoras interactivas (`missingFieldsList`) con el nombre puntual de cada ítem omitido (ej. `[Consentimiento Informado]`, `[Nombre Completo]`, `[Pregunta 5: Faltan las filas...]`).
+* **Salto y Resaltado Automático con Animación:** Al pulsar cualquier píldora, la pantalla se desplaza de forma fluida (`scrollIntoView`) hasta el elemento correspondiente y le aplica un anillo de resplandor luminiscente rojo/esmeralda animado durante 3 segundos para localizarlo de inmediato.
+* **Resaltado Fila por Fila en Tablas de Matriz (`matrix_grid`):** Tanto en vista de escritorio como en tarjetas apiladas móviles, cada fila sin responder se resalta individualmente con un borde de alerta y un distintivo visible: *"Falta responder"*, facilitando la compleción total sin confusión.
+* **Aceptación Directa de Consentimiento Informado:** La tarjeta de ética incorpora un botón de acción rápida: *"Aceptar Consentimiento Ahora"*, reduciendo la fricción cognitiva al mínimo.
+* **Aviso Inferior Previo al Envío:** Justo sobre el botón *"Enviar Cuestionario Completo"*, se despliega un resumen inferior con accesos directos a los campos pendientes para que los usuarios en dispositivos móviles no tengan que desplazarse hasta el tope del formulario.
 
 ---
 
@@ -127,6 +147,8 @@ Un problema recurrente en navegadores móviles (Chrome Android, Safari iOS) es e
 | **V-10** | `SummaryView.tsx` | Matriz Cualitativa | Extracción hermenéutica generada por `/api/analyze-interview`, organizando citas directas en la ontología deductiva (IA, Formación, Efectos). |
 | **V-11** | `GuidesManager.tsx` | Gestor de Guiones | Interfaz administrativa para consultar o calibrar los guiones cualitativos semiestructurados y sus pistas socráticas. |
 | **V-12** | `ThesisProjectModal.tsx` | Ficha Técnica | Ficha institucional de transparencia con autores, director, problema, objetivos y respaldo de la Universidad de Córdoba. |
+| **V-13** | `GoogleFormsCharts.tsx` | Suite Analítica Visual (General) | Visualización cuantitativa estilo Google Forms para respuestas a cuestionarios: gráficos de barras horizontales, diagramas de dona/pastel de proporciones demográficas y tablas de frecuencia porcentual. |
+| **V-14** | `InterviewsAnalyticsView.tsx` | Analítica Cualitativa e Individual | Dashboard hermenéutico avanzado por informante: radar de competencias tecnopedagógicas, polaridad emocional dialógica, distribución de citas por categoría y comparación entre perfiles. |
 
 ---
 

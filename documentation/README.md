@@ -1,5 +1,5 @@
 # Documentación Técnica, Pedagógica y Metodológica de EduPulse
-### Suite Integral de Ocho Componentes Arquitectónicos y Epistémicos · Versión 2.0
+### Suite Integral de Ocho Componentes Arquitectónicos y Epistémicos · Versión 2.3
 
 Este directorio reúne la especificación formal y exhaustiva de la plataforma y del agente inteligente **EduPulse**, estructurada bajo la clásica arquitectura de **Sistemas Inteligentes en Educación** adaptada a modelos de lenguaje extensos (LLMs), orientada a la **recolección, procesamiento y análisis mixto (hermenéutico y estadístico)** de datos para la investigación de grado en la Universidad de Córdoba.
 
@@ -26,15 +26,15 @@ Cada uno de los ocho documentos técnicos ha sido elaborado con el máximo nivel
 
 ```text
 documentation/
-├── README.md                          # Índice general, mapa conceptual y articulación metodológica
-├── 01-modelo-del-tutor.md              # Modelo del Tutor: Mediación cualitativa, socrática y voz magnética de Cereza (v2.0)
-├── 02-modelo-del-conocimiento.md       # Modelo del Conocimiento: Categorías, saberes curriculares, TPACK, Ley 2626 y pilares (v2.0)
-├── 03-modelo-del-alumno.md             # Modelo del Alumno: Perfil del informante, etapas formativas (1°-10°) y traza mixta (v2.0)
-├── 04-modelo-del-mundo.md              # Modelo del Mundo (DESIGN.md): Glassmorphism, UX móvil, navegación popstate y vistas (v2.0)
-├── 05-prompt-maestro-rocas.md          # Especificación del Prompt Maestro: Framework ROCAS, inferencia dual ES/EN y cascada Gemini (v2.0)
-├── 06-arquitectura-del-sistema.md      # Arquitectura del Sistema: Pipeline de 3 capas, endpoints Express y stack técnico (v2.0)
-├── 07-instrumentos-y-triangulacion.md  # Instrumentos y Triangulación: Cuestionarios Likert, autosave offline y convergencia mixta (v1.0)
-└── 08-seguridad-y-control-de-acceso.md # Seguridad y Control de Acceso: RBAC, doble factor (OAuth + PIN 0412) y reglas Firestore (v1.0)
+├── README.md                          # Índice general, mapa conceptual y articulación metodológica (v2.3)
+├── 01-modelo-del-tutor.md              # Modelo del Tutor: Mediación cualitativa, socrática, voz de Cereza y motor resiliente (v2.3)
+├── 02-modelo-del-conocimiento.md       # Modelo del Conocimiento: Categorías, saberes curriculares, TPACK, Ley 2626 y pilares (v2.3)
+├── 03-modelo-del-alumno.md             # Modelo del Alumno: Perfil del informante, etapas formativas (1°-10°) y traza mixta (v2.3)
+├── 04-modelo-del-mundo.md              # Modelo del Mundo (DESIGN.md): Glassmorphism, UX móvil, voz dual y validación interactiva (v2.3)
+├── 05-prompt-maestro-rocas.md          # Especificación del Prompt Maestro: Framework ROCAS, inferencia dual ES/EN y cascada Gemini (v2.3)
+├── 06-arquitectura-del-sistema.md      # Arquitectura del Sistema: Pipeline de 3 capas, endpoints Express, OAuth2.0 y stack técnico (v2.3)
+├── 07-instrumentos-y-triangulacion.md  # Instrumentos y Triangulación: Suite Google Forms general/individual y convergencia mixta (v2.3)
+└── 08-seguridad-y-control-de-acceso.md # Seguridad y Control de Acceso: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas Firestore (v2.3)
 ```
 
 ---

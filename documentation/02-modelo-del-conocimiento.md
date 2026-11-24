@@ -2,7 +2,7 @@ DOCUMENTO 02 | MODELO DEL CONOCIMIENTO: CATEGORÍAS, SABERES Y MARCOS CURADOS
 
 # DOCUMENTO — 02
 # Modelo del Conocimiento: Categorías, Saberes y Marcos Curados
-### Ontología Epistemológica y Curricular de EduPulse · Versión 2.0
+### Ontología Epistemológica y Curricular de EduPulse · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -10,8 +10,8 @@ DOCUMENTO 02 | MODELO DEL CONOCIMIENTO: CATEGORÍAS, SABERES Y MARCOS CURADOS
 | **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
-| **Componente documentado** | Modelo del Conocimiento (Estructura de dominios expertos, ontología de categorías cualitativas y dimensiones cuantitativas, marcos normativos y reglas de triangulación) |
-| **Documento** | 02 — Modelo del Conocimiento (Versión 2.0) |
+| **Componente documentado** | Modelo del Conocimiento (Estructura de dominios expertos, ontología de categorías cualitativas y dimensiones cuantitativas, marcos normativos, Ley 2626 y reglas de triangulación) |
+| **Documento** | 02 — Modelo del Conocimiento (Versión 2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico para la especificación del dominio conceptual, categorías hermenéuticas, pilares epistemológicos y fundamentación mixta del agente.*

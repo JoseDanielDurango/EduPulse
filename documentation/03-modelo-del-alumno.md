@@ -2,7 +2,7 @@ DOCUMENTO 03 | MODELO DEL ALUMNO: PERFIL DEL INFORMANTE Y TRAZA DEL PROGRESO
 
 # DOCUMENTO — 03
 # Modelo del Alumno: Perfil del Informante y Traza del Progreso
-### Representación Epistémica y Curricular del Docente en Formación · Versión 2.0
+### Representación Epistémica y Curricular del Docente en Formación · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -10,8 +10,8 @@ DOCUMENTO 03 | MODELO DEL ALUMNO: PERFIL DEL INFORMANTE Y TRAZA DEL PROGRESO
 | **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
-| **Componente documentado** | Modelo del Alumno (Representación pedagógica del informante, etapas formativas, traza cualitativa y diagnóstica cuantitativa) |
-| **Documento** | 03 — Modelo del Alumno (Versión 2.0) |
+| **Componente documentado** | Modelo del Alumno (Representación pedagógica del informante, etapas formativas, traza cualitativa, diagnóstica cuantitativa y analítica hermenéutica individual) |
+| **Documento** | 03 — Modelo del Alumno (Versión 2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico para la especificación del perfil del participante, gestión del estado cognoscitivo, adaptación curricular del diálogo y resguardo de la traza de aprendizaje.*

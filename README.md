@@ -54,20 +54,27 @@ Bajo el **paradigma hermenéutico–interpretativo** y un diseño concurrente de
    * Monitorea el número de turnos sustantivos del participante (`participantTurns`).
    * Explora orgánicamente cuatro dimensiones clave (Prácticas/Autoeficacia, Ética/Autonomía, Transición Curricular y Coaprendizaje).
    * Tras 6 a 8 intervenciones maduras, sintetiza los hallazgos y concluye con elegancia.
-4. **Voz Multimodal y Bilingüismo (ES / EN):**
-   * Reconocimiento de voz continuo vía Web Speech API y síntesis de voz opcional.
-   * Soporte idiomático dual instantáneo en toda la plataforma.
-5. **Pre-Codificación Semántica y Triangulación CAQDAS (`/api/analyze-interview`):**
-   * Clasifica automáticamente citas textuales directas en las categorías de la tesis y permite exportaciones a Google Sheets, CSV, ATLAS.ti y NVivo.
+4. **Motor de Voz Dual Accesible con IA Multimodal (ES / EN):**
+   * Grabación de audio nativa mediante `MediaRecorder` con retroalimentación visual dinámica en vivo en canvas (`LiveMicVisualizer`).
+   * Transcripción en backend impulsada por Google Gemini multimodal (`/api/transcribe-audio`), superando las limitaciones y fallas de la Web Speech API en navegadores móviles (iOS Safari, Android Chrome, Brave, Firefox).
+   * Síntesis de voz auditiva (Text-to-Speech) opcional y soporte idiomático dual instantáneo.
+5. **Pre-Codificación Semántica, Síntesis Resiliente y Triangulación CAQDAS:**
+   * Clasifica automáticamente citas textuales directas en las categorías de la tesis mediante `/api/analyze-interview`.
+   * **Motor de Síntesis Resiliente (`qualitativeSynthesis.ts`):** Elimina condiciones de carrera y provee un motor determinista de respaldo local (*fallback*) que garantiza citas, resumen y polaridad emocional aún ante caídas de red o cuota de API.
+   * Exportación automatizada hacia Google Drive (Google Sheets en 3 pestañas estructuradas con OAuth 2.0), CSV, ATLAS.ti y NVivo.
 
 ---
 
-## Experiencia de Usuario y Soporte Móvil
+## Experiencia de Usuario, Analítica y Soporte Móvil
 
 * **Estética Frutiger Aero Modern Glassmorphism:** Interfaz oscura y translúcida con acentos cian, esmeralda y el sello simbólico de Umbra (*Umbran Watch*).
 * **Navegación Móvil Inferior (`MobileBottomNav.tsx`):** Barra ergonómica flotante diseñada para smartphones y tablets.
 * **Navegación Protegida con Botones de Retorno (`ArrowLeft`):** Botones explícitos de regreso en pantalla para evitar el cierre accidental de páginas.
 * **Intercepción de Gestos del Navegador (`popstate` + `beforeunload`):** Protección contra el botón atrás nativo del dispositivo y gestos táctiles de deslizamiento durante las sesiones de entrevista activa.
+* **Validación Guiada Fila por Fila en Cuestionarios (`InstrumentForm.tsx`):** Banner interactivo con píldoras de salto directo, animación luminiscente en campos pendientes, distintivos *"Falta responder"* en cada fila de tablas matriciales y aceptación de consentimiento ético en un clic.
+* **Suite de Analítica Visual Tipo Google Forms (General e Individual):**
+  * Dashboard cuantitativo general con diagramas circulares (dona demográfica por semestre y sede) y gráficos de barras horizontales con porcentajes.
+  * Visor hermenéutico individualizado (`InterviewsAnalyticsView.tsx`): radar de competencias docentes, desglose de polaridad/sentimiento dialógico y citas directas organizadas por informante (`E01`...`E40`).
 
 ---
 
@@ -76,19 +83,20 @@ Bajo el **paradigma hermenéutico–interpretativo** y un diseño concurrente de
 * **Autenticación Dual para Investigadores (`AdminAuthModal.tsx`):**
   * Factor 1: Google OAuth verificado contra lista blanca institucional (`josedudaca@gmail.com`, `jdurangocaballero59@correo.unicordoba.edu.co`, `jramirezoviedo06@correo.unicordoba.edu.co`, `jgiraldo@correo.unicordoba.edu.co`).
   * Factor 2: PIN Maestro de Investigador (`0412`).
-* **Protección de Datos Personales (Ley 1581 de 2012):** Desidentificación con códigos seudo-anonimizados (`E01`...`E40`); sin recolección de cédulas ni teléfonos.
-* **Reglas de Seguridad en Cloud Firestore (`firestore.rules`):** Escritura controlada de sesiones e instrumentos con consentimiento ético; lectura masiva y analítica reservada a investigadores.
+* **Gobernanza de Google OAuth 2.0 y Exportación a Sheets:** Configuración de orígenes autorizados de JavaScript en Google Cloud Console para producción y desarrollo, previniendo errores de origen (`origin_mismatch`).
+* **Protección de Datos Personales (Ley 1581 de 2012) y Enmascaramiento PII:** Desidentificación con códigos seudo-anonimizados (`E01`...`E40`); supresión de correos personales en la interfaz pública (etiquetas neutrales *"Enviar a investigadores"*).
+* **Reglas de Seguridad en Cloud Firestore (`firestore.rules`):** Escritura controlada de sesiones e instrumentos con consentimiento ético; lectura masiva, analítica gráfica y transcripciones reservadas exclusivamente a investigadores.
 * **Endpoint Seguro de Diagnóstico (`/api/health`):** Comprobación en vivo del estado del motor de IA sin exponer credenciales privadas.
 
 ---
 
 ## Arquitectura Técnica y Stack
 
-* **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React, Framer Motion.
-* **Backend:** Node.js, Express, TypeScript (`tsx`).
-* **Inteligencia Artificial:** Google GenAI SDK (`@google/genai`) con cascada de modelos (`gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.8-flash`, `gemini-3.6-flash`).
+* **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React, Web Audio API (`AudioContext`, `AnalyserNode`), Google Identity Services (GIS).
+* **Backend:** Node.js, Express, TypeScript (`tsx`), Google Sheets API v4 REST Client.
+* **Inteligencia Artificial:** Google GenAI SDK (`@google/genai`) con cascada de modelos (`gemini-2.5-flash`, `gemini-3.5-flash-lite`, fallbacks).
 * **Base de Datos & Auth:** Google Cloud Firestore (tiempo real) y Firebase Authentication.
-* **Exportación de Datos:** Pipeline de exportación a CSV, Excel, Google Sheets y software CAQDAS.
+* **Exportación de Datos:** Pipeline de exportación a Google Sheets automatizado (3 pestañas), CSV, Excel, JSON y software CAQDAS.
 
 ---
 
@@ -97,15 +105,15 @@ Bajo el **paradigma hermenéutico–interpretativo** y un diseño concurrente de
 ```text
 EduPulse/
 ├── documentation/                   # Suite completa de documentación técnica y metodológica
-│   ├── README.md                    # Índice general y articulación con la tesis
-│   ├── 01-modelo-del-tutor.md        # Modelo del Tutor: Mediación socrática y voz de Cereza (v2.0)
-│   ├── 02-modelo-del-conocimiento.md # Modelo del Conocimiento: TPACK, Ley 2626 y categorías (v2.0)
-│   ├── 03-modelo-del-alumno.md       # Modelo del Alumno: Perfil formativo y traza mixta (v2.0)
-│   ├── 04-modelo-del-mundo.md        # Modelo del Mundo: Glassmorphism, UX móvil y vistas (v2.0)
-│   ├── 05-prompt-maestro-rocas.md    # Prompt Maestro ROCAS: Inferencia dual ES/EN y Gemini (v2.0)
-│   ├── 06-arquitectura-del-sistema.md# Arquitectura del Sistema: Pipeline y endpoints Express (v2.0)
-│   ├── 07-instrumentos-y-triangulacion.md # Instrumentos Likert, autosave y triangulación (v1.0)
-│   └── 08-seguridad-y-control-de-acceso.md # Seguridad: RBAC, 2FA (OAuth + PIN 0412) y reglas (v1.0)
+│   ├── README.md                    # Índice general y articulación con la tesis (v2.3)
+│   ├── 01-modelo-del-tutor.md        # Modelo del Tutor: Mediación socrática, voz de Cereza y motor resiliente (v2.3)
+│   ├── 02-modelo-del-conocimiento.md # Modelo del Conocimiento: TPACK, Ley 2626 y categorías (v2.3)
+│   ├── 03-modelo-del-alumno.md       # Modelo del Alumno: Perfil formativo y traza mixta (v2.3)
+│   ├── 04-modelo-del-mundo.md        # Modelo del Mundo: Glassmorphism, UX móvil, voz dual y validación interactiva (v2.3)
+│   ├── 05-prompt-maestro-rocas.md    # Prompt Maestro ROCAS: Inferencia dual ES/EN y Gemini (v2.3)
+│   ├── 06-arquitectura-del-sistema.md# Arquitectura del Sistema: Pipeline, endpoints Express y OAuth2.0 (v2.3)
+│   ├── 07-instrumentos-y-triangulacion.md # Instrumentos Likert, suite Google Forms general/individual (v2.3)
+│   └── 08-seguridad-y-control-de-acceso.md # Seguridad: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas (v2.3)
 ├── src/
 │   ├── components/
 │   │   ├── instruments/             # Módulo de instrumentos cuantitativos diagnósticos

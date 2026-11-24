@@ -2,7 +2,7 @@ DOCUMENTO 08 | SEGURIDAD, CONTROL DE ACCESO Y PROTECCIÓN DE DATOS ÉTICOS
 
 # DOCUMENTO — 08
 # Seguridad, Control de Acceso y Protección de Datos Éticos
-### Plataforma EduPulse · Arquitectura de Confidencialidad y Gobernanza
+### Plataforma EduPulse · Arquitectura de Confidencialidad y Gobernanza · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -10,8 +10,8 @@ DOCUMENTO 08 | SEGURIDAD, CONTROL DE ACCESO Y PROTECCIÓN DE DATOS ÉTICOS
 | **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
-| **Componente documentado** | Seguridad de la plataforma (Control de acceso basado en roles RBAC, autenticación de doble factor para investigadores, reglas de Cloud Firestore, anonimización PII y cumplimiento de la Ley 1581 de 2012) |
-| **Documento** | 08 — Seguridad y Control de Acceso (Versión 1.0) |
+| **Componente documentado** | Seguridad de la plataforma (Control de acceso basado en roles RBAC, autenticación de doble factor para investigadores, gobernanza de Google OAuth 2.0 y lista blanca de orígenes, reglas de Cloud Firestore, anonimización PII, enmascaramiento de correos y cumplimiento de la Ley 1581 de 2012) |
+| **Documento** | 08 — Seguridad y Control de Acceso (Versión 2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico para la especificación de los mecanismos de autenticación, control de privilegios, salvaguarda de la confidencialidad de los participantes y resguardo de secretos criptográficos.*
@@ -66,12 +66,13 @@ EduPulse implementa un modelo de control de acceso por roles (*Role-Based Access
 | **Formularios Diagnósticos (`InstrumentForm`)** | Escritura / Envío | Lectura y gestión | Registro validado en `instrument_responses`. |
 | **Panel de Sesiones (`SessionsDashboard`)** | Prohibido | Lectura total / Gestión | Restringido por credencial de investigación. |
 | **Visor Estadístico (`InstrumentResponsesViewer`)** | Prohibido | Lectura y cálculo | Restringido por credencial de investigación. |
-| **Exportación a CAQDAS, CSV y Sheets** | Prohibido | Descarga y sincronización | Restringido por credencial de investigación. |
+| **Suite de Analítica Visual Tipo Google Forms (General e Individual)** | Prohibido | Lectura total / Filtros | Restringido por `isAdminAuthenticated` (PIN 0412 + OAuth). |
+| **Exportación a CAQDAS, CSV y Sheets Automatizado** | Prohibido | Descarga y sincronización | Restringido por credencial de investigación y OAuth 2.0. |
 | **Gestión de Guiones Cualitativos (`GuidesManager`)** | Lectura pasiva | Creación / Modificación | Escritura restringida en Firestore. |
 
 ---
 
-## 3. Autenticación de Doble Factor para Investigadores (2FA)
+## 3. Autenticación de Doble Factor para Investigadores (2FA) y Gobernanza OAuth 2.0
 
 Para acceder al panel de sesiones, transcripciones y visualizador estadístico, el sistema no depende de una simple contraseña estática, sino de un protocolo dual administrado por `AdminAuthModal.tsx` y `src/lib/adminAuth.ts`:
 
@@ -94,6 +95,23 @@ export const AUTHORIZED_RESEARCHER_EMAILS = [
 Adicionalmente a la autenticación federada, se exige el ingreso del **PIN Maestro de Investigador (`0412`)**:
 * Previene el acceso no autorizado en computadores compartidos donde la sesión de Google pudiese haber quedado abierta.
 * El estado de autorización de administrador (`isAdminAuthenticated`) se conserva únicamente en memoria volátil de la sesión del cliente, expirando automáticamente al cerrar la pestaña o el navegador.
+
+### 3.3 Gobernanza de Google OAuth 2.0 y Orígenes Autorizados (*origin_mismatch*)
+Para habilitar la exportación automática de hojas de cálculo hacia Google Drive (`/api/export-sheets`) y el inicio de sesión federado, EduPulse utiliza Google Identity Services (GIS) bajo el cliente OAuth 2.0 `288046435138-uuqu1o6hu76e1ga8dbmhc3mhrccitp93.apps.googleusercontent.com` en el proyecto de Google Cloud `gen-lang-client-0983089494`.
+
+Para dar cumplimiento estricto a las directrices de seguridad de Google y prevenir el `Error 400: origin_mismatch`, se definen y autorizan los siguientes límites de origen:
+1. **Orígenes autorizados de JavaScript (*Authorized JavaScript Origins*):**
+   * `https://edupulse-575b.onrender.com` (Entorno de producción en Render)
+   * `http://localhost:3000` (Entorno de desarrollo local)
+   * `http://localhost:5173` (Entorno de pruebas Vite)
+   *(Restricción técnica: URLs normalizadas sin barra inclinada `/` al final)*.
+2. **URIs de redireccionamiento autorizados (*Authorized Redirect URIs*):**
+   * `https://edupulse-575b.onrender.com`
+   * `https://gen-lang-client-0983089494.firebaseapp.com/__/auth/handler` (Handler oficial de Firebase Auth)
+3. **Dominios Autorizados en Firebase Console:**
+   * `edupulse-575b.onrender.com`
+4. **Mecanismo de Resiliencia y Fallback Inmediato:**
+   * Si la ventana emergente de Google OAuth es bloqueada o experimenta demoras de propagación, el sistema captura el error y activa de inmediato botones alternativos de exportación (*Descargar CSV compatible con Excel*, *Descargar JSON* o *Enviar reporte consolidado a investigadores por correo*), impidiendo la interrupción del flujo investigativo.
 
 ---
 
@@ -168,6 +186,12 @@ Siguiendo las directrices éticas de la American Psychological Association (APA,
 2. **Codificación Seudo-Anonimizada:** Durante el registro inicial (`NewSessionModal.tsx`), el sistema asigna una clave de codificación secuencial (`E01`, `E02`... `E40`):
    * En las transcripciones, pre-codificaciones cualitativas y matrices CAQDAS, el estudiante solo es referenciado por dicho identificador alfanumérico.
    * El nombre de pila solo se utiliza en memoria volátil de la conversación para que Cereza mantenga un trato humano, cordial y personalizado (*"Comprendo, Carlos..."*).
+
+### 5.2 Enmascaramiento de Canales de Contacto y Desidentificación en Interfaz Pública
+En versiones previas del software, botones de respaldo por correo electrónico exponían direcciones personales de los investigadores en el DOM público del navegador. En la versión 2.3:
+* Se despersonalizaron todas las etiquetas visibles para los estudiantes y participantes externos, sustituyéndolas por denominaciones académicas institucionales: **"Enviar a investigadores"** / **"Send to researchers"**.
+* El sistema orquesta la apertura controlada del cliente de correo (`mailto:`) precargando el asunto estructurado y copiando simultáneamente el reporte al portapapeles (`navigator.clipboard.writeText`) como medida de contingencia ante navegadores que bloqueen protocolos externos.
+* Se previene la recolección automatizada (*scraping*) de correos y se preserva la intimidad del equipo investigador frente a informantes y terceros.
 
 ---
 

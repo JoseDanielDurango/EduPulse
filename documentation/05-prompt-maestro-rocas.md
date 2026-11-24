@@ -2,7 +2,7 @@ DOCUMENTO 05 | ESPECIFICACIÓN Y DISEÑO DEL PROMPT MAESTRO
 
 # DOCUMENTO — 05
 # Especificación y Diseño del Prompt Maestro
-### Framework ROCAS · Agente Conversacional Cereza · Versión 2.0
+### Framework ROCAS · Agente Conversacional Cereza · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -11,7 +11,7 @@ DOCUMENTO 05 | ESPECIFICACIÓN Y DISEÑO DEL PROMPT MAESTRO
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
 | **Marco metodológico de diseño** | Marco Técnico para la Ingeniería de Prompts en Modelos de Lenguaje Extensos (Giraldo y Muñoz, 2025) y Metodología ROCAS |
-| **Documento** | 05 — Especificación y Diseño del Prompt Maestro (Modelo ROCAS v2.0) |
+| **Documento** | 05 — Especificación y Diseño del Prompt Maestro (Modelo ROCAS v2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico para la especificación, calibración, inferencia dual (ES/EN) y validación empírica del agente conversacional.*

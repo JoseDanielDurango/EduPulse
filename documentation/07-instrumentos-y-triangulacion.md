@@ -2,7 +2,7 @@ DOCUMENTO 07 | INSTRUMENTOS CUANTITATIVOS DE DIAGNÓSTICO Y TRIANGULACIÓN MIXTA
 
 # DOCUMENTO — 07
 # Instrumentos Cuantitativos de Diagnóstico y Triangulación Mixta
-### Plataforma EduPulse · Enfoque Metodológico Multimétodo
+### Plataforma EduPulse · Enfoque Metodológico Multimétodo · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -10,8 +10,8 @@ DOCUMENTO 07 | INSTRUMENTOS CUANTITATIVOS DE DIAGNÓSTICO Y TRIANGULACIÓN MIXTA
 | **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
-| **Componente documentado** | Instrumentos cuantitativos (Cuestionarios estructurados en escala Likert, persistencia en Firestore, visualizador estadístico y protocolo de triangulación hermenéutica-estadística) |
-| **Documento** | 07 — Instrumentos y Triangulación (Versión 1.0) |
+| **Componente documentado** | Instrumentos cuantitativos (Cuestionarios estructurados en escala Likert y matrices de frecuencia, validación interactiva guiada, persistencia en Firestore, suite de analítica visual tipo Google Forms general e individual, y protocolo de triangulación hermenéutica-estadística) |
+| **Documento** | 07 — Instrumentos y Triangulación (Versión 2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico-metodológico para la especificación de los cuestionarios diagnósticos, análisis psicométrico descriptivo y convergencia metodológica en la investigación mixta.*
@@ -176,20 +176,29 @@ Las respuestas son almacenadas en la colección raíz `instrument_responses` de 
 
 ---
 
-## 5. Módulo de Visualización y Análisis Estadístico (`InstrumentResponsesViewer.tsx`)
+## 5. Módulo de Visualización y Suite de Gráficos Tipo Google Forms (`GoogleFormsCharts.tsx` & `InterviewsAnalyticsView.tsx`)
 
-### 5.1 Arquitectura del Visor para Investigadores
-Ubicado en el portal protegido de administración e investigación (`AdminAuthModal`), el componente `InstrumentResponsesViewer.tsx` proporciona un motor de cálculo descriptivo en tiempo real sin requerir exportaciones intermedias. Sus capacidades analíticas abarcan:
+### 5.1 Arquitectura Analítica para Investigadores
+Ubicado en el portal protegido de administración e investigación (`AdminAuthModal`), el sistema proporciona una suite completa de analítica cuantitativa y hermenéutica estructurada bajo el estándar visual y la ergonomía de Google Forms:
 
-1. **Agregación Dinámica de Muestra:** Filtrado en tiempo real por instrumento (Percepciones vs. Autoeficacia), por etapa formativa (Semestres 1°-3°, 4°-6°, 7°-10°) y por sede institucional (Montería, Lorica, Planeta Rica).
-2. **Medidas de Tendencia Central y Dispersión:**
-   * **Media aritmética por reactivo ($\bar{x}_i$):**
-     $$\bar{x}_i = \frac{1}{N} \sum_{k=1}^{N} R_{k,i}$$
-   * **Desviación estándar ($\sigma_i$):** Mide la dispersión u homogeneidad de criterio entre los participantes:
-     $$\sigma_i = \sqrt{\frac{1}{N - 1} \sum_{k=1}^{N} (R_{k,i} - \bar{x}_i)^2}$$
-   * **Puntaje medio consolidado por dimensión ($\bar{D}_j$):** Permite comparar rápidamente qué áreas presentan mayor fortaleza o vacíos pedagógicos.
-3. **Distribución Porcentual de Respuestas:** Visualización mediante barras de distribución segmentadas que representan el porcentaje de participantes en cada nivel de la escala Likert (1 a 5).
-4. **Exportación Estructurada:** Generación instantánea de archivos tabulares (.CSV) compatibles con SPSS, R, Python (Pandas) y Google Sheets.
+1. **Dashboard General de Cuestionarios (`GoogleFormsCharts.tsx` en `InstrumentResponsesViewer.tsx`):**
+   * **Diagramas Circulares de Dona:** Representación de variables sociodemográficas clave como la distribución de informantes por semestre (1° a 10°) y por campus/sede universitaria (Sede Central Montería, Lorica, Sahagún, Montelíbano, Planeta Rica).
+   * **Gráficos de Barras Horizontales con Porcentajes:** Mapeo de frecuencias para reactivos de selección múltiple y matrices Likert, calculando en tiempo real el porcentaje y total de respuestas por opción.
+   * **Medidas de Tendencia Central y Dispersión:** Cálculo reactivo de media ($\bar{x}$) y desviación estándar ($\sigma$) por reactivo y dimensión.
+
+2. **Analítica Cualitativa e Individualizada de Entrevistas (`InterviewsAnalyticsView.tsx`):**
+   * **Visualización General del Corpus:** Distribución de turnos totales de conversación, duración estimada, volumen de citas por eje deductivo y sentimiento dialógico global.
+   * **Visualización Individual por Informante:** Selector dinámico de participantes (`E01`, `E02`, etc.) que despliega:
+     * **Radar de Competencias Tecno-pedagógicas:** Evaluación multi-eje que compara la apropiación técnica, el juicio ético, la transposición didáctica y la prevención de la dependencia cognitiva.
+     * **Desglose Emocional y de Sentimiento:** Proporción de reflexiones entusiastas, críticas o de cautela metodológica frente a la IA.
+     * **Citas Textuales Categorizadas:** Fichas visuales con los testimonios más densos del estudiante, listas para citación directa en el informe de tesis.
+
+3. **Restricción de Seguridad RBAC:**
+   * Tanto el visualizador estadístico de respuestas como los gráficos generales e individuales están estrictamente restringidos al perfil de Investigador Autenticado (mediante PIN Maestro y Google OAuth en lista blanca), garantizando que ningún informante externo acceda a los datos agregados de sus pares.
+
+4. **Exportación Estructurada y Respaldo:**
+   * Generación instantánea de archivos tabulares (.CSV) para SPSS, R y Jamovi.
+   * Sincronización directa hacia Google Sheets con formato de 3 pestañas estructuradas.
 
 ---
 

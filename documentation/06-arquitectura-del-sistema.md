@@ -2,7 +2,7 @@ DOCUMENTO 06 | ARQUITECTURA Y ESPECIFICACIÓN FUNCIONAL DEL SISTEMA
 
 # DOCUMENTO — 06
 # Arquitectura y Especificación Funcional del Sistema
-### Plataforma Integral para la Investigación Mixta sobre Formación Docente e IA · Versión 2.0
+### Plataforma Integral para la Investigación Mixta sobre Formación Docente e IA · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -10,8 +10,8 @@ DOCUMENTO 06 | ARQUITECTURA Y ESPECIFICACIÓN FUNCIONAL DEL SISTEMA
 | **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
-| **Naturaleza del documento** | Arquitectura de software, especificación funcional de requisitos, pipeline de datos de tres capas y seguridad de la información |
-| **Documento** | 06 — Arquitectura del Sistema (Versión 2.0) |
+| **Naturaleza del documento** | Arquitectura de software, especificación funcional de requisitos, pipeline de datos de tres capas, endpoints Express, integración Google Cloud OAuth 2.0 y seguridad |
+| **Documento** | 06 — Arquitectura del Sistema (Versión 2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico para la articulación holística de los Modelos 01 al 08 de la plataforma EduPulse.*
@@ -26,11 +26,13 @@ El sistema **EduPulse** se define como una plataforma web inteligente y co-pilot
 ### 1.1 Alcance Positivo: Lo que ES
 * Guía entrevistas semiestructuradas adaptativas mediante la agente inteligente **Cereza**, calibrada con una personalidad magnética, perspicaz y profesional (inspirada en la elegancia de Bayonetta), adaptando su diálogo al semestre (1° a 10°) y sede universitaria.
 * Evalúa de forma autónoma la saturación de datos cualitativos (`isInterviewFinished`) tras un mínimo de 6 intervenciones maduras a través de cuatro dimensiones de indagación orgánica.
-* Proporciona instrumentos estructurados cuantitativos (Likert 1-5) con guardado automático de borradores offline (`localStorage`) y persistencia en Cloud Firestore.
-* Despliega un panel analítico estadístico en tiempo real (`InstrumentResponsesViewer.tsx`) para cálculo de medias, desviaciones estándar y distribuciones porcentuales.
-* Implementa control de acceso basado en roles (RBAC) con autenticación de doble factor para investigadores (Google OAuth contra lista blanca y PIN Maestro `0412`).
-* Ofrece interacción multimodal (dictado por voz Web Speech API y teclado) y navegación móvil adaptativa (`MobileBottomNav.tsx`, botones de retorno y control de gestos `popstate`).
-* Clasifica y triangula citas directas en la ontología deductiva (IA, Formación Docente, Efectos) y exporta datos estructurados hacia ATLAS.ti, NVivo y Google Sheets.
+* Incorpora un **Motor de Síntesis Cualitativa Resiliente (`qualitativeSynthesis.ts`)** que elimina condiciones de carrera al finalizar y ofrece un fallback determinista que garantiza la extracción de citas y resumen incluso ante caídas de red o cuota de API.
+* Proporciona instrumentos estructurados cuantitativos (Likert y matrices de frecuencia) con validación interactiva guiada, detección de filas pendientes y guardado automático offline (`localStorage`).
+* Despliega una **Suite de Analítica Visual tipo Google Forms** con gráficos generales (barras, donas demográficas) y análisis hermenéutico individualizado por informante (radar de competencias y sentimiento dialógico).
+* Implementa **Motor de Voz Dual** combinando captura nativa con `MediaRecorder`, visualizador dinámico de audio en vivo (`LiveMicVisualizer`) y transcripción multimodal en backend con Google Gemini (`/api/transcribe-audio`).
+* Integra **Google OAuth 2.0 y Google Sheets API v4** (`/api/export-sheets`), generando libros de cálculo automatizados con 3 pestañas estructuradas en el Google Drive de los investigadores con 1 clic.
+* Implementa control de acceso basado en roles (RBAC) con autenticación para investigadores (Google OAuth contra lista blanca y PIN Maestro `0412`), restringiendo estrictamente la visualización de analíticas y transcripciones crudas.
+* Ofrece navegación móvil adaptativa (`MobileBottomNav.tsx`, botones universales de retorno `ArrowLeft` y control de gestos `popstate` para prevenir cierres involuntarios).
 
 ### 1.2 Límites: Lo que NO ES
 * **No es un sistema evaluativo o calificador:** No emite notas ni juzga el rendimiento académico del estudiante.
@@ -84,25 +86,28 @@ Triangulación Mixta y CAQDAS (SummaryView · ResponsesViewer · Sheets)
 ```text
 +-------------------------------------------------------------------------------+
 | CAPA 1: INGESTA CRUDA (Raw Ingestion Layer)                                   |
-| - Captura en vivo de diálogo (texto y voz con Web Speech API).                |
-| - Respuestas cuantitativas brutas a cuestionarios Likert.                     |
+| - Captura dual de voz (MediaRecorder + Web Audio API) y texto.                |
+| - Transcripción multimodal en tiempo real vía '/api/transcribe-audio'.        |
+| - Respuestas brutas a cuestionarios con validación interactiva guiada.        |
 | - Registro secuencial con marcas temporales ISO 8601 en Cloud Firestore.      |
 +-------------------------------------------------------------------------------+
                                        │
                                        ▼
 +-------------------------------------------------------------------------------+
-| CAPA 2: TRANSFORMACIÓN Y PRIVACIDAD (Enriched & PII Shield Layer)             |
+| CAPA 2: TRANSFORMACIÓN, SÍNTESIS Y PRIVACIDAD (Enriched & Fallback Layer)     |
 | - Seudo-anonimización automática con identificadores secuenciales (E01-E40).  |
-| - Agregación de dimensiones cuantitativas y puntuación media por reactivo.    |
-| - Auditoría de integridad ética y estado de consentimiento informado.         |
+| - Motor dual de síntesis cualitativa (Gemini + fallback local determinista).  |
+| - Enmascaramiento de direcciones de correo electrónico en la interfaz pública.|
+| - Auditoría de integridad ética y estado de consentimiento informado digital. |
 +-------------------------------------------------------------------------------+
                                        │
                                        ▼
 +-------------------------------------------------------------------------------+
 | CAPA 3: ANÁLISIS, TRIANGULACIÓN Y CAQDAS (Analytical Layer)                   |
-| - Pre-codificación semántica en '/api/analyze-interview'.                     |
-| - Cálculo en vivo de medias (x̄) y desviaciones (σ) en ResponsesViewer.        |
-| - Exportación interoperable hacia ATLAS.ti, NVivo, CSV y Google Sheets.        |
+| - Pre-codificación semántica y radar de competencias tecnopedagógicas.        |
+| - Suite de gráficos tipo Google Forms (barras, donas demográficas y tablas).  |
+| - Exportación automatizada a Google Drive (Sheets en 3 pestañas) vía OAuth2.0.|
+| - Respaldo en CSV interoperable para software CAQDAS (ATLAS.ti / NVivo).      |
 +-------------------------------------------------------------------------------+
 ```
 
@@ -113,16 +118,20 @@ Triangulación Mixta y CAQDAS (SummaryView · ResponsesViewer · Sheets)
 ### 4.1 Requerimientos Funcionales (RF)
 * **RF-01 (Diálogo Socrático Adaptativo):** Cereza modula su interacción al semestre del estudiante y a su nivel de práctica docente sin emitir calificaciones.
 * **RF-02 (Saturación Cualitativa Autónoma):** El agente evalúa dinámicamente si los testimonios recolectados saturan las 4 dimensiones de indagación para concluir la sesión de forma armónica tras 6 o más turnos sustantivos.
-* **RF-03 (Cuestionarios Diagnósticos con Autosave):** El sistema permite diligenciar encuestas Likert guardando automáticamente el progreso en `localStorage` ante interrupciones de red.
-* **RF-04 (Visor Estadístico Descriptivo):** El panel de investigación calcula reactivamente medidas de tendencia central y distribuciones porcentuales de respuestas.
-* **RF-05 (Autenticación Dual para Investigadores):** Acceso al panel administrativo condicionado a Google OAuth autorizado en lista blanca y PIN Maestro `0412`.
+* **RF-03 (Cuestionarios Diagnósticos con Autosave y Validación Guiada):** El sistema permite diligenciar encuestas Likert y matrices de frecuencia con guardado automático en `localStorage`, banner de validación con enlaces de salto interactivos y resaltado fila por fila.
+* **RF-04 (Visor Estadístico Descriptivo y Gráficos Tipo Google Forms):** El panel de investigación calcula reactivamente medidas de tendencia central, frecuencias porcentuales y genera gráficos de barras y donas demográficas.
+* **RF-05 (Autenticación Dual para Investigadores):** Acceso al panel administrativo y a las analíticas gráficas condicionado a Google OAuth autorizado en lista blanca y PIN Maestro `0412`.
 * **RF-06 (Salida Estructurada JSON):** Todas las respuestas del backend son emitidas bajo esquemas JSON estrictos procesables por React.
-* **RF-07 (Navegación Móvil Segura):** Implementación de barra de navegación móvil inferior y captura de eventos de retroceso para evitar pérdidas accidentales de sesión.
+* **RF-07 (Navegación Móvil Segura):** Implementación de barra de navegación móvil inferior, botones de retorno universales (`ArrowLeft`) y captura de eventos `popstate` para evitar pérdidas accidentales de sesión.
+* **RF-08 (Motor de Voz Dual con Transcripción Multimodal):** Grabación nativa de audio mediante `MediaRecorder`, retroalimentación visual en vivo con `LiveMicVisualizer` y procesamiento neuronal en backend (`/api/transcribe-audio`).
+* **RF-09 (Exportación Automatizada a Google Drive y Sheets):** Integración con Google Identity Services (GIS) para generar libros de cálculo estructurados en 3 pestañas directamente en el Google Drive de los investigadores mediante `/api/export-sheets`.
+* **RF-10 (Analítica Hermenéutica Individualizada):** Visualizador cualitativo por participante que traza el radar de competencias docentes, polaridad de sentimiento y testimonios clasificados por categoría.
+* **RF-11 (Síntesis Cualitativa Resiliente con Fallback):** Arquitectura que resuelve condiciones de carrera al finalizar y garantiza la extracción de citas cualitativas y resumen hermenéutico incluso si la API externa experimenta fallos de conectividad o límites de cuota.
 
 ### 4.2 Requerimientos No Funcionales (RNF)
 * **RNF-01 (Personalidad y Calidez):** Cereza mantiene un tono magnético, ingenioso y maduro, desarmando la deseabilidad social sin perder el rigor universitario.
-* **RNF-02 (Resiliencia y Cascada de Modelos):** Conmutación suave entre modelos de Google Gemini ante saturaciones 503 con reintentos automáticos.
-* **RNF-03 (Protección PII y Habeas Data):** Anonimización sistemática bajo la Ley 1581 de 2012; prohibición de almacenar identificaciones civiles o teléfonos.
+* **RNF-02 (Resiliencia y Cascada de Modelos):** Conmutación suave entre modelos de Google Gemini ante saturaciones 503 con reintentos automáticos y fallback heurístico local.
+* **RNF-03 (Protección PII y Habeas Data):** Anonimización sistemática bajo la Ley 1581 de 2012; prohibición de almacenar identificaciones civiles o teléfonos privados.
 * **RNF-04 (Bilingüismo Completo):** Soporte idiomático íntegro (Español / Inglés) tanto en la interfaz gráfica como en las instrucciones de razonamiento del LLM.
 
 ---
@@ -133,17 +142,19 @@ Triangulación Mixta y CAQDAS (SummaryView · ResponsesViewer · Sheets)
 | :--- | :--- | :--- | :--- |
 | `/api/chat` | POST | Público / Token de Sesión | Procesa el turno conversacional, ejecuta la cascada de Gemini y devuelve el JSON estructurado de Cereza. |
 | `/api/analyze-interview` | POST | Restringido a Investigadores | Ejecuta el análisis hermenéutico global, extrayendo citas categorizadas, puntos críticos y sentimiento. |
+| `/api/transcribe-audio` | POST | Público / Sesión de Entrevista | Recibe el audio crudo capturado por `MediaRecorder`, ejecuta inferencia multimodal con Google Gemini y devuelve la transcripción textual fidedigna. |
+| `/api/export-sheets` | POST | Token Google OAuth 2.0 | Crea un libro de cálculo en Google Sheets v4 con 3 pestañas estructuradas (Ficha, Citas Categorizadas y Transcripción Completa) en el Drive del usuario. |
 | `/api/health` | GET | Público (Anonimizado) | Diagnostica el estado del motor de IA, verificando la presencia de clave (`hasGeminiKey`) y latencia del servicio. |
 
 ---
 
 ## 6. Infraestructura Técnica y Stack Tecnológico
 
-* **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React, Framer Motion.
-* **Backend:** Node.js, Express, TypeScript (`tsx`).
-* **Motor de Inferencia:** Google GenAI SDK (`@google/genai`) con cascada de modelos (`gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.8-flash`).
+* **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React, Web Audio API (`AudioContext`, `AnalyserNode`), Google Identity Services (GIS).
+* **Backend:** Node.js, Express, TypeScript (`tsx`), Google Sheets API v4 REST Client.
+* **Motor de Inferencia:** Google GenAI SDK (`@google/genai`) con cascada de modelos (`gemini-2.5-flash`, `gemini-3.5-flash-lite`, fallbacks).
 * **Base de Datos & Auth:** Google Cloud Firestore (tiempo real) y Firebase Authentication con reglas de seguridad declarativas.
-* **Persistencia Local:** `localStorage` y React State para resiliencia offline.
+* **Persistencia Local y Respaldo:** `localStorage` y React State para resiliencia offline y recuperación transparente de sesiones incompletas.
 
 ---
 

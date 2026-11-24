@@ -2,7 +2,7 @@ DOCUMENTO 01 | MODELO DEL TUTOR: MEDIACIÓN CUALITATIVA Y PROBING HERMENÉUTICO
 
 # DOCUMENTO — 01
 # Modelo del Tutor: Mediación Cualitativa y Probing Hermenéutico
-### Agente Conversacional Cereza · Versión 2.0
+### Agente Conversacional Cereza · Versión 2.3
 
 | Campo | Detalle |
 | :--- | :--- |
@@ -10,8 +10,8 @@ DOCUMENTO 01 | MODELO DEL TUTOR: MEDIACIÓN CUALITATIVA Y PROBING HERMENÉUTICO
 | **Contexto de implementación** | Universidad de Córdoba · Facultad de Educación y Ciencias Humanas · Licenciatura en Informática |
 | **Investigadores** | José Daniel Durango Caballero y Jefersson Ramírez Oviedo |
 | **Director del proyecto** | Juan Carlos Giraldo Cardozo |
-| **Componente documentado** | Modelo del Tutor (Comportamiento pedagógico, dialéctico, personalidad magnética y protocolo de repregunta reflexiva) |
-| **Documento** | 01 — Modelo del Tutor (Versión 2.0) |
+| **Componente documentado** | Modelo del Tutor (Comportamiento pedagógico, dialéctico, personalidad magnética, protocolo de repregunta reflexiva y motor resiliente de síntesis) |
+| **Documento** | 01 — Modelo del Tutor (Versión 2.3) |
 | **Fecha de actualización** | Noviembre de 2026 |
 
 *Documento técnico-pedagógico para la especificación del motor dialéctico, la mediación socrática y la recolección hermenéutica de datos cualitativos.*
@@ -123,7 +123,30 @@ El Modelo del Tutor sitúa al docente en formación en el centro de la deliberac
 ## 19. Síntesis del modelo
 El Modelo del Tutor de EduPulse reconfigura la entrevista cualitativa mediante una agente inteligente (Cereza) dotada de sofisticación, aplomo y sutil picardía, orientada a superar el conformismo discursivo y obtener testimonios profundos y auténticos para la investigación de grado en la Universidad de Córdoba.
 
-## 20. Referencias académicas utilizadas
+## 20. Protocolo de Cierre Autónomo y Motor Resiliente de Síntesis Cualitativa
+Una de las innovaciones fundamentales incorporadas en la versión 2.3 es la resolución de la condición de carrera (*race condition*) durante la finalización del diálogo y la implementación de una arquitectura de síntesis cualitativa resiliente en dos capas:
+
+### 20.1 Resolución de la Condición de Carrera en la Finalización
+En versiones preliminares, cuando Cereza declaraba la saturación (`isInterviewFinished: true`) o el informante presionaba voluntariamente *"Finalizar Entrevista"*, la transición de la vista en React ocurría antes de que la inferencia de análisis asíncrona completara la estructuración de citas.
+* En la versión 2.3, `InterviewRoom.tsx` orquesta un bloqueo controlado mediante `isSynthesizing`, asegurando que `handleTriggerFullSynthesis` sea invocado con `await` riguroso.
+* La sala muestra un estado visual interactivo con mensaje de cortesía (*"Cereza está sintetizando tus aportes y extrayendo los códigos hermenéuticos..."*), garantizando que ningún turno de diálogo quede sin procesar.
+
+### 20.2 Motor Dual de Síntesis Hermenéutica (`src/lib/qualitativeSynthesis.ts`)
+Para blindar el estudio contra caídas de red, latencias en zonas rurales de Córdoba o cuotas agotadas de la API de Google Gemini, el sistema implementa una arquitectura de síntesis en dos capas:
+1. **Capa Primaria (Neuronal en Backend):** Envío del diálogo al endpoint `/api/analyze-interview`, donde Gemini 2.5 Flash genera un JSON enriquecido con citas directas categorizadas, sentimiento global (`positive`, `critical`, `mixed`) y perspectiva del perfil (*Persona Insight*).
+2. **Capa de Respaldo Determinista (*Client & Server Fallback*):** Si la API neuronal devuelve un código 503, 429 o tiempo de espera agotado, se activa automáticamente la función determinista `synthesizeInterviewLocally(messages, participantName, semester, language)`:
+   * **Extracción Heurística de Citas:** Escanea los turnos de habla del estudiante (`sender: 'user'`), segmenta oraciones ricas en densidad semántica y las asigna a los tres ejes deductivos (`Inteligencia Artificial`, `Formación Docente`, `Efectos de la IA`).
+   * **Cálculo de Polaridad y Sentimiento:** Analiza el léxico empleado (verbos de autonomía, términos de dependencia o muleta, entusiasmo metodológico) y computa el sentimiento predominante.
+   * **Garantía Metodológica:** Ninguna entrevista queda en blanco o sin matriz de hallazgos; los investigadores siempre obtienen su reporte estructurado listo para exportar.
+
+### 20.3 Persistencia y Reanudación Transparente en Pantalla de Inicio
+Si por corte de energía o cierre intempestivo del navegador el estudiante abandona la sesión antes de ver la matriz final:
+* La pantalla principal (`App.tsx`) detecta en `localStorage` y Firestore si existe una entrevista previa del informante.
+* Despliega un banner Frutiger Aero persistente con dos acciones: **"Continuar Entrevista con Cereza"** (retoma en el turno exacto sin perder memoria) o **"Ver Matriz y Resultados"** (si ya había alcanzado el cierre).
+
+---
+
+## 21. Referencias académicas utilizadas
 * Bastani, H., Bastani, O., Sungu, A., Ge, H., Kabakcı, H., & Mariman, R. (2024). Generative AI can harm learning: Evidence from high school mathematics. *SSRN Electronic Journal*. https://doi.org/10.2139/ssrn.4895486
 * Creswell, J. W., & Poth, C. N. (2018). *Qualitative inquiry and research design: Choosing among five approaches* (4th ed.). SAGE Publications.
 * Glaser, B. G., & Strauss, A. L. (1967). *The discovery of grounded theory: Strategies for qualitative research*. Aldine Publishing.

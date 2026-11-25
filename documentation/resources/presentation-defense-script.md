@@ -7,7 +7,7 @@
 | **Producto de Software** | EduPulse v2.3: Plataforma Web Híbrida y Agente Dialógico Inteligente |
 | **Sustentantes (Desarrolladores)** | José Daniel Durango Caballero & Jefersson Ramírez Oviedo |
 | **Director de Proyecto** | Mag. Juan Carlos Giraldo Cardozo |
-| **Archivos de Diapositivas** | `EduPulse_Development_and_Design_Final.pptx` / `EduPulse_Final_Defense_Presentation.pptx` (14 diapositivas panorámicas 16:9) |
+| **Archivos de Diapositivas** | `EduPulse_Development_and_Design_Final.pptx` / `EduPulse_Final_Defense_Presentation.pptx` (16 diapositivas panorámicas 16:9) |
 | **Entorno de Producción** | [edupulse-575b.onrender.com](https://edupulse-575b.onrender.com) |
 | **Tiempo Estimado de Exposición** | 15 a 18 minutos (más demostración en vivo y sesión de preguntas) |
 
@@ -18,18 +18,20 @@
 ```text
 Diapositiva 01: Portada Técnica e Identidad del Sistema                  [01:00 min]
 Diapositiva 02: Visión del Software y Retos de Ingeniería                [01:15 min]
-Diapositiva 03: Arquitectura Técnica Full-Stack y Ecosistema             [01:30 min]
-Diapositiva 04: Sistema de Diseño Frutiger Aero Modern Glassmorphism     [01:30 min]
-Diapositiva 05: Experiencia de Usuario (UX) Móvil y Ergonomía Reactiva   [01:15 min]
-Diapositiva 06: Diseño del Agente Conversacional: Cereza y Mediación     [01:45 min]
-Diapositiva 07: Ingeniería de Instrucciones: Framework ROCAS en Backend   [01:30 min]
-Diapositiva 08: Evolución del Desarrollo: Línea Temporal (Sprints 1 al 5) [01:15 min]
-Diapositiva 09: Evolución del Sistema de Audio: Motor de Voz Dual con IA [01:45 min]
-Diapositiva 10: Validación Interactiva de Cuestionarios Fila por Fila    [01:15 min]
-Diapositiva 11: Resiliencia de Datos: Eliminación de Condiciones de Carrera [01:30 min]
-Diapositiva 12: Suite de Analítica Visual Tipo Google Forms y Radar      [01:30 min]
-Diapositiva 13: Gobernanza de Datos, Seguridad RBAC y Google OAuth 2.0   [01:15 min]
-Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:15 min]
+Diapositiva 03: Arquitectura Frontend & UX Reactivo (Cliente)            [01:15 min]
+Diapositiva 04: Arquitectura Backend, Gateway & Inferencia IA (Servidor) [01:15 min]
+Diapositiva 05: Sistema de Diseño Frutiger Aero Modern Glassmorphism     [01:30 min]
+Diapositiva 06: Experiencia de Usuario (UX) Móvil y Ergonomía Reactiva   [01:15 min]
+Diapositiva 07: Diseño del Agente Conversacional: Cereza y Mediación     [01:30 min]
+Diapositiva 08: Ingeniería de Instrucciones: Framework ROCAS en Backend   [01:30 min]
+Diapositiva 09: Orquestación Backend: Pipeline en Tiempo Real (Server.ts) [01:15 min]
+Diapositiva 10: Evolución del Desarrollo: Línea Temporal (Sprints 1 al 5) [01:15 min]
+Diapositiva 11: Evolución del Sistema de Audio: Motor de Voz Dual con IA [01:30 min]
+Diapositiva 12: Validación Interactiva de Cuestionarios Fila por Fila    [01:15 min]
+Diapositiva 13: Resiliencia de Datos: Eliminación de Condiciones de Carrera [01:15 min]
+Diapositiva 14: Suite de Analítica Visual Tipo Google Forms y Radar      [01:15 min]
+Diapositiva 15: Gobernanza de Datos, Seguridad RBAC y Google OAuth 2.0   [01:15 min]
+Diapositiva 16: Demostración en Vivo en Producción y Cierre Técnico      [01:15 min]
                                                     TOTAL ESTIMADO: ~18:00 min
 ```
 
@@ -51,68 +53,84 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 
 ---
 
-### Diapositiva 03 · Arquitectura Técnica Full-Stack y Ecosistema
+### Diapositiva 03 · Arquitectura Frontend & UX Reactivo (Cliente)
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"La arquitectura de EduPulse se cimenta sobre un ecosistema full-stack moderno, modular y desacoplado:  
-  > * En el **Frontend**, implementamos React 19 con TypeScript estricto, Tailwind CSS v4 para diseño atómico y Lucide Icons, optimizado para empaquetado ultra-rápido mediante Vite 6.  
-  > * En el **Backend**, diseñamos un servidor en Node.js y Express que actúa como capa intermedia de seguridad y orquestación con la API de Google Gemini (utilizando la familia multimodal 2.5 Flash), manteniendo oculta la clave de API y gobernando la temperatura de inferencia a 0.4 para garantizar respuestas precisas.  
-  > * Para la **Persistencia**, combinamos Google Cloud Firestore en tiempo real con persistencia reactiva en `localStorage` offline-first.  
-  > * Y en **Integraciones Cloud**, integramos Google Cloud OAuth 2.0 para exportación directa a Google Sheets y Google Drive con tokens JWT."*
+  > *"En la capa de cliente, implementamos React 19 con TypeScript estricto, adoptando una arquitectura basada en componentes funcionales desacoplados y hooks personalizados de sesión (`useSessionProtection`, `useAudioRecorder`).  
+  > Para el estilizado, integramos Tailwind CSS v4 con tokens de diseño Frutiger Aero, capas difuminadas `backdrop-blur-xl` y bordes bioluminiscentes sin sobrecarga de runtime.  
+  > Todo el empaquetado corre sobre Vite 6, logrando un Hot Module Replacement (HMR) inferior a 200 milisegundos y persistencia local reactiva inmediata con cero pérdida de turnos."*
 
 ---
 
-### Diapositiva 04 · Sistema de Diseño Frutiger Aero Modern Glassmorphism
+### Diapositiva 04 · Arquitectura Backend, Gateway & Motor de Inferencia IA
 * **Voz sugerida (Investigador 2 / Jefersson):**
+  > *"Las capas de servidor y nube se estructuran en tres niveles:  
+  > * En la **Capa 2 (API Gateway)**, un servidor Node.js con Express custodia la clave de API de Gemini y expone endpoints especializados para chat, transcripción y exportación a Sheets.  
+  > * En la **Capa 3 (Motor de Inferencia)**, integramos Google Gemini 2.5 Flash, optimizado para latencias menores a 1.2 segundos, con temperatura fijada en 0.4 y forzado de salida JSON nativo.  
+  > * En la **Capa 4 (Persistencia & Nube)**, combinamos Google Cloud Firestore en tiempo real con Google Cloud OAuth 2.0 y resiliencia offline dual."*
+
+---
+
+### Diapositiva 05 · Sistema de Diseño Frutiger Aero Modern Glassmorphism
+* **Voz sugerida (Investigador 1 / José Daniel):**
   > *"A nivel de diseño visual, rompimos deliberadamente con el 'Flat Design' corporativo y minimalista que predomina en las aplicaciones web actuales. Rescatamos y modernizamos la estética **Frutiger Aero** combinada con **Glassmorphism**:  
-  > * Definimos una paleta cromática inspirada en la atmósfera y el agua: Cyan espacial (`#06B6D4`), azul marino profundo (`#070D18`), esmeralda de validación (`#10B981`) y magenta de acento.  
-  > * Desarrollamos componentes con efecto de vidrio esmerilado translúcido utilizando `backdrop-blur-xl`, bordes bioluminiscentes con reflejos de luz y sombras sutiles.  
-  > * Integramos una identidad visual distintiva: el reloj de Umbra (*Umbran Watch*), un widget visual animado que simboliza el control temporal y la introspección académica, otorgando calidez y dinamismo a la interfaz sin sacrificar legibilidad."*
+  > * Definimos una paleta cromática inspirada en la atmósfera y el agua: Cyan espacial (`#06B6D4`), azul marino abisal (`#050B14`), esmeralda de validación (`#10B981`) y magenta de acento.  
+  > * Desarrollamos componentes con efecto de vidrio esmerilado translúcido utilizando `backdrop-blur-xl`, bordes bioluminiscentes con reflejos de luz especular superior y sombras sutiles.  
+  > * Integramos una identidad visual distintiva: el reloj de Umbra (*Umbran Watch*), un widget visual animado que simboliza el control temporal y la introspección pedagógica."*
 
 ---
 
-### Diapositiva 05 · Experiencia de Usuario (UX) Móvil y Ergonomía Reactiva
-* **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"Más del 75% de los informantes universitarios acceden desde sus teléfonos inteligentes. Por eso, diseñamos una ergonomía móvil de primer nivel:  
-  > * Implementamos una barra de navegación inferior fija (`MobileBottomNav`) con zonas táctiles amplias y retroalimentación háptica visual.  
-  > * Incorporamos botones de retorno explícitos en todas las vistas modales y paneles secundarios para evitar que el usuario se pierda.  
-  > * Añadimos una solución crítica de UX: el **atrapamiento de eventos `popstate`**. En dispositivos Android y iOS, el gesto de deslizamiento hacia atrás solía cerrar accidentalmente la entrevista en curso. Nuestro sistema intercepta el historial del navegador y muestra una confirmación flotante, protegiendo la sesión y evitando la pérdida accidental de datos."*
-
----
-
-### Diapositiva 06 · Diseño del Agente Conversacional: Cereza y su Modelo Dialógico
+### Diapositiva 06 · Experiencia de Usuario (UX) Móvil y Ergonomía Reactiva
 * **Voz sugerida (Investigador 2 / Jefersson):**
+  > *"Más del 76% de los informantes universitarios acceden desde sus teléfonos inteligentes. Por eso, diseñamos una ergonomía móvil de primer nivel:  
+  > * Implementamos una barra de navegación inferior fija (`MobileBottomNav`) con zonas táctiles amplias y retroalimentación táctil visual.  
+  > * Incorporamos botones de retorno explícitos en todas las vistas modales y paneles secundarios para evitar desorientación.  
+  > * Añadimos una solución crítica de UX: el **atrapamiento de eventos `popstate`**. En dispositivos móviles, el gesto de deslizamiento hacia atrás solía cerrar accidentalmente la entrevista. Nuestro sistema intercepta el historial del navegador y muestra una confirmación flotante, protegiendo la sesión y reteniendo los datos en `localStorage`."*
+
+---
+
+### Diapositiva 07 · Diseño del Agente Conversacional: Cereza y su Modelo Dialógico
+* **Voz sugerida (Investigador 1 / José Daniel):**
   > *"El núcleo de la interacción es **Cereza**, nuestro agente conversacional socrático. A diferencia de los asistentes sumisos o genéricos (tipo ChatGPT o Siri), Cereza fue modelada con una personalidad distintiva, elegante y astuta (inspirada en la figura de Bayonetta):  
   > * Emplea un tono cercano pero intelectualmente exigente, dirigiéndose al usuario de tú a tú como un colega en formación.  
-  > * Cuando el estudiante da una respuesta complaciente o teórica de manual, Cereza no se conforma: activa técnicas de **indagación de contraste (probing)** y repregunta buscando anécdotas vividas y dilemas reales.  
+  > * Cuando el estudiante da una respuesta complaciente o teórica de manual, Cereza activa técnicas de **indagación de contraste (probing)** y repregunta buscando anécdotas vividas y dilemas reales.  
   > * Utiliza la técnica del **eco reflexivo**, reflejando las propias palabras del estudiante para impulsarlo a profundizar.  
   > * Y crucialmente, posee **criterio de saturación autónomo**: en lugar de ceñirse a un número estático de preguntas, analiza algorítmicamente la densidad y riqueza de las respuestas, marcando el fin de la entrevista (`isInterviewFinished: true`) de forma orgánica entre 6 y 8 turnos de diálogo sustantivos."*
 
 ---
 
-### Diapositiva 07 · Ingeniería de Instrucciones: Framework ROCAS en Backend
-* **Voz sugerida (Investigador 1 / José Daniel):**
+### Diapositiva 08 · Ingeniería de Instrucciones: Framework ROCAS en Backend
+* **Voz sugerida (Investigador 2 / Jefersson):**
   > *"Para gobernar el comportamiento de Cereza en cada turno de diálogo, diseñamos en `server.ts` un prompt de sistema estructurado bajo el framework **ROCAS**:  
   > * **Rol:** Mentora reflexiva y aguda en educación y tecnologías computacionales.  
   > * **Objetivo:** Explorar cómo la IA transforma la formación docente, detectando el 'efecto muleta' y la autonomía crítica.  
   > * **Contexto:** Estudiantes de la Universidad de Córdoba en diversas sedes territoriales y semestres.  
   > * **Acciones:** Indagación atómica, preguntas concisas de una sola idea y extracción concurrente de citas textuales.  
-  > * **Salida:** Un contrato JSON estricto (`reply`, `dimension`, `identifiedNeed`, `directQuote`, `isInterviewFinished`).  
-  > Gracias a la parametrización de temperatura en 0.4 y la cascada inteligente de modelos en Gemini 2.5 Flash, logramos tiempos de respuesta inferiores a 1.2 segundos con un 100% de cumplimiento del esquema JSON."*
+  > * **Salida:** Un contrato JSON estricto (`reply`, `dimension`, `directQuote`, `isInterviewFinished`)."*
 
 ---
 
-### Diapositiva 08 · Evolución del Desarrollo: Línea Temporal y Sprints (1 al 5)
+### Diapositiva 09 · Orquestación Backend: Pipeline en Tiempo Real (`server.ts`)
+* **Voz sugerida (Investigador 1 / José Daniel):**
+  > *"En esta diapositiva observamos la ejecución paso a paso de cada turno conversacional en nuestro servidor intermedio:  
+  > 1. **Sanitización de Entrada:** Valida longitudes, neutraliza inyecciones de prompt y aplica limitación de tasa (rate limiting).  
+  > 2. **Inyección ROCAS + Historial:** Ensambla dinámicamente el prompt con el historial previo y la categoría metodológica activa.  
+  > 3. **Inferencia con Gemini 2.5 Flash:** Ejecuta la llamada en streaming con `temperature: 0.4` y `response_mime_type: 'application/json'`.  
+  > 4. **Contrato JSON & Cascada:** Valida el esquema con TypeScript y activa fallbacks automáticos ante errores 429/500."*
+
+---
+
+### Diapositiva 10 · Evolución del Desarrollo: Línea Temporal y Sprints (1 al 5)
 * **Voz sugerida (Investigador 2 / Jefersson):**
   > *"El desarrollo de EduPulse siguió una metodología ágil iterativa a lo largo de 5 grandes Sprints:  
   > * **Sprint 1:** Arquitectura base, configuración de TypeScript, Vite y conexión inicial con Google Gemini.  
   > * **Sprint 2:** Modelado del agente Cereza, prompts socráticos y control de turnos en `ChatArea.tsx`.  
   > * **Sprint 3:** Módulo psicométrico cuantitativo con persistencia reactiva en Cloud Firestore.  
-  > * **Sprint 4:** Rediseño completo bajo Frutiger Aero, navegación móvil y panel administrativo con PIN.  
+  > * **Sprint 4:** Rediseño completo bajo Frutiger Aero, navegación móvil y panel administrativo con PIN ####.  
   > * **Sprint 5 (Versión Final 2.3):** Motor de voz dual multimodal, validación guiada fila por fila, fallback heurístico local para síntesis cualitativa y analítica visual tipo Google Forms."*
 
 ---
 
-### Diapositiva 09 · Evolución del Sistema de Audio: Motor de Voz Dual con IA Multimodal
+### Diapositiva 11 · Evolución del Sistema de Audio: Motor de Voz Dual con IA Multimodal
 * **Voz sugerida (Investigador 1 / José Daniel):**
   > *"Uno de los desafíos de ingeniería más fascinantes fue la entrada de voz para los usuarios:  
   > * Inicialmente, implementamos la API nativa del navegador `webkitSpeechRecognition`. Sin embargo, en pruebas de campo en teléfonos móviles y navegadores como Brave o Safari, la API fallaba frecuentemente por falta de soporte nativo o cortes por silencios prolongados.  
@@ -123,7 +141,7 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 
 ---
 
-### Diapositiva 10 · Módulo de Cuestionarios: Validación Guiada Fila por Fila
+### Diapositiva 12 · Módulo de Cuestionarios: Validación Guiada Fila por Fila
 * **Voz sugerida (Investigador 2 / Jefersson):**
   > *"En el módulo cuantitativo (`InstrumentForm.tsx`), los informantes debían responder matrices Likert con múltiples criterios. En los formularios tradicionales, si un usuario olvida marcar una casilla en una tabla de 10 filas, el sistema se limita a arrojar un error genérico, obligando al usuario a buscar a ciegas cuál fila faltó.  
   > En EduPulse implementamos una **validación guiada interactiva**:  
@@ -133,9 +151,9 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 
 ---
 
-### Diapositiva 11 · Resiliencia de Datos: Eliminación de Condiciones de Carrera
+### Diapositiva 13 · Resiliencia de Datos: Eliminación de Condiciones de Carrera
 * **Voz sugerida (Investigador 1 / José Daniel):**
-  > *"En la versión anterior, al finalizar la entrevista se presentaba un problema de sincronización: si el usuario cerraba la pestaña justo cuando la IA estaba calculando la matriz cualitativa, la síntesis podía quedar incompleta o entrar en una condición de carrera (*race condition*).  
+  > *"En versiones tempranas, al finalizar la entrevista se presentaba un problema de sincronización: si el usuario cerraba la pestaña justo cuando la IA estaba calculando la matriz cualitativa, la síntesis podía quedar incompleta o entrar en una condición de carrera (*race condition*).  
   > Para blindar la aplicación contra cualquier fallo de red o tiempo de espera, construimos el **Motor de Síntesis Cualitativa Resiliente (`qualitativeSynthesis.ts`)**:  
   > * Si el backend por alguna razón tarda más de lo previsto o se interrumpe la conexión, el frontend activa de forma transparente un **algoritmo heurístico local determinista**.  
   > * Este motor local analiza la transcripción completa, agrupa las intervenciones por dimensiones formativas, extrae las citas más relevantes y calcula los índices de necesidad y polaridad emocional.  
@@ -143,7 +161,7 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 
 ---
 
-### Diapositiva 12 · Suite de Analítica Visual Tipo Google Forms y Radar
+### Diapositiva 14 · Suite de Analítica Visual Tipo Google Forms y Radar
 * **Voz sugerida (Investigador 2 / Jefersson):**
   > *"Para la visualización de los datos recopilados por EduPulse, desarrollamos una suite analítica completa inspirada en la familiaridad y ergonomía de Google Forms:  
   > * **Nivel General:** Despliega gráficos interactivos SVG de dona para la distribución demográfica por sedes y semestres, y gráficos de barras horizontales porcentuales para el análisis comparativo de respuestas.  
@@ -152,7 +170,7 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 
 ---
 
-### Diapositiva 13 · Gobernanza de Datos, Seguridad RBAC y Google OAuth 2.0
+### Diapositiva 15 · Gobernanza de Datos, Seguridad RBAC y Google OAuth 2.0
 * **Voz sugerida (Investigador 1 / José Daniel):**
   > *"En materia de seguridad y gobernanza de la información, EduPulse implementa controles estrictos en todos los niveles:  
   > * **Habeas Data y Anonimato:** Los estudiantes participan bajo anonimización completa; sus datos se asocian únicamente a códigos seudonimizados alfanuméricos y nunca a identificadores personales.  
@@ -161,7 +179,7 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 
 ---
 
-### Diapositiva 14 · Demostración en Vivo en Producción y Cierre Técnico
+### Diapositiva 16 · Demostración en Vivo en Producción y Cierre Técnico
 * **Voz sugerida (Investigadores 1 y 2):**
   > *"EduPulse no es un prototipo local de laboratorio; es una aplicación web en producción real, desplegada y disponible para la comunidad académica en la nube en **`https://edupulse-575b.onrender.com`**.  
   > A continuación, procederemos a realizar una breve demostración en vivo de la interacción con Cereza, el funcionamiento del motor de voz con visualizador y la generación instantánea de la matriz de analítica.  
@@ -197,7 +215,7 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 | **Software Product** | EduPulse v2.3: Hybrid Web Platform and Intelligent Dialogic Agent |
 | **Presenters (Developers)** | José Daniel Durango Caballero & Jefersson Ramírez Oviedo |
 | **Project Director** | Mag. Juan Carlos Giraldo Cardozo |
-| **Slide Decks** | `EduPulse_Development_and_Design_Final.pptx` / `EduPulse_Final_Defense_Presentation.pptx` (14 widescreen 16:9 slides) |
+| **Slide Decks** | `EduPulse_Development_and_Design_Final.pptx` / `EduPulse_Final_Defense_Presentation.pptx` (16 widescreen 16:9 slides) |
 | **Production Environment** | [edupulse-575b.onrender.com](https://edupulse-575b.onrender.com) |
 | **Estimated Exposition Time** | 15 to 18 minutes (followed by live demo and jury Q&A) |
 
@@ -208,18 +226,20 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 ```text
 Slide 01: Technical Cover & System Identity                     [01:00 min]
 Slide 02: Software Vision & Engineering Challenges              [01:15 min]
-Slide 03: Full-Stack Technical Architecture & Ecosystem         [01:30 min]
-Slide 04: Frutiger Aero Modern Glassmorphism Design System      [01:30 min]
-Slide 05: Mobile User Experience (UX) & Reactive Ergonomics     [01:15 min]
-Slide 06: Conversational Agent Design: Cereza & Socratic Model  [01:45 min]
-Slide 07: Prompt Engineering: ROCAS Framework on Backend        [01:30 min]
-Slide 08: Development Timeline: Iterative Sprints (1 to 5)      [01:15 min]
-Slide 09: Audio System Evolution: Dual-Engine Voice with AI     [01:45 min]
-Slide 10: Questionnaire Module: Row-by-Row Guided Validation    [01:15 min]
-Slide 11: Data Resilience: Race Condition Resolution            [01:30 min]
-Slide 12: Google Forms-Style Visual Analytics Suite & Radar     [01:30 min]
-Slide 13: Data Governance, RBAC Security, and Google OAuth 2.0  [01:15 min]
-Slide 14: Live Production Demonstration & Technical Closure     [01:15 min]
+Slide 03: Frontend Architecture & Reactive UX (Client Layer)    [01:15 min]
+Slide 04: Backend Architecture, Gateway & AI Inference (Server) [01:15 min]
+Slide 05: Frutiger Aero Modern Glassmorphism Design System      [01:30 min]
+Slide 06: Mobile User Experience (UX) & Reactive Ergonomics     [01:15 min]
+Slide 07: Conversational Agent Design: Cereza & Socratic Model  [01:30 min]
+Slide 08: Prompt Engineering: ROCAS Framework on Backend        [01:30 min]
+Slide 09: Backend Orchestration: Real-Time Pipeline (Server.ts) [01:15 min]
+Slide 10: Development Timeline: Iterative Sprints (1 to 5)      [01:15 min]
+Slide 11: Audio System Evolution: Dual-Engine Voice with AI     [01:30 min]
+Slide 12: Questionnaire Module: Row-by-Row Guided Validation    [01:15 min]
+Slide 13: Data Resilience: Race Condition Resolution            [01:15 min]
+Slide 14: Google Forms-Style Visual Analytics Suite & Radar     [01:15 min]
+Slide 15: Data Governance, RBAC Security, and Google OAuth 2.0  [01:15 min]
+Slide 16: Live Production Demonstration & Technical Closure     [01:15 min]
                                             TOTAL ESTIMATE: ~18:00 min
 ```
 
@@ -237,47 +257,59 @@ Slide 14: Live Production Demonstration & Technical Closure     [01:15 min]
   > *"What technical challenge motivated EduPulse? Historically, complex perceptions have been gathered through static web surveys (Google Forms, Typeform, etc.). However, in educational research, these tools suffer from three severe engineering drawbacks: textbook answers skewed by social desirability bias, survey abandonment due to cognitive fatigue, and zero ability to probe when an answer is vague or contradictory.  
   > EduPulse's engineering vision was to replace rigid surveys with an interactive dialogic experience: an intelligent agent capable of reasoning in real time, detecting contradictions, applying reflective probing, and synthesizing findings in structured formats without sacrificing quantitative rigor."*
 
-### Slide 03 · Full-Stack Technical Architecture & Ecosystem
+### Slide 03 · Frontend Architecture & Reactive UX (Client Layer)
 * **Suggested Speaker (Lead Researcher 1 / José Daniel):**
-  > *"EduPulse's architecture is anchored on a modern, decoupled full-stack ecosystem:  
-  > * On the **Frontend**, we implemented React 19 with strict TypeScript, Tailwind CSS v4 for atomic design, and Lucide Icons, optimized for ultra-fast bundling through Vite 6.  
-  > * On the **Backend**, we designed a Node.js and Express server that acts as a secure intermediary layer orchestrating the Google Gemini API (utilizing the multimodal 2.5 Flash family), safeguarding API credentials and locking inference temperature at 0.4 for deterministic accuracy.  
-  > * For **Persistence**, we combined real-time Google Cloud Firestore with reactive offline-first `localStorage` caching.  
-  > * In **Cloud Integrations**, we connected Google Cloud OAuth 2.0 for automated direct exports to Google Sheets and Google Drive with JWT tokens."*
+  > *"On the client tier, we implemented React 19 with strict TypeScript, adopting decoupled functional components and specialized custom hooks (`useSessionProtection`, `useAudioRecorder`).  
+  > For styling, Tailwind CSS v4 delivers atomic utility classes themed with Frutiger Aero tokens, `backdrop-blur-xl` translucent frosted layers, and bioluminescent borders without runtime overhead.  
+  > Powered by Vite 6, Hot Module Replacement executes in under 200 milliseconds alongside instant reactive localStorage persistence."*
 
-### Slide 04 · Frutiger Aero Modern Glassmorphism Design System
+### Slide 04 · Backend Architecture, Gateway & AI Inference (Server)
 * **Suggested Speaker (Lead Researcher 2 / Jefersson):**
-  > *"In visual design, we deliberately broke away from flat, corporate minimalism. We revived and modernized **Frutiger Aero** combined with **Glassmorphism**:  
-  > * Atmospheric color palette: Space Cyan (`#06B6D4`), deep oceanic navy (`#070D18`), validation emerald (`#10B981`), and accent magenta.  
-  > * Translucent frosted glass components using `backdrop-blur-xl`, bioluminescent borders, and subtle light refractions.  
-  > * An animated brand emblem symbolizing temporal control and academic reflection, granting dynamism and warmth to the interface without impairing readability."*
+  > *"Our server and cloud tiers are divided into three synchronized layers:  
+  > * In the **API Gateway Layer (Node.js/Express)**, server endpoints protect Gemini private keys and handle specialized routes for chat, audio, and Sheets export.  
+  > * In the **AI Inference Layer**, Google Gemini 2.5 Flash guarantees sub-1.2-second response latency, calibrated with a 0.4 temperature and native JSON schema output.  
+  > * In the **Persistence Tier**, Cloud Firestore provides real-time NoSQL synchronization backed by Google Cloud OAuth 2.0."*
 
-### Slide 05 · Mobile User Experience (UX) & Reactive Ergonomics
+### Slide 05 · Frutiger Aero Modern Glassmorphism Design System
 * **Suggested Speaker (Lead Researcher 1 / José Daniel):**
-  > *"Over 75% of pre-service teachers access the web from mobile smartphones. Therefore, we crafted first-class mobile ergonomics:  
+  > *"In visual design, we deliberately broke away from flat, corporate minimalism. We revived and modernized **Frutiger Aero** combined with **Glassmorphism**:  
+  > * Atmospheric color palette: Space Cyan (`#06B6D4`), deep oceanic navy (`#050B14`), validation emerald (`#10B981`), and accent magenta.  
+  > * Translucent frosted glass components using `backdrop-blur-xl`, bioluminescent borders, and subtle top specular light refractions.  
+  > * An animated brand emblem (the Umbran Watch) symbolizing temporal control and academic reflection, granting dynamism and warmth to the interface without impairing readability."*
+
+### Slide 06 · Mobile User Experience (UX) & Reactive Ergonomics
+* **Suggested Speaker (Lead Researcher 2 / Jefersson):**
+  > *"Over 76% of pre-service teachers access the web from mobile smartphones. Therefore, we crafted first-class mobile ergonomics:  
   > * A fixed bottom navigation bar (`MobileBottomNav`) with generous touch targets and tactile visual feedback.  
-  > * Explicit on-screen return buttons (`ArrowLeft`) across all modal views and secondary panels.  
+  > * Explicit on-screen return buttons across all modal views and secondary panels.  
   > * A critical UX solution: **`popstate` event trapping**. On Android and iOS, native back-swipe gestures previously closed the active session prematurely. Our system intercepts browser history and displays an in-app confirmation modal, safeguarding the active interview from accidental loss."*
 
-### Slide 06 · Conversational Agent Design: Cereza & Socratic Model
-* **Suggested Speaker (Lead Researcher 2 / Jefersson):**
+### Slide 07 · Conversational Agent Design: Cereza & Socratic Model
+* **Suggested Speaker (Lead Researcher 1 / José Daniel):**
   > *"The heart of interaction is **Cereza**, our Socratic conversational agent. Unlike generic assistants, Cereza was modeled with a distinct, poised, and sharp persona:  
   > * She speaks as an intellectual colleague, establishing approachable peer-to-peer rapport.  
   > * When a student provides an evasive or textbook answer, Cereza challenges them Socratically with contrast probing, seeking lived anecdotes.  
   > * She utilizes reflective mirroring, echoing the student's own words to guide deeper inquiry.  
   > * Crucially, she possesses an **autonomous saturation engine**: rather than sticking to a static question count, she algorithmically tracks response density, concluding the dialogue organically between 6 and 8 substantive turns (`isInterviewFinished: true`)."*
 
-### Slide 07 · Prompt Engineering: ROCAS Framework on Backend
-* **Suggested Speaker (Lead Researcher 1 / José Daniel):**
+### Slide 08 · Prompt Engineering: ROCAS Framework on Backend
+* **Suggested Speaker (Lead Researcher 2 / Jefersson):**
   > *"To govern Cereza's reasoning on every conversational turn, we engineered in `server.ts` a system prompt structured under the **ROCAS** framework:  
   > * **Role:** Insightful reflective mentor in educational technology.  
   > * **Objective:** Explore teacher AI adoption while detecting the 'crutch effect' and intellectual agency.  
   > * **Context:** Pre-service teachers at UniCórdoba across diverse semesters and campuses.  
   > * **Actions:** Atomic single-question formulation, knowing wit upon clichés, and concurrent quote extraction.  
-  > * **Output:** A strict JSON schema (`reply`, `dimension`, `identifiedNeed`, `directQuote`, `isInterviewFinished`).  
-  > Thanks to temperature locking at 0.4 and Gemini 2.5 Flash, response latency remains under 1.2 seconds with 100% JSON contract compliance."*
+  > * **Output:** A strict JSON schema (`reply`, `dimension`, `directQuote`, `isInterviewFinished`)."*
 
-### Slide 08 · Development Timeline: Iterative Sprints (1 to 5)
+### Slide 09 · Backend Orchestration: Real-Time Pipeline (`server.ts`)
+* **Suggested Speaker (Lead Researcher 1 / José Daniel):**
+  > *"This slide breaks down each real-time conversational turn inside our intermediary server:  
+  > 1. **Input Sanitization:** Validates length, neutralizes prompt injection payloads, and enforces rate limits.  
+  > 2. **ROCAS Context Assembly:** Dynamically builds prompts with active conversational history and current methodological dimension.  
+  > 3. **Gemini 2.5 Flash Inference:** Executes streaming inference with locked 0.4 temperature and forced JSON mime-type.  
+  > 4. **JSON Contract & Cascade:** Verifies schema via TypeScript and triggers automated fallbacks upon 429/500 events."*
+
+### Slide 10 · Development Timeline: Iterative Sprints (1 to 5)
 * **Suggested Speaker (Lead Researcher 2 / Jefersson):**
   > *"EduPulse was engineered following an agile iterative methodology across 5 major sprints:  
   > * **Sprint 1:** Base architecture, TypeScript/Vite scaffolding, and initial Google Gemini connectivity.  
@@ -286,7 +318,7 @@ Slide 14: Live Production Demonstration & Technical Closure     [01:15 min]
   > * **Sprint 4:** Modern Frutiger Aero redesign, mobile bottom navigation, and PIN-secured admin portal.  
   > * **Sprint 5 (Version 2.3):** Dual-engine multimodal voice engine, row-by-row questionnaire validation, resilient local heuristic fallback, and Google Forms-style visual analytics."*
 
-### Slide 09 · Audio System Evolution: Dual-Engine Voice with Multimodal AI
+### Slide 11 · Audio System Evolution: Dual-Engine Voice with Multimodal AI
 * **Suggested Speaker (Lead Researcher 1 / José Daniel):**
   > *"One of our greatest engineering challenges was voice input:  
   > * The browser's native `webkitSpeechRecognition` frequently crashed or lacked support on mobile browsers like Brave or iOS Safari.  
@@ -295,7 +327,7 @@ Slide 14: Live Production Demonstration & Technical Closure     [01:15 min]
   >   2. Captured audio streams via native `MediaRecorder` in compressed webm/ogg format.  
   >   3. Streamed audio blobs to `/api/transcribe-audio`, where Gemini multimodal transcription accurately decodes speech without arbitrary timeouts."*
 
-### Slide 10 · Questionnaire Module: Row-by-Row Guided Validation
+### Slide 12 · Questionnaire Module: Row-by-Row Guided Validation
 * **Suggested Speaker (Lead Researcher 2 / Jefersson):**
   > *"In traditional web forms, missing an item in a 10-row matrix produces a generic error, forcing the user to search blindly.  
   > In EduPulse, we implemented **interactive guided validation**:  
@@ -303,28 +335,28 @@ Slide 14: Live Production Demonstration & Technical Closure     [01:15 min]
   > * Clicking any pill smoothly scrolls to the exact row and highlights it with an animated warning halo.  
   > * Matrix tables visually tag unanswered rows with a visible badge: 'Answer required'."*
 
-### Slide 11 · Data Resilience: Race Condition Resolution
+### Slide 13 · Data Resilience: Race Condition Resolution
 * **Suggested Speaker (Lead Researcher 1 / José Daniel):**
   > *"In earlier versions, closing the tab right when Cereza completed an interview could trigger a race condition before synthesis finished.  
   > We built the **Resilient Qualitative Synthesis Engine (`qualitativeSynthesis.ts`)**:  
   > * Enforces an asynchronous UI lock (`isSynthesizing`) until synthesis resolves.  
   > * If the network drops or the external API times out, the client automatically triggers a **deterministic local heuristic algorithm** that extracts quotes, computes sentiment, and generates the findings matrix. Result: **zero data loss**."*
 
-### Slide 12 · Google Forms-Style Visual Analytics Suite & Radar
+### Slide 14 · Google Forms-Style Visual Analytics Suite & Radar
 * **Suggested Speaker (Lead Researcher 2 / Jefersson):**
   > *"For data visualization, we engineered an analytics suite inspired by the ergonomic clarity of Google Forms:  
   > * **General Level:** Interactive SVG demographic donut charts and horizontal percentage frequency bars.  
   > * **Individual Level:** Select any participant code (`E01`...`E40`) to display their **Technopedagogical Competency Radar**, speech-turn sentiment, and categorized quote matrix.  
   > * One-click exports to CSV, TSV, and 3-tab Google Sheets."*
 
-### Slide 13 · Data Governance, RBAC Security, and Google OAuth 2.0
+### Slide 15 · Data Governance, RBAC Security, and Google OAuth 2.0
 * **Suggested Speaker (Lead Researcher 1 / José Daniel):**
   > *"In security and data governance:  
   > * **Habeas Data & Anonymity:** Students participate under alphanumeric codes (`E01`...`E40`); private contact channels are masked in the public interface.  
   > * **Two-Factor Access Control (RBAC):** Research views are guarded by Google OAuth whitelist verification and an ephemeral **Master PIN (`####`)**.  
   > * **Google Cloud OAuth 2.0 Governance:** Normalized authorized origins (`edupulse-575b.onrender.com` and `localhost`) allow `/api/export-sheets` to export 3-tab spreadsheets directly to Google Drive."*
 
-### Slide 14 · Live Production Demonstration & Technical Closure
+### Slide 16 · Live Production Demonstration & Technical Closure
 * **Suggested Speaker (Joint):**
   > *"EduPulse is not a local lab prototype; it is a live web application in real production deployed on **`https://edupulse-575b.onrender.com`**.  
   > We will now proceed with a live demonstration of Cereza's dialogue, voice transcription with dynamic wave visualizer, and the visual analytics suite.  

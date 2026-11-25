@@ -24,14 +24,14 @@ C_EMERALD       = RGBColor(16, 185, 129)       # Verde esmeralda #10B981
 C_EMERALD_LIGHT = RGBColor(52, 211, 153)       # Esmeralda claro #34D399
 C_AMBER         = RGBColor(245, 158, 11)       # Ámbar alerta #F59E0B
 C_AMBER_LIGHT   = RGBColor(251, 191, 36)       # Ámbar claro #FBBF24
-C_ROSE          = RGBColor(244, 63, 94)        # Rosa/Rojo contraste #F43F5E
+C_ROSE          = RGBColor(244, 63, 94)        # Rosa contraste #F43F5E
 C_ROSE_LIGHT    = RGBColor(251, 113, 133)      # Rosa claro #FB7185
 C_PURPLE        = RGBColor(168, 85, 247)       # Umbra Púrpura #A855F7
 C_PURPLE_LIGHT  = RGBColor(192, 132, 252)      # Púrpura suave #C084FC
 
 C_WHITE         = RGBColor(255, 255, 255)
-C_TEXT_LIGHT    = RGBColor(226, 232, 240)      # Gris claro legible #E2E8F0
-C_TEXT_MUTED    = RGBColor(148, 163, 184)      # Gris secundario #94A3B8
+C_TEXT_LIGHT    = RGBColor(230, 238, 248)      # Blanco azulado ultra legible #E6EEF8
+C_TEXT_MUTED    = RGBColor(160, 178, 200)      # Gris azulado secundario #A0B2C8
 
 # Rutas de recursos visuales
 ASSET_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public"))
@@ -163,7 +163,7 @@ def add_glass_card(slide, left, top, width, height, border_hex="06B6D4", border_
         
     return card
 
-def add_pill_badge(slide, left, top, width, height, text, bg_hex="0E243A", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=8.5):
+def add_pill_badge(slide, left, top, width, height, text, bg_hex="0E243A", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5):
     """Genera una píldora suave 100% redondeada con borde luminoso y tipografía Segoe UI"""
     badge = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(left), Inches(top), Inches(width), Inches(height))
     badge.adjustments[0] = 0.5  # Full pill shape
@@ -207,11 +207,11 @@ def create_base_slide(badge_text="EDUPULSE · INGENIERÍA DE SOFTWARE", title_te
     
     # 1. Píldora de Categoría Superior
     if badge_text:
-        add_pill_badge(slide, 0.8, 0.38, 4.8, 0.34, badge_text.upper(), bg_hex="0C2238", text_color=C_CYAN_LIGHT, border_hex=border_hex, font_size=9)
+        add_pill_badge(slide, 0.8, 0.36, 4.9, 0.35, badge_text.upper(), bg_hex="0C2238", text_color=C_CYAN_LIGHT, border_hex=border_hex, font_size=9.5)
 
     # 2. Título de Diapositiva
     if title_text:
-        txBox = slide.shapes.add_textbox(Inches(0.8), Inches(0.80), Inches(11.733), Inches(0.72))
+        txBox = slide.shapes.add_textbox(Inches(0.8), Inches(0.78), Inches(11.733), Inches(0.72))
         tf = txBox.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
@@ -232,32 +232,32 @@ def create_base_slide(badge_text="EDUPULSE · INGENIERÍA DE SOFTWARE", title_te
     run_f = p_f.add_run()
     run_f.text = "EduPulse v2.3 · Licenciatura en Informática · Universidad de Córdoba · Sustentación Técnica Final"
     run_f.font.name = "Segoe UI"
-    run_f.font.size = Pt(8.5)
+    run_f.font.size = Pt(9)
     run_f.font.color.rgb = C_TEXT_MUTED
     
     return slide
 
-def add_bullet_item(tf, bold_prefix, text_content, font_size=9.5, space_before=4):
+def add_bullet_item(tf, bold_prefix, text_content, font_size=11.0, space_before=7):
     p = tf.add_paragraph()
     p.space_before = Pt(space_before)
     r1 = p.add_run()
     r1.text = bold_prefix + " "
     r1.font.name = "Segoe UI"
-    r1.font.size = Pt(font_size)
+    r1.font.size = Pt(font_size + 0.5)
     r1.font.bold = True
     r1.font.color.rgb = C_WHITE
     
     r2 = p.add_run()
     r2.text = text_content
     r2.font.name = "Segoe UI"
-    r2.font.size = Pt(font_size - 0.5)
+    r2.font.size = Pt(font_size)
     r2.font.color.rgb = C_TEXT_LIGHT
 
 def add_stat_card(slide, left, top, width, height, number_str, title_str, desc_str, color=C_CYAN_LIGHT, border_hex="06B6D4", tint="cyan"):
     """Tarjeta estadística armonizada con bordes suaves, reflejo superior y gradiente entintado"""
     card = add_glass_card(slide, left, top, width, height, border_hex=border_hex, border_width=1.3, tint=tint, corner_radius=0.08, add_gloss=True)
     
-    txBox = slide.shapes.add_textbox(Inches(left + 0.18), Inches(top + 0.14), Inches(width - 0.36), Inches(height - 0.28))
+    txBox = slide.shapes.add_textbox(Inches(left + 0.22), Inches(top + 0.16), Inches(width - 0.44), Inches(height - 0.32))
     tf = txBox.text_frame
     tf.word_wrap = True
     tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
@@ -266,25 +266,25 @@ def add_stat_card(slide, left, top, width, height, number_str, title_str, desc_s
     r0 = p0.add_run()
     r0.text = number_str
     r0.font.name = "Segoe UI"
-    r0.font.size = Pt(26)
+    r0.font.size = Pt(32)
     r0.font.bold = True
     r0.font.color.rgb = color
     
     p1 = tf.add_paragraph()
-    p1.space_before = Pt(3)
+    p1.space_before = Pt(4)
     r1 = p1.add_run()
     r1.text = title_str
     r1.font.name = "Segoe UI"
-    r1.font.size = Pt(11)
+    r1.font.size = Pt(13)
     r1.font.bold = True
     r1.font.color.rgb = C_WHITE
     
     p2 = tf.add_paragraph()
-    p2.space_before = Pt(3)
+    p2.space_before = Pt(4)
     r2 = p2.add_run()
     r2.text = desc_str
     r2.font.name = "Segoe UI"
-    r2.font.size = Pt(8.8)
+    r2.font.size = Pt(10.5)
     r2.font.color.rgb = C_TEXT_LIGHT
 
 
@@ -300,10 +300,10 @@ add_ambient_glow(s1, -1.0, 4.0, 5.5, 5.5, "A855F7", 12)
 panel_hero = add_glass_card(s1, 0.8, 0.8, 7.6, 5.9, border_hex="06B6D4", border_width=1.5, tint="cyan", corner_radius=0.04)
 
 # Badge de cabecera
-add_pill_badge(s1, 1.1, 1.1, 5.8, 0.35, "PROYECTO DE GRADO · LICENCIATURA EN INFORMÁTICA · UNICÓRDOBA", bg_hex="0C2238", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=8.5)
+add_pill_badge(s1, 1.1, 1.1, 6.0, 0.38, "PROYECTO DE GRADO · LICENCIATURA EN INFORMÁTICA · UNICÓRDOBA", bg_hex="0C2238", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9)
 
 # Título y Subtítulo Hero
-tx_hero = s1.shapes.add_textbox(Inches(1.1), Inches(1.6), Inches(7.0), Inches(2.3))
+tx_hero = s1.shapes.add_textbox(Inches(1.1), Inches(1.65), Inches(7.0), Inches(2.3))
 tf_h = tx_hero.text_frame
 tf_h.word_wrap = True
 tf_h.margin_left = tf_h.margin_top = tf_h.margin_right = tf_h.margin_bottom = 0
@@ -312,7 +312,7 @@ p_h0 = tf_h.paragraphs[0]
 r_h0 = p_h0.add_run()
 r_h0.text = "EduPulse v2.3"
 r_h0.font.name = "Segoe UI"
-r_h0.font.size = Pt(36)
+r_h0.font.size = Pt(38)
 r_h0.font.bold = True
 r_h0.font.color.rgb = C_CYAN_LIGHT
 
@@ -321,7 +321,7 @@ p_h1.space_before = Pt(4)
 r_h1 = p_h1.add_run()
 r_h1.text = "Arquitectura de Software, Sistema de Diseño UI/UX y Agente Conversacional Cereza"
 r_h1.font.name = "Segoe UI"
-r_h1.font.size = Pt(13.5)
+r_h1.font.size = Pt(14)
 r_h1.font.bold = True
 r_h1.font.color.rgb = C_WHITE
 
@@ -330,10 +330,10 @@ p_h2.space_before = Pt(6)
 r_h2 = p_h2.add_run()
 r_h2.text = "Plataforma web reactiva con inteligencia artificial multimodal para la recolección, diagnóstico y triangulación concurrente (QUAN + QUAL) en la educación superior."
 r_h2.font.name = "Segoe UI"
-r_h2.font.size = Pt(9.5)
+r_h2.font.size = Pt(11)
 r_h2.font.color.rgb = C_TEXT_LIGHT
 
-# 4 Fichas Informativas en Grid 2x2 con bordes suaves unificados
+# 4 Fichas Informativas en Grid 2x2
 info_items = [
     ("Sustentantes / Desarrolladores:", "José Daniel Durango C. & Jefersson Ramírez O.", C_CYAN_LIGHT, "06B6D4", "cyan"),
     ("Director de Proyecto de Grado:", "Mag. Juan Carlos Giraldo Cardozo", C_EMERALD_LIGHT, "10B981", "emerald"),
@@ -343,9 +343,9 @@ info_items = [
 
 for idx, (label, val, col, b_hex, t_name) in enumerate(info_items):
     c_left = 1.1 + (idx % 2) * 3.55
-    c_top = 4.25 + (idx // 2) * 1.05
-    box = add_glass_card(s1, c_left, c_top, 3.4, 0.95, border_hex=b_hex, border_width=1.0, tint=t_name, corner_radius=0.10, add_gloss=False)
-    tx = s1.shapes.add_textbox(Inches(c_left + 0.14), Inches(c_top + 0.12), Inches(3.12), Inches(0.72))
+    c_top = 4.30 + (idx // 2) * 1.05
+    box = add_glass_card(s1, c_left, c_top, 3.4, 0.98, border_hex=b_hex, border_width=1.0, tint=t_name, corner_radius=0.10, add_gloss=False)
+    tx = s1.shapes.add_textbox(Inches(c_left + 0.16), Inches(c_top + 0.12), Inches(3.08), Inches(0.74))
     tf_i = tx.text_frame
     tf_i.word_wrap = True
     tf_i.margin_left = tf_i.margin_top = tf_i.margin_right = tf_i.margin_bottom = 0
@@ -353,27 +353,27 @@ for idx, (label, val, col, b_hex, t_name) in enumerate(info_items):
     ri0 = pi0.add_run()
     ri0.text = label
     ri0.font.name = "Segoe UI"
-    ri0.font.size = Pt(8.8)
+    ri0.font.size = Pt(9.5)
     ri0.font.bold = True
     ri0.font.color.rgb = col
     
     pi1 = tf_i.add_paragraph()
-    pi1.space_before = Pt(2)
+    pi1.space_before = Pt(3)
     ri1 = pi1.add_run()
     ri1.text = val
     ri1.font.name = "Segoe UI"
-    ri1.font.size = Pt(8.5)
+    ri1.font.size = Pt(9.5)
     ri1.font.color.rgb = C_WHITE
 
 # Panel Derecho: Showcase Visual de Cereza y Umbran Watch
 panel_right = add_glass_card(s1, 8.65, 0.8, 3.88, 5.9, border_hex="A855F7", border_width=1.5, tint="purple", corner_radius=0.04)
 
 if os.path.exists(IMG_AVATAR):
-    s1.shapes.add_picture(IMG_AVATAR, Inches(9.25), Inches(1.3), width=Inches(2.68))
+    s1.shapes.add_picture(IMG_AVATAR, Inches(9.25), Inches(1.25), width=Inches(2.68))
 
-add_pill_badge(s1, 9.15, 4.45, 2.88, 0.38, "AGENTE SOCRÁTICO · CEREZA v2.3", bg_hex="201235", text_color=C_PURPLE_LIGHT, border_hex="A855F7")
+add_pill_badge(s1, 9.10, 4.40, 2.98, 0.40, "AGENTE SOCRÁTICO · CEREZA v2.3", bg_hex="201235", text_color=C_PURPLE_LIGHT, border_hex="A855F7", font_size=9.5)
 
-tx_ag = s1.shapes.add_textbox(Inches(8.85), Inches(4.95), Inches(3.48), Inches(1.5))
+tx_ag = s1.shapes.add_textbox(Inches(8.85), Inches(4.95), Inches(3.48), Inches(1.55))
 tf_ag = tx_ag.text_frame
 tf_ag.word_wrap = True
 tf_ag.margin_left = tf_ag.margin_top = tf_ag.margin_right = tf_ag.margin_bottom = 0
@@ -382,7 +382,7 @@ p_ag0.alignment = PP_ALIGN.CENTER
 r_ag0 = p_ag0.add_run()
 r_ag0.text = "Inspirada en el aplomo y perspicacia de Bayonetta. Conduce entrevistas en profundidad, desafía respuestas cliché y declara la saturación autónoma."
 r_ag0.font.name = "Segoe UI"
-r_ag0.font.size = Pt(9)
+r_ag0.font.size = Pt(10.5)
 r_ag0.font.color.rgb = C_TEXT_LIGHT
 
 
@@ -396,132 +396,155 @@ s2 = create_base_slide(
 
 cols_s2 = [
     ("1. El Problema del Software Clásico", "rose", "F43F5E", [
-        ("Formularios Aburridos y Rígidos:", "Herramientas tipo Google Forms o Typeform capturan respuestas telegráficas o evasivas por fatiga del usuario."),
-        ("Falta Total de Interactividad:", "Incapaces de repreguntar o profundizar cuando el informante ofrece respuestas incompletas o contradictorias."),
-        ("Chatbots Genéricos y Sumisos:", "Asistentes comerciales convencionales suenan planos, sumisos y carecen de intencionalidad metodológica."),
+        ("Formularios Rígidos y Pasivos:", "Google Forms o Typeform capturan respuestas telegráficas o evasivas por fatiga y desinterés del estudiante."),
+        ("Cero Capacidad de Repregunta:", "Incapaces de profundizar cuando el informante ofrece respuestas ambiguas, incompletas o contradictorias."),
+        ("Chatbots Genéricos y Sumisos:", "Asistentes comerciales convencionales suenan complacientes, halagan respuestas cliché y carecen de intencionalidad pedagógica."),
         ("Ruptura Metodológica:", "Obliga a separar encuestas de entrevistas, requiriendo complejas triangulaciones manuales a posteriori.")
-    ], "⚠️ 70% de datos en encuestas tradicionales son superficiales o sesgados"),
+    ], "⚠️ 70% de datos en encuestas tradicionales son superficiales"),
     
     ("2. La Solución: EduPulse Web App", "cyan", "06B6D4", [
-        ("Plataforma Híbrida QUAN + QUAL:", "Combina diálogo inteligente socrático en profundidad con formularios cuantitativos guiados."),
-        ("Agente con Identidad (Cereza):", "Personalidad magnética y sofisticada que desata conversaciones vivas y honestas."),
-        ("Sincronización Total en la Nube:", "Base de datos reactiva en tiempo real (Cloud Firestore) con resiliencia offline ante caídas de red."),
+        ("Plataforma Híbrida QUAN + QUAL:", "Combina diálogo inteligente socrático en profundidad con matrices cuantitativas Likert guiadas."),
+        ("Agente con Identidad (Cereza):", "Personalidad magnética y desafiante inspirada en Bayonetta que desata conversaciones vivas y auténticas."),
+        ("Sincronización Total Nube / Local:", "Base de datos reactiva en tiempo real (Cloud Firestore) con resiliencia offline ante caídas de red."),
         ("Triangulación Hermenéutica:", "Extracción en vivo de citas y categorización simultánea de dimensiones formativas.")
-    ], "🎯 4x mayor profundidad cualitativa y trazabilidad completa de citas"),
+    ], "🎯 4x mayor profundidad cualitativa y citas trazables"),
     
     ("3. Desafíos de Ingeniería Superados", "emerald", "10B981", [
         ("Baja Latencia de Inferencia:", "Respuestas rápidas del LLM (<1.2s) con microestados de escritura y feedback visual en tiempo real."),
-        ("Audio Robusto en Móviles:", "Reemplazo de la inestable Web Speech API por grabación nativa continua y Gemini multimodal."),
+        ("Audio Robusto en Dispositivos:", "Reemplazo de la inestable Web Speech API por grabación nativa continua y transcripción Gemini multimodal."),
         ("Cero Pérdida de Información:", "Guardado en caliente de turnos y borradores para pausar y reanudar sesiones interrumpidas."),
         ("Contrato JSON 100% Blindado:", "Parsing determinista que elimina errores 500 y garantiza persistencia estructurada.")
-    ], "⚡ Latencia < 1.2s · 0 KB pérdida de datos · Uptime 99.9%")
+    ], "⚡ Latencia < 1.2s · 0 KB pérdida · Uptime 99.9%")
 ]
 
 for idx, (col_title, t_name, b_hex, items, tag_text) in enumerate(cols_s2):
     c_left = 0.8 + idx * 4.0
     panel = add_glass_card(s2, c_left, 1.65, 3.73, 5.15, border_hex=b_hex, border_width=1.4, tint=t_name, corner_radius=0.06)
     
-    add_pill_badge(s2, c_left + 0.2, 1.85, 3.33, 0.32, col_title.upper(), bg_hex="0E2034" if t_name=="cyan" else ("2A101C" if t_name=="rose" else "0E2820"), text_color=C_CYAN_LIGHT if t_name=="cyan" else (C_ROSE_LIGHT if t_name=="rose" else C_EMERALD_LIGHT), border_hex=b_hex, font_size=8)
+    add_pill_badge(s2, c_left + 0.18, 1.82, 3.37, 0.36, col_title.upper(), bg_hex="0E2034" if t_name=="cyan" else ("2A101C" if t_name=="rose" else "0E2820"), text_color=C_CYAN_LIGHT if t_name=="cyan" else (C_ROSE_LIGHT if t_name=="rose" else C_EMERALD_LIGHT), border_hex=b_hex, font_size=8.8)
     
-    tx = s2.shapes.add_textbox(Inches(c_left + 0.2), Inches(2.3), Inches(3.33), Inches(3.7))
+    tx = s2.shapes.add_textbox(Inches(c_left + 0.18), Inches(2.28), Inches(3.37), Inches(3.95))
     tf = tx.text_frame
     tf.word_wrap = True
     tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
     
     for it in items:
-        add_bullet_item(tf, it[0], it[1], font_size=8.8, space_before=6)
+        add_bullet_item(tf, it[0], it[1], font_size=10.0, space_before=7)
         
     # Píldora inferior de impacto
-    add_pill_badge(s2, c_left + 0.18, 6.25, 3.37, 0.42, tag_text, bg_hex="081420" if t_name=="cyan" else ("1A0A10" if t_name=="rose" else "081A12"), text_color=C_CYAN_LIGHT if t_name=="cyan" else (C_ROSE_LIGHT if t_name=="rose" else C_EMERALD_LIGHT), border_hex=b_hex, font_size=7.5)
+    add_pill_badge(s2, c_left + 0.18, 6.28, 3.37, 0.40, tag_text, bg_hex="081420" if t_name=="cyan" else ("1A0A10" if t_name=="rose" else "081A12"), text_color=C_CYAN_LIGHT if t_name=="cyan" else (C_ROSE_LIGHT if t_name=="rose" else C_EMERALD_LIGHT), border_hex=b_hex, font_size=8.5)
 
 
 # =========================================================================
-# SLIDE 3: ARQUITECTURA TÉCNICA FULL-STACK (BORDES SUAVES & GRADIENTES)
+# SLIDE 3: ARQUITECTURA FRONTEND & UX REACTIVO (CLIENTE, REACT 19 & ESTÉTICA)
 # =========================================================================
 s3 = create_base_slide(
-    badge_text="ARQUITECTURA DE SOFTWARE · STACK TECNOLÓGICO",
-    title_text="Ecosistema Full-Stack: 4 Capas Desacopladas y Reactivas"
+    badge_text="ARQUITECTURA DE SOFTWARE · CAPA CLIENTE",
+    title_text="Capa 1: Presentación & UX Reactivo con React 19 y Frutiger Aero"
 )
 
-# 4 Capas Horizontales con diseño glassmorphic uniforme y sin cajas anidadas toscas
-layers = [
-    ("CAPA 1: PRESENTACIÓN & UX REACTIVO (CLIENTE)", "06B6D4", "cyan", C_CYAN_LIGHT, [
-        ("React 19 + TypeScript Estricto:", "Arquitectura basada en componentes funcionales, hooks personalizados y validación estricta de interfaces."),
-        ("Tailwind CSS v4 + Frutiger Aero:", "Estilizado atómico ultra-ligero con tokens glassmorphic y backdrop-blur-xl."),
-        ("Vite 6 Bundler:", "Tiempo de compilación Hot Module Reload <200ms y empaquetado optimizado para producción.")
+# Columna Izquierda: 3 Bloques Fundacionales del Frontend (7.8 in)
+panel_fe = add_glass_card(s3, 0.8, 1.65, 7.8, 5.15, border_hex="06B6D4", border_width=1.5, tint="cyan", corner_radius=0.06)
+add_pill_badge(s3, 1.05, 1.85, 4.8, 0.36, "ARQUITECTURA DE INTERFAZ & RENDIMIENTO CLIENTE", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5)
+
+tx_fe = s3.shapes.add_textbox(Inches(1.05), Inches(2.35), Inches(7.3), Inches(4.3))
+tf_fe = tx_fe.text_frame
+tf_fe.word_wrap = True
+tf_fe.margin_left = tf_fe.margin_top = tf_fe.margin_right = tf_fe.margin_bottom = 0
+
+add_bullet_item(tf_fe, "1. React 19 + TypeScript Estricto:", "Arquitectura basada en componentes desacoplados, custom hooks de sesión (`useSessionProtection`, `useAudioRecorder`) e inferencia estricta de interfaces para eliminar bugs en tiempo de ejecución.", font_size=11.0, space_before=4)
+add_bullet_item(tf_fe, "2. Tailwind CSS v4 con Tokens Frutiger Aero:", "Estilizado atómico sin sobrecarga de runtime. Implementa capas difuminadas con `backdrop-blur-xl`, fondos oscuros abisales (#050B14) y bordes bioluminiscentes cian y púrpura.", font_size=11.0, space_before=10)
+add_bullet_item(tf_fe, "3. Bundler Vite 6 Ultra-Rápido:", "Entorno de desarrollo con Hot Module Replacement (HMR) <200ms y árbol de sacudida (tree-shaking) avanzado para empaquetar producción en chunks optimizados.", font_size=11.0, space_before=10)
+add_bullet_item(tf_fe, "4. Sistema de Micro-Estados Reactivos:", "Indicadores visuales en caliente que muestran estados de escritura de Cereza, temporizador reflexivo y retroalimentación táctil inmediata.", font_size=11.0, space_before=10)
+
+# Columna Derecha: 2 Métricas de Rendimiento Frontend
+add_stat_card(s3, 8.85, 1.65, 3.68, 2.45, "< 200 ms", "Compilación y HMR Instantáneo", "Gracias al motor Rolldown/Vite 6, los cambios de interfaz y la recarga en caliente ocurren en microsegundos.", color=C_CYAN_LIGHT, border_hex="06B6D4", tint="cyan")
+add_stat_card(s3, 8.85, 4.35, 3.68, 2.45, "0 KB", "Pérdida Local de Turnos", "El estado del chat y las respuestas de encuestas se respaldan en caliente en LocalStorage reactivo ante cualquier cierre involuntario.", color=C_EMERALD_LIGHT, border_hex="10B981", tint="emerald")
+
+
+# =========================================================================
+# SLIDE 4: ARQUITECTURA BACKEND, INFERENCIA IA & SERVICIOS NUBE
+# =========================================================================
+s4 = create_base_slide(
+    badge_text="ARQUITECTURA DE SOFTWARE · CAPAS SERVIDOR Y NUBE",
+    title_text="Capas 2, 3 y 4: API Gateway, Google Gemini 2.5 y Cloud Firestore"
+)
+
+# 3 Tarjetas Verticales para Servidor, Inferencia y Nube
+backend_blocks = [
+    ("CAPA 2: API GATEWAY", "Node.js + Express API", "10B981", "emerald", C_EMERALD_LIGHT, [
+        ("Capa Intermedia Segura:", "Protege la clave privada de API de Gemini; el cliente web jamás expone credenciales maestras."),
+        ("Endpoints Dedicados:", "`/api/chat` (diálogo ROCAS), `/api/transcribe-audio` (voz a texto) y `/api/export-sheets` (Drive)."),
+        ("Manejo de Sobrecarga:", "Intercepción de errores 429 con degradación transparente y reintentos exponenciales.")
     ]),
-    ("CAPA 2: SERVIDOR INTERMEDIO & API GATEWAY (NODE/EXPRESS)", "10B981", "emerald", C_EMERALD_LIGHT, [
-        ("Node.js + Express REST API:", "Capa intermedia segura que protege la clave de API de Gemini y evita llamadas directas desde el navegador."),
-        ("Endpoints Especializados:", "`/api/chat` (diálogo ROCAS), `/api/transcribe-audio` (voz a texto), `/api/export-sheets` (OAuth Drive)."),
-        ("Manejo de Errores y Fallbacks:", "Intercepción de errores 429/500 con degradación transparente y resiliencia offline.")
+    ("CAPA 3: MOTOR IA", "Google Gemini 2.5 Flash", "A855F7", "purple", C_PURPLE_LIGHT, [
+        ("Inferencia Multimodal Rápida:", "Modelo optimizado para procesamiento de texto y audio nativo con latencias inferiores a 1.2 segundos."),
+        ("Temperatura Regulada en 0.4:", "Calibrada para evitar alucinaciones, manteniendo creatividad socrática y respuestas estructuradas."),
+        ("Cascada Inteligente:", "Mapeo automático de contingencia ante picos de demanda hacia modelos flash alternativos.")
     ]),
-    ("CAPA 3: MOTOR DE INFERENCIA IA (GOOGLE GEMINI 2.5 FLASH)", "A855F7", "purple", C_PURPLE_LIGHT, [
-        ("Gemini 2.5 Flash:", "Modelo multimodal optimizado para baja latencia (<1.2s) y comprensión profunda de lenguaje natural."),
-        ("Temperatura Regulada en 0.4:", "Equilibrio calibrado para evitar alucinaciones y forzar estructura JSON predecible."),
-        ("Cascada Inteligente:", "Fallback automático a `gemini-3.5-flash-lite` y `gemini-3.8-flash` ante picos de demanda.")
-    ]),
-    ("CAPA 4: PERSISTENCIA, SEGURIDAD & SERVICIOS NUBE", "F59E0B", "amber", C_AMBER_LIGHT, [
-        ("Google Cloud Firestore:", "Base de datos NoSQL reactiva en tiempo real para respuestas cuantitativas y sesiones."),
-        ("Google Cloud OAuth 2.0 & GIS:", "Exportación en 1 clic de hojas de cálculo a Google Sheets y Google Drive con token JWT."),
-        ("Persistencia Local Dual (`localStorage`):", "Garantía offline-first que retiene borradores y turnos ante cortes de red.")
+    ("CAPA 4: SERVICIOS NUBE", "Firestore & Google OAuth", "F59E0B", "amber", C_AMBER_LIGHT, [
+        ("Cloud Firestore NoSQL:", "Colecciones reactivas en tiempo real (`instrument_responses`, `chat_sessions`) con reglas de seguridad."),
+        ("Google OAuth 2.0 & GIS:", "Exportación en 1 clic de hojas de cálculo estructuradas a Google Sheets y Drive con JWT."),
+        ("Persistencia Híbrida Dual:", "Tolerancia a fallos: sincronización en nube respaldada por persistencia de cliente.")
     ])
 ]
 
-for idx, (layer_title, b_hex, t_name, col, items) in enumerate(layers):
-    l_top = 1.65 + idx * 1.28
-    panel_l = add_glass_card(s3, 0.8, l_top, 8.2, 1.2, border_hex=b_hex, border_width=1.3, tint=t_name, corner_radius=0.06)
+for idx, (badge_str, title_str, b_hex, t_name, col, items) in enumerate(backend_blocks):
+    c_left = 0.8 + idx * 4.0
+    panel = add_glass_card(s4, c_left, 1.65, 3.73, 5.15, border_hex=b_hex, border_width=1.4, tint=t_name, corner_radius=0.06)
     
-    # Header tag de capa integrado suavemente
-    add_pill_badge(s3, 0.98, l_top + 0.1, 4.3, 0.26, layer_title, bg_hex="0A1C2E" if t_name=="cyan" else ("08241A" if t_name=="emerald" else ("1E102E" if t_name=="purple" else "24180A")), text_color=col, border_hex=b_hex, font_size=8.2)
+    add_pill_badge(s4, c_left + 0.18, 1.82, 3.37, 0.36, badge_str, bg_hex="0A281E" if t_name=="emerald" else ("201235" if t_name=="purple" else "261B0B"), text_color=col, border_hex=b_hex, font_size=9)
     
-    tx_l = s3.shapes.add_textbox(Inches(0.98), Inches(l_top + 0.38), Inches(7.85), Inches(0.76))
-    tf_l = tx_l.text_frame
-    tf_l.word_wrap = True
-    tf_l.margin_left = tf_l.margin_top = tf_l.margin_right = tf_l.margin_bottom = 0
+    tx = s4.shapes.add_textbox(Inches(c_left + 0.18), Inches(2.28), Inches(3.37), Inches(4.35))
+    tf = tx.text_frame
+    tf.word_wrap = True
+    tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
     
-    for b_item in items:
-        add_bullet_item(tf_l, b_item[0], b_item[1], font_size=8.8, space_before=1.5)
-
-# Sidebar Derecho: 3 Métricas con bordes suaves idénticos y reflejo superior
-add_stat_card(s3, 9.25, 1.65, 3.28, 1.65, "< 1.2s", "Latencia de Inferencia", "Tiempo medio de respuesta del agente Cereza en turnos de chat con feedback de escritura.", color=C_CYAN_LIGHT, border_hex="06B6D4", tint="cyan")
-add_stat_card(s3, 9.25, 3.42, 3.28, 1.65, "100%", "Contrato JSON Estricto", "Todas las respuestas de Cereza se validan bajo esquema TypeScript sin rupturas de parseo.", color=C_EMERALD_LIGHT, border_hex="10B981", tint="emerald")
-add_stat_card(s3, 9.25, 5.19, 3.28, 1.61, "0 KB", "Pérdida de Información", "Gracias a la persistencia dual en caliente (Cloud Firestore + LocalStorage reactivo).", color=C_AMBER_LIGHT, border_hex="F59E0B", tint="amber")
+    p0 = tf.paragraphs[0]
+    r0 = p0.add_run()
+    r0.text = title_str
+    r0.font.name = "Segoe UI"
+    r0.font.size = Pt(13)
+    r0.font.bold = True
+    r0.font.color.rgb = C_WHITE
+    
+    for it in items:
+        add_bullet_item(tf, it[0], it[1], font_size=10.2, space_before=10)
 
 
 # =========================================================================
-# SLIDE 4: SISTEMA DE DISEÑO · FRUTIGER AERO MODERN GLASSMORPHISM
+# SLIDE 5: SISTEMA DE DISEÑO · FRUTIGER AERO MODERN GLASSMORPHISM
 # =========================================================================
-s4 = create_base_slide(
+s5 = create_base_slide(
     badge_text="SISTEMA DE DISEÑO · IDENTIDAD VISUAL",
     title_text="Estética Frutiger Aero Modern Glassmorphism: Belleza y Claridad Cognitiva"
 )
 
 # Columna 1 (5.2 in): Los 4 Pilares Visuales
-panel_pil = add_glass_card(s4, 0.8, 1.65, 5.2, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
-add_pill_badge(s4, 1.05, 1.85, 3.6, 0.3, "LOS 4 PILARES DEL SISTEMA VISUAL", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_pil = add_glass_card(s5, 0.8, 1.65, 5.2, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
+add_pill_badge(s5, 1.05, 1.85, 4.0, 0.36, "LOS 4 PILARES DEL SISTEMA VISUAL", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5)
 
-tx_pil = s4.shapes.add_textbox(Inches(1.05), Inches(2.25), Inches(4.7), Inches(4.4))
+tx_pil = s5.shapes.add_textbox(Inches(1.05), Inches(2.32), Inches(4.7), Inches(4.35))
 tf_pil = tx_pil.text_frame
 tf_pil.word_wrap = True
 tf_pil.margin_left = tf_pil.margin_top = tf_pil.margin_right = tf_pil.margin_bottom = 0
 
-add_bullet_item(tf_pil, "1. Gradientes Luminosos Aero:", "Uso de tonos cian espacial (#06B6D4) a azul cielo (#38BDF8) evocando agua, aire y optimismo tecnológico.", font_size=9, space_before=2)
-add_bullet_item(tf_pil, "2. Glassmorphism Translúcido:", "Capas difuminadas con `backdrop-blur-xl`, fondos oscuros abisales (#050B14) y bordes que aportan jerarquía.", font_size=9, space_before=7)
-add_bullet_item(tf_pil, "3. Bordes Bioluminiscentes:", "Delicados acentos de luz en cajas activas y modales, guiando el foco de atención sin cansar la vista.", font_size=9, space_before=7)
-add_bullet_item(tf_pil, "4. Micro-Interacciones Táctiles:", "Botones con brillo especular superior (estilo cristal de burbuja) y retroalimentación reactiva ante clics.", font_size=9, space_before=7)
-add_bullet_item(tf_pil, "5. Modo Dual Bilingüe:", "Soporte fluido para temas Claro y Oscuro e idiomas Español / Inglés sin saltos de interfaz.", font_size=9, space_before=7)
+add_bullet_item(tf_pil, "1. Gradientes Luminosos Aero:", "Uso de cian espacial (#06B6D4) a azul cielo (#38BDF8) evocando agua, aire y optimismo tecnológico de inicios del 2000.", font_size=10.5, space_before=4)
+add_bullet_item(tf_pil, "2. Glassmorphism Translúcido:", "Capas difuminadas con `backdrop-blur-xl`, fondos oscuros abisales (#050B14) y reflejos superiores que aportan profundidad jerárquica.", font_size=10.5, space_before=8)
+add_bullet_item(tf_pil, "3. Bordes Bioluminiscentes:", "Delicados acentos de luz en cajas activas y modales, guiando el foco de atención sin cansar la vista del usuario.", font_size=10.5, space_before=8)
+add_bullet_item(tf_pil, "4. Micro-Interacciones Táctiles:", "Botones con brillo especular superior (estilo cristal de burbuja) y retroalimentación táctil reactiva ante clics.", font_size=10.5, space_before=8)
+add_bullet_item(tf_pil, "5. Modo Dual Bilingüe:", "Soporte fluido para temas Claro y Oscuro e idiomas Español / Inglés sin saltos de interfaz.", font_size=10.5, space_before=8)
 
 # Columna 2 (3.7 in): El Reloj de Umbra (Umbran Watch)
-panel_umb = add_glass_card(s4, 6.25, 1.65, 3.7, 5.15, border_hex="A855F7", border_width=1.4, tint="purple", corner_radius=0.06)
-add_pill_badge(s4, 6.45, 1.85, 3.2, 0.3, "ANATOMÍA DEL UMBRAN WATCH", bg_hex="22143A", text_color=C_PURPLE_LIGHT, border_hex="A855F7")
+panel_umb = add_glass_card(s5, 6.25, 1.65, 3.7, 5.15, border_hex="A855F7", border_width=1.4, tint="purple", corner_radius=0.06)
+add_pill_badge(s5, 6.45, 1.85, 3.3, 0.36, "ANATOMÍA DEL UMBRAN WATCH", bg_hex="22143A", text_color=C_PURPLE_LIGHT, border_hex="A855F7", font_size=9)
 
-# Halo bioluminiscente detrás del icono
-add_ambient_glow(s4, 7.1, 2.3, 2.0, 2.0, "A855F7", 25)
+add_ambient_glow(s5, 7.1, 2.3, 2.0, 2.0, "A855F7", 25)
 
 if os.path.exists(IMG_ICON):
-    s4.shapes.add_picture(IMG_ICON, Inches(7.1), Inches(2.35), width=Inches(2.0))
+    s5.shapes.add_picture(IMG_ICON, Inches(7.1), Inches(2.35), width=Inches(2.0))
 
-tx_u = s4.shapes.add_textbox(Inches(6.45), Inches(4.5), Inches(3.3), Inches(2.1))
+tx_u = s5.shapes.add_textbox(Inches(6.45), Inches(4.5), Inches(3.3), Inches(2.1))
 tf_u = tx_u.text_frame
 tf_u.word_wrap = True
 tf_u.margin_left = tf_u.margin_top = tf_u.margin_right = tf_u.margin_bottom = 0
@@ -529,12 +552,12 @@ p_u = tf_u.paragraphs[0]
 r_u = p_u.add_run()
 r_u.text = "Símbolo de Identidad e Introspección:\nInspirado en el reloj de bolsillo de las Brujas de Umbra. Encarna el paso reflexivo del tiempo pedagógico, la elegancia de Cereza y la ruptura con la frialdad corporativa tradicional."
 r_u.font.name = "Segoe UI"
-r_u.font.size = Pt(8.8)
+r_u.font.size = Pt(10.2)
 r_u.font.color.rgb = C_TEXT_LIGHT
 
 # Columna 3 (2.33 in): Muestrario de Color
-panel_col = add_glass_card(s4, 10.2, 1.65, 2.33, 5.15, border_hex="38BDF8", border_width=1.2, tint="cyan", corner_radius=0.06)
-add_pill_badge(s4, 10.35, 1.85, 2.03, 0.3, "PALETA CROMÁTICA", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_col = add_glass_card(s5, 10.2, 1.65, 2.33, 5.15, border_hex="38BDF8", border_width=1.2, tint="cyan", corner_radius=0.06)
+add_pill_badge(s5, 10.35, 1.85, 2.03, 0.36, "PALETA CROMÁTICA", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9)
 
 swatches = [
     ("Cyan Aero", "#06B6D4", C_CYAN_ACCENT),
@@ -546,21 +569,21 @@ swatches = [
 
 for idx, (s_name, s_hex, s_col) in enumerate(swatches):
     s_top = 2.35 + idx * 0.86
-    sw_box = s4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(10.4), Inches(s_top), Inches(0.45), Inches(0.45))
+    sw_box = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(10.4), Inches(s_top), Inches(0.45), Inches(0.45))
     sw_box.adjustments[0] = 0.25
     sw_box.fill.solid()
     sw_box.fill.fore_color.rgb = s_col
     sw_box.line.color.rgb = C_WHITE
     sw_box.line.width = Pt(1)
     
-    tx_s = s4.shapes.add_textbox(Inches(10.95), Inches(s_top - 0.05), Inches(1.45), Inches(0.55))
+    tx_s = s5.shapes.add_textbox(Inches(10.95), Inches(s_top - 0.05), Inches(1.45), Inches(0.55))
     tf_s = tx_s.text_frame
     tf_s.word_wrap = True
     p_s0 = tf_s.paragraphs[0]
     r_s0 = p_s0.add_run()
     r_s0.text = s_name
     r_s0.font.name = "Segoe UI"
-    r_s0.font.size = Pt(9)
+    r_s0.font.size = Pt(10)
     r_s0.font.bold = True
     r_s0.font.color.rgb = C_WHITE
     
@@ -568,39 +591,39 @@ for idx, (s_name, s_hex, s_col) in enumerate(swatches):
     r_s1 = p_s1.add_run()
     r_s1.text = s_hex
     r_s1.font.name = "Segoe UI"
-    r_s1.font.size = Pt(8)
+    r_s1.font.size = Pt(9)
     r_s1.font.color.rgb = C_TEXT_MUTED
 
 
 # =========================================================================
-# SLIDE 5: EXPERIENCIA MÓVIL Y PREVENCIÓN DE ERRORES (UX MÓVIL)
+# SLIDE 6: EXPERIENCIA MÓVIL Y PREVENCIÓN DE ERRORES (UX MÓVIL)
 # =========================================================================
-s5 = create_base_slide(
+s6 = create_base_slide(
     badge_text="EXPERIENCIA DE USUARIO · ARQUITECTURA MÓVIL",
     title_text="Ingeniería UX Móvil: Ergonomía Táctil y Protección ante Gestos"
 )
 
-add_stat_card(s5, 0.8, 1.65, 3.75, 1.45, "76%", "Tráfico Móvil Universitario", "Más de 3/4 de los informantes clave accedieron desde sus smartphones personales.", color=C_CYAN_LIGHT, border_hex="06B6D4", tint="cyan")
-add_stat_card(s5, 4.78, 1.65, 3.75, 1.45, "0%", "Pérdida por Gestos de Retorno", "Cero cierres accidentales tras implementar la intercepción reactiva de popstate.", color=C_EMERALD_LIGHT, border_hex="10B981", tint="emerald")
-add_stat_card(s5, 8.78, 1.65, 3.75, 1.45, "4.9 / 5.0", "Índice de Usabilidad Percibida", "Facilidad de navegación con pulgar validada en pruebas de usabilidad de campo.", color=C_AMBER_LIGHT, border_hex="F59E0B", tint="amber")
+add_stat_card(s6, 0.8, 1.65, 3.75, 1.45, "76%", "Tráfico Móvil Universitario", "Más de 3/4 de los informantes clave accedieron desde sus smartphones personales.", color=C_CYAN_LIGHT, border_hex="06B6D4", tint="cyan")
+add_stat_card(s6, 4.78, 1.65, 3.75, 1.45, "0%", "Pérdida por Gestos de Retorno", "Cero cierres accidentales tras implementar la intercepción reactiva de popstate.", color=C_EMERALD_LIGHT, border_hex="10B981", tint="emerald")
+add_stat_card(s6, 8.78, 1.65, 3.75, 1.45, "4.9 / 5.0", "Índice de Usabilidad Percibida", "Facilidad de navegación con pulgar validada en pruebas de usabilidad de campo.", color=C_AMBER_LIGHT, border_hex="F59E0B", tint="amber")
 
 # Bloque Izquierdo: Patrones de Ergonomía Móvil
-panel_m1 = add_glass_card(s5, 0.8, 3.3, 5.7, 3.5, border_hex="06B6D4", border_width=1.3, tint="cyan", corner_radius=0.06)
-add_pill_badge(s5, 1.05, 3.48, 3.8, 0.3, "PATRONES DE ERGONOMÍA MÓVIL", bg_hex="0E243A", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_m1 = add_glass_card(s6, 0.8, 3.3, 5.7, 3.5, border_hex="06B6D4", border_width=1.3, tint="cyan", corner_radius=0.06)
+add_pill_badge(s6, 1.05, 3.48, 3.8, 0.34, "PATRONES DE ERGONOMÍA MÓVIL", bg_hex="0E243A", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5)
 
-tx_m1 = s5.shapes.add_textbox(Inches(1.05), Inches(3.9), Inches(5.2), Inches(2.7))
+tx_m1 = s6.shapes.add_textbox(Inches(1.05), Inches(3.9), Inches(5.2), Inches(2.7))
 tf_m1 = tx_m1.text_frame
 tf_m1.word_wrap = True
 tf_m1.margin_left = tf_m1.margin_top = tf_m1.margin_right = tf_m1.margin_bottom = 0
 
-add_bullet_item(tf_m1, "1. MobileBottomNav Fija:", "Barra de navegación inferior fija para pulgar, accesible con una sola mano sin forzar la ergonomía.", font_size=9, space_before=2)
-add_bullet_item(tf_m1, "2. Botones de Retorno Explícitos:", "Cada vista modal y sub-sección incorpora botones flotantes 'Volver' con alto contraste y retroalimentación táctil.", font_size=9, space_before=6)
-add_bullet_item(tf_m1, "3. Auto-Scroll con Teclado Virtual:", "Cuando el teclado de Android o iOS se despliega, el contenedor de mensajes reajusta su altura automáticamente.", font_size=9, space_before=6)
-add_bullet_item(tf_m1, "4. Safe Areas para Notch y Gestos:", "Padding dinámico con variables CSS env(safe-area-inset-bottom) para compatibilidad con iPhones y pantallas modernas.", font_size=9, space_before=6)
+add_bullet_item(tf_m1, "1. MobileBottomNav Fija:", "Barra de navegación inferior fija para pulgar, accesible con una sola mano sin forzar la ergonomía del usuario.", font_size=10.2, space_before=2)
+add_bullet_item(tf_m1, "2. Botones de Retorno Explícitos:", "Cada vista modal y sub-sección incorpora botones flotantes 'Volver' con alto contraste y retroalimentación táctil.", font_size=10.2, space_before=6)
+add_bullet_item(tf_m1, "3. Auto-Scroll con Teclado Virtual:", "Cuando el teclado de Android o iOS se despliega, el contenedor de mensajes reajusta su altura automáticamente.", font_size=10.2, space_before=6)
+add_bullet_item(tf_m1, "4. Safe Areas para Notch y Gestos:", "Padding dinámico con variables CSS env(safe-area-inset-bottom) para compatibilidad con iPhones y pantallas modernas.", font_size=10.2, space_before=6)
 
 # Bloque Derecho: Protección ante el Gesto Atrás (popstate)
-panel_m2 = add_glass_card(s5, 6.83, 3.3, 5.7, 3.5, border_hex="10B981", border_width=1.3, tint="emerald", corner_radius=0.06)
-add_pill_badge(s5, 7.08, 3.48, 4.2, 0.3, "SOLUCIÓN DE INGENIERÍA: ATRAPAMIENTO POPSTATE", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981")
+panel_m2 = add_glass_card(s6, 6.83, 3.3, 5.7, 3.5, border_hex="10B981", border_width=1.3, tint="emerald", corner_radius=0.06)
+add_pill_badge(s6, 7.08, 3.48, 4.3, 0.34, "SOLUCIÓN DE INGENIERÍA: ATRAPAMIENTO POPSTATE", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981", font_size=9.2)
 
 steps = [
     ("Paso 1: Detección", "El usuario realiza el gesto de deslizar hacia atrás en el borde de la pantalla.", C_TEXT_LIGHT, "cyan"),
@@ -611,69 +634,69 @@ steps = [
 
 for idx, (st_title, st_desc, st_col, st_tint) in enumerate(steps):
     step_top = 3.95 + idx * 0.68
-    box_s = add_glass_card(s5, 7.08, step_top, 5.2, 0.58, border_hex="10B981" if st_tint=="emerald" else ("06B6D4" if st_tint=="cyan" else "F59E0B"), border_width=1.0, tint=st_tint, corner_radius=0.15, add_gloss=False)
-    tx_s = s5.shapes.add_textbox(Inches(7.2), Inches(step_top + 0.05), Inches(4.95), Inches(0.48))
+    box_s = add_glass_card(s6, 7.08, step_top, 5.2, 0.58, border_hex="10B981" if st_tint=="emerald" else ("06B6D4" if st_tint=="cyan" else "F59E0B"), border_width=1.0, tint=st_tint, corner_radius=0.15, add_gloss=False)
+    tx_s = s6.shapes.add_textbox(Inches(7.2), Inches(step_top + 0.05), Inches(4.95), Inches(0.48))
     tf_s = tx_s.text_frame
     tf_s.word_wrap = True
     p_st = tf_s.paragraphs[0]
     r_st0 = p_st.add_run()
     r_st0.text = st_title + " → "
     r_st0.font.name = "Segoe UI"
-    r_st0.font.size = Pt(8.5)
+    r_st0.font.size = Pt(9.5)
     r_st0.font.bold = True
     r_st0.font.color.rgb = st_col
     
     r_st1 = p_st.add_run()
     r_st1.text = st_desc
     r_st1.font.name = "Segoe UI"
-    r_st1.font.size = Pt(8)
+    r_st1.font.size = Pt(9.0)
     r_st1.font.color.rgb = C_TEXT_LIGHT
 
 
 # =========================================================================
-# SLIDE 6: AGENTE CONVERSACIONAL CEREZA · PERSONA & MEDIACIÓN SOCRÁTICA
+# SLIDE 7: AGENTE CONVERSACIONAL CEREZA · PERSONA & MEDIACIÓN SOCRÁTICA
 # =========================================================================
-s6 = create_base_slide(
+s7 = create_base_slide(
     badge_text="INTELIGENCIA ARTIFICIAL · AGENTE CONVERSACIONAL",
     title_text="Diseño del Agente Cereza: Identidad, Probing y Saturación Autónoma"
 )
 
 # Columna Izquierda: Ficha de Personaje
-panel_char = add_glass_card(s6, 0.8, 1.65, 3.6, 5.15, border_hex="A855F7", border_width=1.5, tint="purple", corner_radius=0.06)
-add_pill_badge(s6, 1.0, 1.85, 3.2, 0.3, "FICHA DE PERSONAJE · CEREZA", bg_hex="22143A", text_color=C_PURPLE_LIGHT, border_hex="A855F7")
+panel_char = add_glass_card(s7, 0.8, 1.65, 3.6, 5.15, border_hex="A855F7", border_width=1.5, tint="purple", corner_radius=0.06)
+add_pill_badge(s7, 1.0, 1.85, 3.2, 0.36, "FICHA DE PERSONAJE · CEREZA", bg_hex="22143A", text_color=C_PURPLE_LIGHT, border_hex="A855F7", font_size=9)
 
 if os.path.exists(IMG_AVATAR):
-    s6.shapes.add_picture(IMG_AVATAR, Inches(1.35), Inches(2.25), width=Inches(2.5))
+    s7.shapes.add_picture(IMG_AVATAR, Inches(1.35), Inches(2.25), width=Inches(2.5))
 
-tx_ch = s6.shapes.add_textbox(Inches(1.0), Inches(5.0), Inches(3.2), Inches(1.6))
+tx_ch = s7.shapes.add_textbox(Inches(1.0), Inches(5.0), Inches(3.2), Inches(1.6))
 tf_ch = tx_ch.text_frame
 tf_ch.word_wrap = True
 tf_ch.margin_left = tf_ch.margin_top = tf_ch.margin_right = tf_ch.margin_bottom = 0
 
-add_bullet_item(tf_ch, "Arquetipo:", "Mentora reflexiva y colega empática.", font_size=8.8, space_before=1)
-add_bullet_item(tf_ch, "Inspiración:", "Aplomo y perspicacia de Bayonetta.", font_size=8.8, space_before=3)
-add_bullet_item(tf_ch, "Regla de Oro:", "Cero complacencia; desafía lugares comunes.", font_size=8.8, space_before=3)
+add_bullet_item(tf_ch, "Arquetipo:", "Mentora reflexiva y colega empática.", font_size=10.0, space_before=1)
+add_bullet_item(tf_ch, "Inspiración:", "Aplomo y perspicacia de Bayonetta.", font_size=10.0, space_before=4)
+add_bullet_item(tf_ch, "Regla de Oro:", "Cero complacencia; desafía lugares comunes.", font_size=10.0, space_before=4)
 
 # Columna Derecha: Los 3 Mecanismos Dialógicos de Cereza
-panel_mec = add_glass_card(s6, 4.73, 1.65, 7.8, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
-add_pill_badge(s6, 4.95, 1.85, 4.4, 0.3, "MECANISMOS DE MEDIACIÓN SOCRÁTICA EN TIEMPO REAL", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_mec = add_glass_card(s7, 4.73, 1.65, 7.8, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
+add_pill_badge(s7, 4.95, 1.85, 4.8, 0.36, "MECANISMOS DE MEDIACIÓN SOCRÁTICA EN TIEMPO REAL", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5)
 
 mechanisms = [
     ("1. Probing de Contraste (Detector de Clichés):", 
-     "Cuando un estudiante responde con lugares comunes ('La IA es buena porque ahorra tiempo'), Cereza sonríe cómplice y contrataca con dilemas éticos:\n\"Vaya, qué respuesta tan correcta... pero entre tú y yo, colega: ¿en qué momento sentiste que fue una muleta para salir del paso?\"", 
+     "Cuando un informante responde con lugares comunes ('La IA es buena porque ahorra tiempo'), Cereza sonríe cómplice y contrataca con dilemas éticos reales:\n\"Vaya, qué respuesta tan correcta... pero entre tú y yo, colega: ¿en qué momento sentiste que fue una muleta para salir del paso?\"", 
      C_AMBER_LIGHT, "amber", "F59E0B"),
     ("2. Eco Reflexivo y Reencuadre Epistémico:", 
-     "Extrae los términos técnicos propios del estudiante ('planeación didáctica', 'transposición', 'algoritmo') y los reintroduce en la siguiente pregunta para forzar una profundización ontológica sin sonar invasiva.", 
+     "Extrae los términos técnicos propios del informante ('planeación didáctica', 'transposición', 'algoritmo') y los reintroduce en la siguiente pregunta para forzar una profundización ontológica sin sonar invasiva.", 
      C_CYAN_LIGHT, "cyan", "06B6D4"),
     ("3. Criterio de Saturación Teórica Autónoma (`isInterviewFinished`):", 
-     "En lugar de seguir un cuestionario rígido de N preguntas, Cereza evalúa algorítmicamente la densidad argumental. Cuando las dimensiones clave han sido cubiertas con anécdotas sustantivas (habitualmente entre 6 y 8 turnos), cierra la entrevista orgánicamente.", 
+     "En lugar de seguir un cuestionario rígido de N preguntas, Cereza evalúa algorítmicamente la densidad argumental. Cuando las dimensiones clave han sido cubiertas con anécdotas sustantivas (6 a 8 turnos), cierra la entrevista orgánicamente.", 
      C_EMERALD_LIGHT, "emerald", "10B981")
 ]
 
 for idx, (m_title, m_desc, m_col, m_tint, m_bhex) in enumerate(mechanisms):
-    m_top = 2.25 + idx * 1.45
-    box_m = add_glass_card(s6, 4.95, m_top, 7.35, 1.35, border_hex=m_bhex, border_width=1.2, tint=m_tint, corner_radius=0.08, add_gloss=False)
-    tx_m = s6.shapes.add_textbox(Inches(5.1), Inches(m_top + 0.1), Inches(7.05), Inches(1.15))
+    m_top = 2.28 + idx * 1.45
+    box_m = add_glass_card(s7, 4.95, m_top, 7.35, 1.35, border_hex=m_bhex, border_width=1.2, tint=m_tint, corner_radius=0.08, add_gloss=False)
+    tx_m = s7.shapes.add_textbox(Inches(5.12), Inches(m_top + 0.12), Inches(7.01), Inches(1.15))
     tf_m = tx_m.text_frame
     tf_m.word_wrap = True
     tf_m.margin_left = tf_m.margin_top = tf_m.margin_right = tf_m.margin_bottom = 0
@@ -682,97 +705,141 @@ for idx, (m_title, m_desc, m_col, m_tint, m_bhex) in enumerate(mechanisms):
     r_m0 = p_m0.add_run()
     r_m0.text = m_title
     r_m0.font.name = "Segoe UI"
-    r_m0.font.size = Pt(10)
+    r_m0.font.size = Pt(11)
     r_m0.font.bold = True
     r_m0.font.color.rgb = m_col
     
     p_m1 = tf_m.add_paragraph()
-    p_m1.space_before = Pt(3)
+    p_m1.space_before = Pt(4)
     r_m1 = p_m1.add_run()
     r_m1.text = m_desc
     r_m1.font.name = "Segoe UI"
-    r_m1.font.size = Pt(8.5)
+    r_m1.font.size = Pt(9.8)
     r_m1.font.color.rgb = C_TEXT_LIGHT
 
 
 # =========================================================================
-# SLIDE 7: INGENIERÍA DE INSTRUCCIONES · FRAMEWORK ROCAS EN BACKEND
+# SLIDE 8: FRAMEWORK ROCAS · GOBIERNO METODOLÓGICO DE INFERENCIA (DEDICADA)
 # =========================================================================
-s7 = create_base_slide(
-    badge_text="INGENIERÍA DE PROMPTS · BACKEND ORCHESTRATION",
-    title_text="Framework ROCAS: Gobierno de Inferencia y Contrato JSON Estricto"
+s8 = create_base_slide(
+    badge_text="INGENIERÍA DE PROMPTS · GOBIERNO DE INFERENCIA",
+    title_text="Framework ROCAS: Gobierno de Inferencia del Agente Socrático Cereza"
 )
 
-rocas_items = [
-    ("[R] ROL", "Mentora socrática e investigadora perspicaz en educación computacional.", C_CYAN_LIGHT, "06B6D4", "cyan"),
-    ("[O] OBJETIVO", "Desentrañar vivencias reales, tensiones éticas y el 'efecto muleta'.", C_EMERALD_LIGHT, "10B981", "emerald"),
-    ("[C] CONTEXTO", "Universidad de Córdoba, sedes regionales y Ley 2626 de 2026.", C_PURPLE_LIGHT, "A855F7", "purple"),
-    ("[A] ACCIONES", "Preguntas atómicas, probing de contraste y extracción de citas literales.", C_AMBER_LIGHT, "F59E0B", "amber"),
-    ("[S] SALIDA", "Esquema JSON estricto con campos validados en TypeScript.", C_ROSE_LIGHT, "F43F5E", "rose")
+rocas_detailed = [
+    ("[R] ROL", "Mentora y Colega Empática", "06B6D4", "cyan", C_CYAN_LIGHT, [
+        ("Definición:", "Co-investigadora cualitativa y mentora socrática inspirada en Bayonetta."),
+        ("Directriz Central:", "Cero complacencia; desafía lugares comunes con tono perspicaz y profesional."),
+        ("Comportamiento:", "Escucha activa sin halagar respuestas vacías ni fingir sumisión robótica.")
+    ]),
+    ("[O] OBJETIVO", "Desentrañar Vivencias Reales", "10B981", "emerald", C_EMERALD_LIGHT, [
+        ("Definición:", "Identificar dilemas formativos, tensiones éticas y el 'efecto muleta' de la IA."),
+        ("Directriz Central:", "Trascender el discurso teórico para extraer vivencias de aula concretas."),
+        ("Comportamiento:", "Exige anécdotas situadas donde la IA haya ayudado o entorpecido el aprendizaje.")
+    ]),
+    ("[C] CONTEXTO", "Universidad de Córdoba", "A855F7", "purple", C_PURPLE_LIGHT, [
+        ("Definición:", "Licenciatura en Informática, sedes regionales y política Ley 2626 de 2026."),
+        ("Directriz Central:", "Reconoce realidades de Montería, Lorica, Sahagún, Montelíbano y Planeta Rica."),
+        ("Comportamiento:", "Adecúa el rigor dialógico al semestre académico declarado por el informante.")
+    ]),
+    ("[A] ACCIONES", "Probing Socrático Activo", "F59E0B", "amber", C_AMBER_LIGHT, [
+        ("Definición:", "Preguntas atómicas, eco reflexivo y contra-ejemplos desestabilizadores."),
+        ("Directriz Central:", "Formula una sola pregunta a la vez para no saturar la carga cognitiva."),
+        ("Comportamiento:", "Extrae citas textuales textuales y evalúa el criterio de saturación teórica.")
+    ]),
+    ("[S] SALIDA", "Contrato JSON Estricto", "F43F5E", "rose", C_ROSE_LIGHT, [
+        ("Definición:", "Esquema JSON tipado sin texto libre alrededor (`response_mime_type`)."),
+        ("Directriz Central:", "Campos validados en TypeScript: `reply`, `dimension`, `directQuote`, `isFinished`."),
+        ("Comportamiento:", "Garantiza almacenamiento determinista sin rupturas de parseo en el cliente.")
+    ])
 ]
 
-for idx, (r_title, r_desc, r_col, r_bhex, r_tint) in enumerate(rocas_items):
+for idx, (r_badge, r_title, r_bhex, r_tint, r_col, r_points) in enumerate(rocas_detailed):
     r_left = 0.8 + idx * 2.38
-    box_r = add_glass_card(s7, r_left, 1.65, 2.25, 2.1, border_hex=r_bhex, border_width=1.2, tint=r_tint, corner_radius=0.10)
-    add_pill_badge(s7, r_left + 0.15, 1.8, 1.95, 0.3, r_title, bg_hex="0E2034" if r_tint=="cyan" else ("0C2418" if r_tint=="emerald" else ("201235" if r_tint=="purple" else ("261B0B" if r_tint=="amber" else "2A101C"))), text_color=r_col, border_hex=r_bhex)
+    box_r = add_glass_card(s8, r_left, 1.65, 2.25, 5.15, border_hex=r_bhex, border_width=1.3, tint=r_tint, corner_radius=0.08)
     
-    tx_r = s7.shapes.add_textbox(Inches(r_left + 0.15), Inches(2.2), Inches(1.95), Inches(1.4))
+    add_pill_badge(s8, r_left + 0.12, 1.82, 2.01, 0.36, r_badge, bg_hex="0E2034" if r_tint=="cyan" else ("0C2418" if r_tint=="emerald" else ("201235" if r_tint=="purple" else ("261B0B" if r_tint=="amber" else "2A101C"))), text_color=r_col, border_hex=r_bhex, font_size=9.5)
+    
+    tx_r = s8.shapes.add_textbox(Inches(r_left + 0.12), Inches(2.28), Inches(2.01), Inches(4.35))
     tf_r = tx_r.text_frame
     tf_r.word_wrap = True
     tf_r.margin_left = tf_r.margin_top = tf_r.margin_right = tf_r.margin_bottom = 0
-    p_r = tf_r.paragraphs[0]
-    r_txt = p_r.add_run()
-    r_txt.text = r_desc
-    r_txt.font.name = "Segoe UI"
-    r_txt.font.size = Pt(8.5)
-    r_txt.font.color.rgb = C_TEXT_LIGHT
+    
+    p0 = tf_r.paragraphs[0]
+    r0 = p0.add_run()
+    r0.text = r_title
+    r0.font.name = "Segoe UI"
+    r0.font.size = Pt(11)
+    r0.font.bold = True
+    r0.font.color.rgb = C_WHITE
+    
+    for pt in r_points:
+        add_bullet_item(tf_r, pt[0], pt[1], font_size=9.8, space_before=10)
 
-panel_pipe = add_glass_card(s7, 0.8, 3.95, 11.733, 2.85, border_hex="06B6D4", border_width=1.3, tint="cyan", corner_radius=0.06)
-add_pill_badge(s7, 1.05, 4.12, 4.6, 0.3, "PIPELINE DE EJECUCIÓN EN TIEMPO REAL (SERVER.TS)", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
 
-pipeline_steps = [
-    ("1. Sanitización de Entrada", "Captura el mensaje del usuario, valida longitud y limpia inyecciones de prompt maliciosas.", C_CYAN_LIGHT, "06B6D4"),
-    ("2. Inyección ROCAS + Historial", "Ensambla el prompt maestro junto al historial conversacional y la categoría metodológica actual.", C_PURPLE_LIGHT, "A855F7"),
-    ("3. Inferencia con Gemini 2.5", "Ejecuta llamada con `temperature: 0.4` y `response_mime_type: 'application/json'`.", C_EMERALD_LIGHT, "10B981"),
-    ("4. Contrato JSON & Fallback", "Valida los campos (`reply`, `dimension`, `directQuote`, `isFinished`) con parsing blindado.", C_AMBER_LIGHT, "F59E0B")
+# =========================================================================
+# SLIDE 9: PIPELINE DE INFERENCIA EN TIEMPO REAL EN SERVER.TS (DEDICADA)
+# =========================================================================
+s9 = create_base_slide(
+    badge_text="ORQUESTACIÓN BACKEND · TIEMPO REAL",
+    title_text="Pipeline de Inferencia en Tiempo Real en Servidor Intermedio (`server.ts`)"
+)
+
+pipe_detailed = [
+    ("FASE 1", "Sanitización & Seguridad de Entrada", "06B6D4", "cyan", C_CYAN_LIGHT, [
+        ("Captura Segura del Mensaje:", "Intercepción del payload POST en `/api/chat` con verificación de longitud."),
+        ("Depuración de Inyecciones:", "Filtro activo de comandos de escape, prompt injection y caracteres anómalos."),
+        ("Control de Frecuencia (Rate Limit):", "Protege el backend contra ataques de denegación de servicio (DoS).")
+    ]),
+    ("FASE 2", "Inyección Dinámica de Contexto ROCAS", "A855F7", "purple", C_PURPLE_LIGHT, [
+        ("Ensamblado del Prompt Maestro:", "Inyecta el rol socrático de Cereza, el semestre del estudiante y la categoría actual."),
+        ("Historial Conversacional Ponderado:", "Agrega los turnos previos para preservar el hilo narrativo y evitar repeticiones."),
+        ("Anclaje Metodológico:", "Instruye explícitamente a detectar clichés y evaluar saturación.")
+    ]),
+    ("FASE 3", "Llamada Multimodal a Gemini 2.5 Flash", "10B981", "emerald", C_EMERALD_LIGHT, [
+        ("Modelo Optimizado Flash:", "Inferencia ultra-rápida de baja latencia (<1.2s) para diálogo conversacional fluido."),
+        ("Control Estricto de Temperatura:", "Fijada en `temperature: 0.4` para equilibrar vivacidad sin alucinaciones."),
+        ("Formato Forzado JSON:", "Parámetro `response_mime_type: 'application/json'` activado nativamente en la API.")
+    ]),
+    ("FASE 4", "Validación de Contrato JSON & Fallbacks", "F59E0B", "amber", C_AMBER_LIGHT, [
+        ("Contrato Tipado TypeScript:", "Valida la presencia de `reply`, `dimension`, `directQuote` y `isInterviewFinished`."),
+        ("Tolerancia a Malformaciones:", "Si el JSON falla o la cuota se agota (429), se activa la cascada a modelos lite."),
+        ("Emisión al Cliente:", "Retorna el objeto estructurado listo para actualización inmediata de la interfaz.")
+    ])
 ]
 
-for idx, (p_title, p_desc, p_col, p_bhex) in enumerate(pipeline_steps):
-    p_left = 1.05 + idx * 2.8
-    box_p = add_glass_card(s7, p_left, 4.55, 2.65, 2.05, border_hex=p_bhex, border_width=1.1, tint="default", corner_radius=0.10, add_gloss=False)
+for idx, (p_phase, p_name, p_bhex, p_tint, p_col, p_items) in enumerate(pipe_detailed):
+    c_left = 0.8 + idx * 3.0
+    panel = add_glass_card(s9, c_left, 1.65, 2.78, 5.15, border_hex=p_bhex, border_width=1.4, tint=p_tint, corner_radius=0.06)
     
-    tx_p = s7.shapes.add_textbox(Inches(p_left + 0.15), Inches(4.7), Inches(2.35), Inches(1.75))
-    tf_p = tx_p.text_frame
-    tf_p.word_wrap = True
-    tf_p.margin_left = tf_p.margin_top = tf_p.margin_right = tf_p.margin_bottom = 0
+    add_pill_badge(s9, c_left + 0.16, 1.82, 2.46, 0.36, p_phase, bg_hex="0E2034" if p_tint=="cyan" else ("201235" if p_tint=="purple" else ("0C2418" if p_tint=="emerald" else "261B0B")), text_color=p_col, border_hex=p_bhex, font_size=9.5)
     
-    p0 = tf_p.paragraphs[0]
+    tx = s9.shapes.add_textbox(Inches(c_left + 0.16), Inches(2.28), Inches(2.46), Inches(4.35))
+    tf = tx.text_frame
+    tf.word_wrap = True
+    tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
+    
+    p0 = tf.paragraphs[0]
     r0 = p0.add_run()
-    r0.text = p_title
+    r0.text = p_name
     r0.font.name = "Segoe UI"
-    r0.font.size = Pt(9.5)
+    r0.font.size = Pt(12)
     r0.font.bold = True
-    r0.font.color.rgb = p_col
+    r0.font.color.rgb = C_WHITE
     
-    p1 = tf_p.add_paragraph()
-    p1.space_before = Pt(4)
-    r1 = p1.add_run()
-    r1.text = p_desc
-    r1.font.name = "Segoe UI"
-    r1.font.size = Pt(8.2)
-    r1.font.color.rgb = C_TEXT_LIGHT
+    for it in p_items:
+        add_bullet_item(tf, it[0], it[1], font_size=10.0, space_before=10)
 
 
 # =========================================================================
-# SLIDE 8: EVOLUCIÓN DEL DESARROLLO · LÍNEA TEMPORAL DE SPRINTS (RIBBON)
+# SLIDE 10: EVOLUCIÓN DEL DESARROLLO · LÍNEA TEMPORAL DE SPRINTS (RIBBON)
 # =========================================================================
-s8 = create_base_slide(
+s10 = create_base_slide(
     badge_text="METODOLOGÍA ÁGIL · CICLO DE VIDA DE SOFTWARE",
     title_text="Evolución del Desarrollo: Línea Temporal y Sprints (1 al 5)"
 )
 
-# Cinta Ribbon horizontal de conexión temporal con bordes suaves
-ribbon = s8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.2), Inches(2.2), Inches(10.9), Inches(0.08))
+ribbon = s10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.2), Inches(2.2), Inches(10.9), Inches(0.08))
 ribbon.adjustments[0] = 0.5
 ribbon.fill.solid()
 ribbon.fill.fore_color.rgb = RGBColor(14, 116, 144)
@@ -780,7 +847,7 @@ ribbon.line.color.rgb = C_CYAN_ACCENT
 
 sprints = [
     ("SPRINT 1", "Sept 2026", "Cimientos & Core", [
-        "Configuración Vite 6 + TS.",
+        "Configuración Vite 6 + TypeScript.",
         "Arquitectura Express base.",
         "Primeras pruebas API Gemini."
     ], C_CYAN_LIGHT, "06B6D4", "cyan"),
@@ -809,17 +876,16 @@ sprints = [
 for idx, (sp_num, sp_date, sp_title, sp_items, sp_col, sp_bhex, sp_tint) in enumerate(sprints):
     sp_left = 0.8 + idx * 2.38
     
-    # Nodo circular en el Ribbon
-    node = s8.shapes.add_shape(MSO_SHAPE.OVAL, Inches(sp_left + 0.95), Inches(2.05), Inches(0.38), Inches(0.38))
+    node = s10.shapes.add_shape(MSO_SHAPE.OVAL, Inches(sp_left + 0.95), Inches(2.05), Inches(0.38), Inches(0.38))
     node.fill.solid()
     node.fill.fore_color.rgb = RGBColor(7, 13, 24)
     node.line.color.rgb = sp_col
     node.line.width = Pt(2)
     
-    box_sp = add_glass_card(s8, sp_left, 2.55, 2.25, 3.65, border_hex=sp_bhex, border_width=1.2, tint=sp_tint, corner_radius=0.08)
-    add_pill_badge(s8, sp_left + 0.15, 2.7, 1.95, 0.28, f"{sp_num} · {sp_date}", bg_hex="0E243A" if sp_tint=="cyan" else ("0C2418" if sp_tint=="emerald" else ("201235" if sp_tint=="purple" else "261B0B")), text_color=sp_col, border_hex=sp_bhex, font_size=8)
+    box_sp = add_glass_card(s10, sp_left, 2.55, 2.25, 3.65, border_hex=sp_bhex, border_width=1.2, tint=sp_tint, corner_radius=0.08)
+    add_pill_badge(s10, sp_left + 0.15, 2.7, 1.95, 0.32, f"{sp_num} · {sp_date}", bg_hex="0E243A" if sp_tint=="cyan" else ("0C2418" if sp_tint=="emerald" else ("201235" if sp_tint=="purple" else "261B0B")), text_color=sp_col, border_hex=sp_bhex, font_size=8.5)
     
-    tx_sp = s8.shapes.add_textbox(Inches(sp_left + 0.15), Inches(3.1), Inches(1.95), Inches(2.9))
+    tx_sp = s10.shapes.add_textbox(Inches(sp_left + 0.15), Inches(3.1), Inches(1.95), Inches(2.9))
     tf_sp = tx_sp.text_frame
     tf_sp.word_wrap = True
     tf_sp.margin_left = tf_sp.margin_top = tf_sp.margin_right = tf_sp.margin_bottom = 0
@@ -828,99 +894,99 @@ for idx, (sp_num, sp_date, sp_title, sp_items, sp_col, sp_bhex, sp_tint) in enum
     r0 = p0.add_run()
     r0.text = sp_title
     r0.font.name = "Segoe UI"
-    r0.font.size = Pt(10)
+    r0.font.size = Pt(11)
     r0.font.bold = True
     r0.font.color.rgb = C_WHITE
     
     for it in sp_items:
-        add_bullet_item(tf_sp, "•", it, font_size=8.2, space_before=4)
+        add_bullet_item(tf_sp, "•", it, font_size=9.5, space_before=6)
 
-box_r_bot = add_glass_card(s8, 0.8, 6.35, 11.733, 0.55, border_hex="06B6D4", border_width=1.0, tint="cyan", corner_radius=0.35, add_gloss=False)
-tx_rb = s8.shapes.add_textbox(Inches(1.0), Inches(6.42), Inches(11.3), Inches(0.4))
+box_r_bot = add_glass_card(s10, 0.8, 6.35, 11.733, 0.55, border_hex="06B6D4", border_width=1.0, tint="cyan", corner_radius=0.35, add_gloss=False)
+tx_rb = s10.shapes.add_textbox(Inches(1.0), Inches(6.42), Inches(11.3), Inches(0.4))
 tf_rb = tx_rb.text_frame
 p_rb = tf_rb.paragraphs[0]
 p_rb.alignment = PP_ALIGN.CENTER
 r_rb = p_rb.add_run()
 r_rb.text = "🚀 Resultado del Ciclo Ágil: 5 Sprints · 14 Versiones Desplegadas · 0 Regresiones Críticas · Despliegue Continuo en Render"
 r_rb.font.name = "Segoe UI"
-r_rb.font.size = Pt(9)
+r_rb.font.size = Pt(9.5)
 r_rb.font.bold = True
 r_rb.font.color.rgb = C_CYAN_LIGHT
 
 
 # =========================================================================
-# SLIDE 9: SISTEMA DE AUDIO · MOTOR DE VOZ DUAL CON IA MULTIMODAL
+# SLIDE 11: SISTEMA DE AUDIO · MOTOR DE VOZ DUAL CON IA MULTIMODAL
 # =========================================================================
-s9 = create_base_slide(
+s11 = create_base_slide(
     badge_text="MULTIMODALIDAD · INNOVACIÓN EN ENTRADA DE VOZ",
     title_text="Evolución del Audio: Del Inestable Web Speech al Motor Dual Multimodal"
 )
 
 # Columna Izquierda: El Fracaso del Web Speech API Tradicional
-panel_a1 = add_glass_card(s9, 0.8, 1.65, 5.6, 5.15, border_hex="F43F5E", border_width=1.4, tint="rose", corner_radius=0.06)
-add_pill_badge(s9, 1.05, 1.85, 3.8, 0.3, "EL PROBLEMA DEL WEB SPEECH API NATIVO", bg_hex="2A101C", text_color=C_ROSE_LIGHT, border_hex="F43F5E")
+panel_a1 = add_glass_card(s11, 0.8, 1.65, 5.6, 5.15, border_hex="F43F5E", border_width=1.4, tint="rose", corner_radius=0.06)
+add_pill_badge(s11, 1.05, 1.85, 4.2, 0.36, "EL PROBLEMA DEL WEB SPEECH API NATIVO", bg_hex="2A101C", text_color=C_ROSE_LIGHT, border_hex="F43F5E", font_size=9.5)
 
-tx_a1 = s9.shapes.add_textbox(Inches(1.05), Inches(2.25), Inches(5.1), Inches(4.3))
+tx_a1 = s11.shapes.add_textbox(Inches(1.05), Inches(2.32), Inches(5.1), Inches(4.3))
 tf_a1 = tx_a1.text_frame
 tf_a1.word_wrap = True
 tf_a1.margin_left = tf_a1.margin_top = tf_a1.margin_right = tf_a1.margin_bottom = 0
 
-add_bullet_item(tf_a1, "1. Incompatibilidad Crítica en Móviles:", "webkitSpeechRecognition falla sistemáticamente en navegadores como Brave, Firefox o WebViews en Android y iOS.", font_size=9, space_before=2)
-add_bullet_item(tf_a1, "2. Cortes Prematuros por Silencio:", "Si el estudiante pausaba 1.5 segundos para ordenar su idea pedagógica, la API nativa abortaba abruptamente la sesión.", font_size=9, space_before=7)
-add_bullet_item(tf_a1, "3. Pobreza Fonética Regional:", "Pérdida continua de términos tecno-pedagógicos y modismos coloquiales propios de los informantes en Córdoba.", font_size=9, space_before=7)
-add_bullet_item(tf_a1, "4. Dependencia de Servidores Externos:", "Llamadas ciegas hacia servidores de Google Voice sin control de reintentos ni visualización para el usuario.", font_size=9, space_before=7)
+add_bullet_item(tf_a1, "1. Incompatibilidad Crítica en Móviles:", "webkitSpeechRecognition falla sistemáticamente en navegadores como Brave, Firefox o WebViews en Android y iOS.", font_size=10.5, space_before=4)
+add_bullet_item(tf_a1, "2. Cortes Prematuros por Silencio:", "Si el estudiante pausaba 1.5 segundos para ordenar su idea pedagógica, la API nativa abortaba abruptamente la sesión.", font_size=10.5, space_before=10)
+add_bullet_item(tf_a1, "3. Pobreza Fonética Regional:", "Pérdida continua de términos tecno-pedagógicos y modismos coloquiales propios de los informantes en Córdoba.", font_size=10.5, space_before=10)
+add_bullet_item(tf_a1, "4. Dependencia de Servidores Externos:", "Llamadas ciegas hacia servidores de Google Voice sin control de reintentos ni visualización para el usuario.", font_size=10.5, space_before=10)
 
 # Columna Derecha: La Solución con Motor Dual EduPulse v2.3
-panel_a2 = add_glass_card(s9, 6.93, 1.65, 5.6, 5.15, border_hex="10B981", border_width=1.4, tint="emerald", corner_radius=0.06)
-add_pill_badge(s9, 7.18, 1.85, 3.8, 0.3, "LA SOLUCIÓN: MOTOR DE VOZ DUAL CON IA", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981")
+panel_a2 = add_glass_card(s11, 6.93, 1.65, 5.6, 5.15, border_hex="10B981", border_width=1.4, tint="emerald", corner_radius=0.06)
+add_pill_badge(s11, 7.18, 1.85, 4.2, 0.36, "LA SOLUCIÓN: MOTOR DE VOZ DUAL CON IA", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981", font_size=9.5)
 
-tx_a2 = s9.shapes.add_textbox(Inches(7.18), Inches(2.25), Inches(5.1), Inches(4.3))
+tx_a2 = s11.shapes.add_textbox(Inches(7.18), Inches(2.32), Inches(5.1), Inches(4.3))
 tf_a2 = tx_a2.text_frame
 tf_a2.word_wrap = True
 tf_a2.margin_left = tf_a2.margin_top = tf_a2.margin_right = tf_a2.margin_bottom = 0
 
-add_bullet_item(tf_a2, "1. LiveMicVisualizer (Canvas + Web Audio):", "Muestrea frecuencias en tiempo real con AnalyserNode, renderizando ondas sinusoidales dinámicas cian/esmeralda.", font_size=9, space_before=2)
-add_bullet_item(tf_a2, "2. Grabación Continua con MediaRecorder:", "Captura el flujo de audio puro en formato webm/ogg nativo, permitiendo pausas reflexivas sin desconexiones.", font_size=9, space_before=7)
-add_bullet_item(tf_a2, "3. Transcripción Multimodal en Backend:", "El blob se envía a `/api/transcribe-audio`, donde Gemini 2.5 Flash transcribe con comprensión del contexto educativo.", font_size=9, space_before=7)
-add_bullet_item(tf_a2, "4. Precisión Fonética del 99.2%:", "Reconocimiento impecable de jerga pedagógica ('TPACK', 'transposición', 'heurística') y acentos territoriales.", font_size=9, space_before=7)
+add_bullet_item(tf_a2, "1. LiveMicVisualizer (Canvas + Web Audio):", "Muestrea frecuencias en tiempo real con AnalyserNode, renderizando ondas sinusoidales dinámicas cian/esmeralda.", font_size=10.5, space_before=4)
+add_bullet_item(tf_a2, "2. Grabación Continua con MediaRecorder:", "Captura el flujo de audio puro en formato webm/ogg nativo, permitiendo pausas reflexivas sin desconexiones.", font_size=10.5, space_before=10)
+add_bullet_item(tf_a2, "3. Transcripción Multimodal en Backend:", "El blob se envía a `/api/transcribe-audio`, donde Gemini 2.5 Flash transcribe con comprensión del contexto educativo.", font_size=10.5, space_before=10)
+add_bullet_item(tf_a2, "4. Precisión Fonética del 99.2%:", "Reconocimiento impecable de jerga pedagógica ('TPACK', 'transposición', 'heurística') y acentos territoriales.", font_size=10.5, space_before=10)
 
 
 # =========================================================================
-# SLIDE 10: MÓDULO DE CUESTIONARIOS · VALIDACIÓN GUIADA FILA POR FILA
+# SLIDE 12: MÓDULO DE CUESTIONARIOS · VALIDACIÓN GUIADA FILA POR FILA
 # =========================================================================
-s10 = create_base_slide(
+s12 = create_base_slide(
     badge_text="VALIDACIÓN REACTIVA · ERGONOMÍA DE FORMULARIOS",
     title_text="Módulo de Cuestionarios: Validación Guiada Interactiva Fila por Fila"
 )
 
-panel_q1 = add_glass_card(s10, 0.8, 1.65, 5.4, 5.15, border_hex="F59E0B", border_width=1.4, tint="amber", corner_radius=0.06)
-add_pill_badge(s10, 1.05, 1.85, 4.2, 0.3, "EL RETO DE LAS MATRICES LIKERT EXTENSAS", bg_hex="261B0B", text_color=C_AMBER_LIGHT, border_hex="F59E0B")
+panel_q1 = add_glass_card(s12, 0.8, 1.65, 5.4, 5.15, border_hex="F59E0B", border_width=1.4, tint="amber", corner_radius=0.06)
+add_pill_badge(s12, 1.05, 1.85, 4.4, 0.36, "EL RETO DE LAS MATRICES LIKERT EXTENSAS", bg_hex="261B0B", text_color=C_AMBER_LIGHT, border_hex="F59E0B", font_size=9.5)
 
-tx_q1 = s10.shapes.add_textbox(Inches(1.05), Inches(2.3), Inches(4.9), Inches(1.8))
+tx_q1 = s12.shapes.add_textbox(Inches(1.05), Inches(2.32), Inches(4.9), Inches(1.8))
 tf_q1 = tx_q1.text_frame
 tf_q1.word_wrap = True
 p_q1 = tf_q1.paragraphs[0]
 r_q1 = p_q1.add_run()
 r_q1.text = "En matrices Likert de 10 a 14 filas, los informantes frecuentemente olvidan marcar una casilla intermedia. Los formularios tradicionales emiten un error general abstracto, provocando frustración y abandono."
 r_q1.font.name = "Segoe UI"
-r_q1.font.size = Pt(9)
+r_q1.font.size = Pt(10.5)
 r_q1.font.color.rgb = C_TEXT_LIGHT
 
-box_mock = add_glass_card(s10, 1.05, 3.8, 4.9, 2.75, border_hex="FBBF24", border_width=1.1, tint="amber", corner_radius=0.08, add_gloss=False)
-add_pill_badge(s10, 1.25, 3.98, 3.2, 0.28, "BANNER INTERACTIVO DE SALTO", bg_hex="281E0C", text_color=C_AMBER_LIGHT, border_hex="FBBF24")
+box_mock = add_glass_card(s12, 1.05, 3.8, 4.9, 2.75, border_hex="FBBF24", border_width=1.1, tint="amber", corner_radius=0.08, add_gloss=False)
+add_pill_badge(s12, 1.25, 3.98, 3.4, 0.32, "BANNER INTERACTIVO DE SALTO", bg_hex="281E0C", text_color=C_AMBER_LIGHT, border_hex="FBBF24", font_size=9)
 
-tx_mk = s10.shapes.add_textbox(Inches(1.25), Inches(4.35), Inches(4.5), Inches(2.0))
+tx_mk = s12.shapes.add_textbox(Inches(1.25), Inches(4.38), Inches(4.5), Inches(2.0))
 tf_mk = tx_mk.text_frame
 tf_mk.word_wrap = True
 p_mk = tf_mk.paragraphs[0]
 r_mk = p_mk.add_run()
 r_mk.text = "⚠️ Tienes 2 criterios incompletos en esta sección:\n\n[ Fila 3: Frecuencia de Uso de IA ] → Clic para ir\n[ Fila 8: Evaluación Crítica de Fuentes ] → Clic para ir\n\n✨ Al pulsar la píldora, la pantalla realiza auto-scroll suave e ilumina la fila con un aura ámbar pulsante."
 r_mk.font.name = "Segoe UI"
-r_mk.font.size = Pt(8.5)
+r_mk.font.size = Pt(9.5)
 r_mk.font.color.rgb = C_WHITE
 
-panel_q2 = add_glass_card(s10, 6.73, 1.65, 5.8, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
-add_pill_badge(s10, 6.98, 1.85, 4.4, 0.3, "3 INNOVACIONES EN INSTRUMENTFORM.TSX", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_q2 = add_glass_card(s12, 6.73, 1.65, 5.8, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
+add_pill_badge(s12, 6.98, 1.85, 4.6, 0.36, "3 INNOVACIONES EN INSTRUMENTFORM.TSX", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5)
 
 innovations = [
     ("1. Píldoras de Salto con Scroll Suave (`scrollIntoView`):", 
@@ -935,9 +1001,9 @@ innovations = [
 ]
 
 for idx, (in_title, in_desc, in_col, in_tint, in_bhex) in enumerate(innovations):
-    in_top = 2.3 + idx * 1.45
-    box_in = add_glass_card(s10, 6.98, in_top, 5.3, 1.35, border_hex=in_bhex, border_width=1.1, tint=in_tint, corner_radius=0.08, add_gloss=False)
-    tx_in = s10.shapes.add_textbox(Inches(7.15), Inches(in_top + 0.1), Inches(5.0), Inches(1.15))
+    in_top = 2.32 + idx * 1.45
+    box_in = add_glass_card(s12, 6.98, in_top, 5.3, 1.35, border_hex=in_bhex, border_width=1.1, tint=in_tint, corner_radius=0.08, add_gloss=False)
+    tx_in = s12.shapes.add_textbox(Inches(7.15), Inches(in_top + 0.12), Inches(5.0), Inches(1.15))
     tf_in = tx_in.text_frame
     tf_in.word_wrap = True
     
@@ -945,93 +1011,93 @@ for idx, (in_title, in_desc, in_col, in_tint, in_bhex) in enumerate(innovations)
     r0 = p0.add_run()
     r0.text = in_title
     r0.font.name = "Segoe UI"
-    r0.font.size = Pt(9.5)
+    r0.font.size = Pt(10.5)
     r0.font.bold = True
     r0.font.color.rgb = in_col
     
     p1 = tf_in.add_paragraph()
-    p1.space_before = Pt(3)
+    p1.space_before = Pt(4)
     r1 = p1.add_run()
     r1.text = in_desc
     r1.font.name = "Segoe UI"
-    r1.font.size = Pt(8.5)
+    r1.font.size = Pt(9.5)
     r1.font.color.rgb = C_TEXT_LIGHT
 
 
 # =========================================================================
-# SLIDE 11: RESILIENCIA DE DATOS · MOTOR DE SÍNTESIS CUALITATIVA LOCAL
+# SLIDE 13: RESILIENCIA DE DATOS · MOTOR DE SÍNTESIS CUALITATIVA LOCAL
 # =========================================================================
-s11 = create_base_slide(
+s13 = create_base_slide(
     badge_text="RESILIENCIA DE DATOS · TOLERANCIA A FALLOS",
     title_text="Resiliencia: Eliminación de Condiciones de Carrera y Fallback Heurístico"
 )
 
-add_stat_card(s11, 0.8, 1.65, 11.733, 1.25, "100% Blindado", "El Reto de Sincronización Resuelto:", "Si el usuario cerraba la pestaña justo cuando el LLM calculaba la matriz al finalizar la entrevista, ocurría una condición de carrera (race condition) que podía truncar el resumen. Diseñamos un motor determinista dual.", color=C_EMERALD_LIGHT, border_hex="10B981", tint="emerald")
+add_stat_card(s13, 0.8, 1.65, 11.733, 1.35, "100% Blindado", "El Reto de Sincronización Resuelto:", "Si el usuario cerraba la pestaña justo cuando el LLM calculaba la matriz al finalizar la entrevista, ocurría una condición de carrera que podía truncar el resumen. Diseñamos un motor determinista dual cloud/local.", color=C_EMERALD_LIGHT, border_hex="10B981", tint="emerald")
 
-panel_res1 = add_glass_card(s11, 0.8, 3.1, 5.7, 3.7, border_hex="06B6D4", border_width=1.3, tint="cyan", corner_radius=0.06)
-add_pill_badge(s11, 1.05, 3.28, 3.8, 0.3, "CAMINO PRIMARIO: SÍNTESIS EN CLOUD (GEMINI)", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_res1 = add_glass_card(s13, 0.8, 3.2, 5.7, 3.6, border_hex="06B6D4", border_width=1.3, tint="cyan", corner_radius=0.06)
+add_pill_badge(s13, 1.05, 3.38, 4.2, 0.36, "CAMINO PRIMARIO: SÍNTESIS EN CLOUD (GEMINI)", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.2)
 
-tx_rs1 = s11.shapes.add_textbox(Inches(1.05), Inches(3.7), Inches(5.2), Inches(2.9))
+tx_rs1 = s13.shapes.add_textbox(Inches(1.05), Inches(3.85), Inches(5.2), Inches(2.8))
 tf_rs1 = tx_rs1.text_frame
 tf_rs1.word_wrap = True
 tf_rs1.margin_left = tf_rs1.margin_top = tf_rs1.margin_right = tf_rs1.margin_bottom = 0
 
-add_bullet_item(tf_rs1, "1. Disparo Automático:", "Al activarse `isInterviewFinished`, el backend inicia la síntesis hermenéutica global.", font_size=9, space_before=2)
-add_bullet_item(tf_rs1, "2. Categorización Teórica:", "Clasifica citas en las 3 categorías ontológicas (IA, Formación Docente y Efectos).", font_size=9, space_before=6)
-add_bullet_item(tf_rs1, "3. Persistencia en Tiempo Real:", "Almacena la sesión en Firestore y emite el resumen final en pantalla.", font_size=9, space_before=6)
+add_bullet_item(tf_rs1, "1. Disparo Automático:", "Al activarse `isInterviewFinished`, el backend inicia la síntesis hermenéutica global de las citas.", font_size=10.5, space_before=4)
+add_bullet_item(tf_rs1, "2. Categorización Teórica:", "Clasifica citas en las 3 categorías ontológicas (IA, Formación Docente y Efectos del Uso).", font_size=10.5, space_before=8)
+add_bullet_item(tf_rs1, "3. Persistencia en Tiempo Real:", "Almacena la sesión en Firestore y emite el resumen final en pantalla sin bloqueos.", font_size=10.5, space_before=8)
 
-panel_res2 = add_glass_card(s11, 6.83, 3.1, 5.7, 3.7, border_hex="10B981", border_width=1.3, tint="emerald", corner_radius=0.06)
-add_pill_badge(s11, 7.08, 3.28, 4.4, 0.3, "CAMINO FALLBACK: MOTOR LOCAL (`qualitativeSynthesis.ts`)", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981")
+panel_res2 = add_glass_card(s13, 6.83, 3.2, 5.7, 3.6, border_hex="10B981", border_width=1.3, tint="emerald", corner_radius=0.06)
+add_pill_badge(s13, 7.08, 3.38, 4.6, 0.36, "CAMINO FALLBACK: MOTOR LOCAL (`qualitativeSynthesis.ts`)", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981", font_size=9.0)
 
-tx_rs2 = s11.shapes.add_textbox(Inches(7.08), Inches(3.7), Inches(5.2), Inches(2.9))
+tx_rs2 = s13.shapes.add_textbox(Inches(7.08), Inches(3.85), Inches(5.2), Inches(2.8))
 tf_rs2 = tx_rs2.text_frame
 tf_rs2.word_wrap = True
 tf_rs2.margin_left = tf_rs2.margin_top = tf_rs2.margin_right = tf_rs2.margin_bottom = 0
 
-add_bullet_item(tf_rs2, "1. Activación Transparente:", "Si la red falla o se agota el timeout (3s), el cliente asume la síntesis sin alertar al usuario.", font_size=9, space_before=2)
-add_bullet_item(tf_rs2, "2. Algoritmo Heurístico Local:", "Analiza la transcripción completa desde `localStorage` y audita citas literales.", font_size=9, space_before=6)
-add_bullet_item(tf_rs2, "3. Cero Pérdida de Datos:", "Garantiza que el informante y los investigadores SIEMPRE obtienen la matriz estructurada.", font_size=9, space_before=6)
+add_bullet_item(tf_rs2, "1. Activación Transparente:", "Si la red falla o se agota el timeout (3s), el cliente asume la síntesis sin alertar al usuario.", font_size=10.5, space_before=4)
+add_bullet_item(tf_rs2, "2. Algoritmo Heurístico Local:", "Analiza la transcripción completa desde `localStorage` y audita citas literales de turnos.", font_size=10.5, space_before=8)
+add_bullet_item(tf_rs2, "3. Cero Pérdida de Datos:", "Garantiza que el informante y los investigadores SIEMPRE obtienen la matriz estructurada.", font_size=10.5, space_before=8)
 
 
 # =========================================================================
-# SLIDE 12: SUITE DE ANALÍTICA VISUAL TIPO GOOGLE FORMS
+# SLIDE 14: SUITE DE ANALÍTICA VISUAL TIPO GOOGLE FORMS
 # =========================================================================
-s12 = create_base_slide(
+s14 = create_base_slide(
     badge_text="VISUALIZACIÓN DE DATOS · ANALÍTICA INVESTIGATIVA",
     title_text="Suite Analítica Visual: Paneles Demográficos y Radar Hermenéutico"
 )
 
-panel_an1 = add_glass_card(s12, 0.8, 1.65, 5.6, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
-add_pill_badge(s12, 1.05, 1.85, 3.8, 0.3, "NIVEL GENERAL: DISTRIBUCIÓN Y BARRAS", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_an1 = add_glass_card(s14, 0.8, 1.65, 5.6, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
+add_pill_badge(s14, 1.05, 1.85, 4.2, 0.36, "NIVEL GENERAL: DISTRIBUCIÓN Y BARRAS", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5)
 
-tx_an1 = s12.shapes.add_textbox(Inches(1.05), Inches(2.3), Inches(5.1), Inches(4.3))
+tx_an1 = s14.shapes.add_textbox(Inches(1.05), Inches(2.32), Inches(5.1), Inches(4.3))
 tf_an1 = tx_an1.text_frame
 tf_an1.word_wrap = True
 tf_an1.margin_left = tf_an1.margin_top = tf_an1.margin_right = tf_an1.margin_bottom = 0
 
-add_bullet_item(tf_an1, "1. Diagramas de Dona SVG (Estilo Forms):", "Visualización limpia de la distribución porcentual de informantes por sede (Montería, Lorica, Sahagún, Planeta Rica).", font_size=9, space_before=2)
-add_bullet_item(tf_an1, "2. Barras Horizontales Comparativas:", "Desglose de frecuencias para escalas Likert y herramientas utilizadas (ChatGPT 82%, Copilot 34%, Claude 21%).", font_size=9, space_before=7)
-add_bullet_item(tf_an1, "3. Filtro Dinámico por Sede y Semestre:", "Selector reactivo que recalcula métricas y frecuencias al vuelo sin recargar la página.", font_size=9, space_before=7)
-add_bullet_item(tf_an1, "4. Exportación Rápida a TSV:", "Botón para copiar tabla de datos estructurada directamente pegable en Excel.", font_size=9, space_before=7)
+add_bullet_item(tf_an1, "1. Diagramas de Dona SVG (Estilo Forms):", "Visualización limpia de la distribución porcentual de informantes por sede (Montería, Lorica, Sahagún, Planeta Rica).", font_size=10.5, space_before=4)
+add_bullet_item(tf_an1, "2. Barras Horizontales Comparativas:", "Desglose de frecuencias para escalas Likert y herramientas utilizadas (ChatGPT 82%, Copilot 34%, Claude 21%).", font_size=10.5, space_before=10)
+add_bullet_item(tf_an1, "3. Filtro Dinámico por Sede y Semestre:", "Selector reactivo que recalcula métricas y frecuencias al vuelo sin recargar la página.", font_size=10.5, space_before=10)
+add_bullet_item(tf_an1, "4. Exportación Rápida a TSV:", "Botón para copiar tabla de datos estructurada directamente pegable en hojas de cálculo.", font_size=10.5, space_before=10)
 
-panel_an2 = add_glass_card(s12, 6.93, 1.65, 5.6, 5.15, border_hex="A855F7", border_width=1.4, tint="purple", corner_radius=0.06)
-add_pill_badge(s12, 7.18, 1.85, 4.2, 0.3, "NIVEL INDIVIDUAL: RADAR Y CITAS (E01-E40)", bg_hex="22143A", text_color=C_PURPLE_LIGHT, border_hex="A855F7")
+panel_an2 = add_glass_card(s14, 6.93, 1.65, 5.6, 5.15, border_hex="A855F7", border_width=1.4, tint="purple", corner_radius=0.06)
+add_pill_badge(s14, 7.18, 1.85, 4.4, 0.36, "NIVEL INDIVIDUAL: RADAR Y CITAS (E01-E40)", bg_hex="22143A", text_color=C_PURPLE_LIGHT, border_hex="A855F7", font_size=9.5)
 
-tx_an2 = s12.shapes.add_textbox(Inches(7.18), Inches(2.3), Inches(5.1), Inches(4.3))
+tx_an2 = s14.shapes.add_textbox(Inches(7.18), Inches(2.32), Inches(5.1), Inches(4.3))
 tf_an2 = tx_an2.text_frame
 tf_an2.word_wrap = True
 tf_an2.margin_left = tf_an2.margin_top = tf_an2.margin_right = tf_an2.margin_bottom = 0
 
-add_bullet_item(tf_an2, "1. Radar de Competencias Tecno-Pedagógicas:", "Mapea 5 dimensiones formativas de cada estudiante, identificando fortalezas didácticas y brechas de formación.", font_size=9, space_before=2)
-add_bullet_item(tf_an2, "2. Fichas de Citas Textuales Pre-Categorizadas:", "Tarjetas bioluminiscentes con las citas literales más enriquecedoras extraídas durante la entrevista socrática.", font_size=9, space_before=7)
-add_bullet_item(tf_an2, "3. Polaridad y Turnos de Diálogo:", "Inspección paso a paso de cada turno conversacional entre el estudiante y Cereza.", font_size=9, space_before=7)
-add_bullet_item(tf_an2, "4. Protección de Privacidad:", "Acceso exclusivo restringido a investigadores autorizados mediante doble factor (OAuth + PIN ####).", font_size=9, space_before=7)
+add_bullet_item(tf_an2, "1. Radar de Competencias Tecno-Pedagógicas:", "Mapea 5 dimensiones formativas de cada estudiante, identificando fortalezas didácticas y brechas de formación.", font_size=10.5, space_before=4)
+add_bullet_item(tf_an2, "2. Fichas de Citas Textuales Pre-Categorizadas:", "Tarjetas bioluminiscentes con las citas literales más enriquecedoras extraídas durante la entrevista socrática.", font_size=10.5, space_before=10)
+add_bullet_item(tf_an2, "3. Polaridad y Turnos de Diálogo:", "Inspección paso a paso de cada turno conversacional entre el estudiante y Cereza.", font_size=10.5, space_before=10)
+add_bullet_item(tf_an2, "4. Protección de Privacidad:", "Acceso exclusivo restringido a investigadores autorizados mediante doble factor (OAuth + PIN ####).", font_size=10.5, space_before=10)
 
 
 # =========================================================================
-# SLIDE 13: GOBERNANZA, SEGURIDAD Y GOOGLE CLOUD OAUTH 2.0
+# SLIDE 15: GOBERNANZA, SEGURIDAD Y GOOGLE CLOUD OAUTH 2.0
 # =========================================================================
-s13 = create_base_slide(
+s15 = create_base_slide(
     badge_text="SEGURIDAD Y CUMPLIMIENTO · GOBERNANZA CLOUD",
     title_text="Gobernanza de Datos, Control de Acceso RBAC y Google OAuth 2.0"
 )
@@ -1056,11 +1122,11 @@ shields = [
 
 for idx, (sh_badge, sh_title, sh_col, sh_bhex, sh_tint, sh_items) in enumerate(shields):
     sh_left = 0.8 + idx * 4.0
-    panel_sh = add_glass_card(s13, sh_left, 1.65, 3.73, 5.15, border_hex=sh_bhex, border_width=1.4, tint=sh_tint, corner_radius=0.06)
+    panel_sh = add_glass_card(s15, sh_left, 1.65, 3.73, 5.15, border_hex=sh_bhex, border_width=1.4, tint=sh_tint, corner_radius=0.06)
     
-    add_pill_badge(s13, sh_left + 0.2, 1.85, 3.33, 0.3, sh_badge, bg_hex="0E243A" if sh_tint=="cyan" else ("0A281E" if sh_tint=="emerald" else "261B0B"), text_color=sh_col, border_hex=sh_bhex)
+    add_pill_badge(s15, sh_left + 0.18, 1.82, 3.37, 0.36, sh_badge, bg_hex="0E243A" if sh_tint=="cyan" else ("0A281E" if sh_tint=="emerald" else "261B0B"), text_color=sh_col, border_hex=sh_bhex, font_size=9)
     
-    tx_sh = s13.shapes.add_textbox(Inches(sh_left + 0.2), Inches(2.25), Inches(3.33), Inches(4.3))
+    tx_sh = s15.shapes.add_textbox(Inches(sh_left + 0.18), Inches(2.28), Inches(3.37), Inches(4.35))
     tf_sh = tx_sh.text_frame
     tf_sh.word_wrap = True
     tf_sh.margin_left = tf_sh.margin_top = tf_sh.margin_right = tf_sh.margin_bottom = 0
@@ -1069,27 +1135,27 @@ for idx, (sh_badge, sh_title, sh_col, sh_bhex, sh_tint, sh_items) in enumerate(s
     r0 = p0.add_run()
     r0.text = sh_title
     r0.font.name = "Segoe UI"
-    r0.font.size = Pt(11)
+    r0.font.size = Pt(12)
     r0.font.bold = True
     r0.font.color.rgb = C_WHITE
     
     for it in sh_items:
-        add_bullet_item(tf_sh, it[0], it[1], font_size=8.8, space_before=6)
+        add_bullet_item(tf_sh, it[0], it[1], font_size=10.2, space_before=10)
 
 
 # =========================================================================
-# SLIDE 14: DEMOSTRACIÓN EN VIVO, LOGROS Y CIERRE TÉCNICO
+# SLIDE 16: DEMOSTRACIÓN EN VIVO, LOGROS Y CIERRE TÉCNICO
 # =========================================================================
-s14 = create_base_slide(
+s16 = create_base_slide(
     badge_text="DESPLIEGUE EN PRODUCCIÓN · CONCLUSIONES TÉCNICAS",
     title_text="EduPulse en Producción: Demostración en Vivo y Cierre Técnico"
 )
 
 # Columna Izquierda: Acceso en Vivo a Producción
-panel_cl1 = add_glass_card(s14, 0.8, 1.65, 4.8, 5.15, border_hex="10B981", border_width=1.4, tint="emerald", corner_radius=0.06)
-add_pill_badge(s14, 1.05, 1.85, 4.3, 0.3, "SISTEMA DESPLEGADO Y OPERATIVO EN LA NUBE", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981")
+panel_cl1 = add_glass_card(s16, 0.8, 1.65, 4.8, 5.15, border_hex="10B981", border_width=1.4, tint="emerald", corner_radius=0.06)
+add_pill_badge(s16, 1.05, 1.85, 4.3, 0.36, "SISTEMA DESPLEGADO Y OPERATIVO EN LA NUBE", bg_hex="0A281E", text_color=C_EMERALD_LIGHT, border_hex="10B981", font_size=9.5)
 
-tx_cl1 = s14.shapes.add_textbox(Inches(1.05), Inches(2.3), Inches(4.3), Inches(4.2))
+tx_cl1 = s16.shapes.add_textbox(Inches(1.05), Inches(2.32), Inches(4.3), Inches(4.2))
 tf_cl1 = tx_cl1.text_frame
 tf_cl1.word_wrap = True
 tf_cl1.margin_left = tf_cl1.margin_top = tf_cl1.margin_right = tf_cl1.margin_bottom = 0
@@ -1098,7 +1164,7 @@ p_u0 = tf_cl1.paragraphs[0]
 r_u0 = p_u0.add_run()
 r_u0.text = "URL Oficial de Producción:"
 r_u0.font.name = "Segoe UI"
-r_u0.font.size = Pt(10)
+r_u0.font.size = Pt(11)
 r_u0.font.bold = True
 r_u0.font.color.rgb = C_CYAN_LIGHT
 
@@ -1107,29 +1173,29 @@ p_u1.space_before = Pt(3)
 r_u1 = p_u1.add_run()
 r_u1.text = "https://edupulse-575b.onrender.com"
 r_u1.font.name = "Segoe UI"
-r_u1.font.size = Pt(11)
+r_u1.font.size = Pt(13)
 r_u1.font.bold = True
 r_u1.font.color.rgb = C_WHITE
 
-add_bullet_item(tf_cl1, "Infraestructura Cloud:", "Despliegue automatizado en Render con soporte HTTPS y balanceo de carga.", font_size=8.8, space_before=10)
-add_bullet_item(tf_cl1, "Disponibilidad:", "99.9% Uptime durante las sesiones de prueba con estudiantes universitarios.", font_size=8.8, space_before=6)
-add_bullet_item(tf_cl1, "Demostración Interactiva:", "A continuación pasaremos al navegador en vivo para dialogar con Cereza y observar la suite analítica.", font_size=8.8, space_before=6)
+add_bullet_item(tf_cl1, "Infraestructura Cloud:", "Despliegue automatizado en Render con soporte HTTPS, balanceo de carga y compresión HTTP.", font_size=10.2, space_before=14)
+add_bullet_item(tf_cl1, "Disponibilidad:", "99.9% Uptime durante las sesiones de prueba con estudiantes universitarios en Montería y sedes.", font_size=10.2, space_before=10)
+add_bullet_item(tf_cl1, "Demostración Interactiva:", "A continuación pasaremos al navegador en vivo para dialogar con Cereza y observar la suite analítica.", font_size=10.2, space_before=10)
 
 # Columna Derecha: 4 Logros Clave de Ingeniería
-panel_cl2 = add_glass_card(s14, 6.0, 1.65, 6.533, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
-add_pill_badge(s14, 6.25, 1.85, 4.4, 0.3, "4 LOGROS CLAVE DE INGENIERÍA DE SOFTWARE", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4")
+panel_cl2 = add_glass_card(s16, 6.0, 1.65, 6.533, 5.15, border_hex="06B6D4", border_width=1.4, tint="cyan", corner_radius=0.06)
+add_pill_badge(s16, 6.25, 1.85, 4.6, 0.36, "4 LOGROS CLAVE DE INGENIERÍA DE SOFTWARE", bg_hex="0E263E", text_color=C_CYAN_LIGHT, border_hex="06B6D4", font_size=9.5)
 
 achievements = [
-    ("1. Arquitectura Híbrida QUAN + QUAL:", "Integración armónica en un solo sistema de psicometría Likert y diálogo socrático.", C_CYAN_LIGHT, "06B6D4"),
+    ("1. Arquitectura Híbrida QUAN + QUAL:", "Integración armónica en un solo sistema de psicometría Likert y diálogo socrático profundo.", C_CYAN_LIGHT, "06B6D4"),
     ("2. Agente con Criterio de Saturación:", "Cereza trasciende el chatbot plano y actúa como co-investigadora cualitativa real.", C_PURPLE_LIGHT, "A855F7"),
     ("3. Resiliencia y Cero Pérdida de Datos:", "Motor de voz dual con IA multimodal y fallback heurístico local determinista.", C_EMERALD_LIGHT, "10B981"),
     ("4. Innovación en Diseño Frutiger Aero:", "Ruptura estética con el diseño plano, logrando calidez y ergonomía táctil móvil.", C_AMBER_LIGHT, "F59E0B")
 ]
 
 for idx, (ac_t, ac_d, ac_c, ac_bhex) in enumerate(achievements):
-    ac_top = 2.3 + idx * 0.98
-    box_ac = add_glass_card(s14, 6.25, ac_top, 6.03, 0.88, border_hex=ac_bhex, border_width=1.0, tint="default", corner_radius=0.10, add_gloss=False)
-    tx_ac = s14.shapes.add_textbox(Inches(6.4), Inches(ac_top + 0.08), Inches(5.75), Inches(0.72))
+    ac_top = 2.32 + idx * 0.98
+    box_ac = add_glass_card(s16, 6.25, ac_top, 6.03, 0.88, border_hex=ac_bhex, border_width=1.0, tint="default", corner_radius=0.10, add_gloss=False)
+    tx_ac = s16.shapes.add_textbox(Inches(6.42), Inches(ac_top + 0.08), Inches(5.7), Inches(0.72))
     tf_ac = tx_ac.text_frame
     tf_ac.word_wrap = True
     
@@ -1137,25 +1203,25 @@ for idx, (ac_t, ac_d, ac_c, ac_bhex) in enumerate(achievements):
     r0 = p0.add_run()
     r0.text = ac_t + " → "
     r0.font.name = "Segoe UI"
-    r0.font.size = Pt(9.5)
+    r0.font.size = Pt(10.5)
     r0.font.bold = True
     r0.font.color.rgb = ac_c
     
     r1 = p0.add_run()
     r1.text = ac_d
     r1.font.name = "Segoe UI"
-    r1.font.size = Pt(8.5)
+    r1.font.size = Pt(9.5)
     r1.font.color.rgb = C_TEXT_LIGHT
 
-box_thx = add_glass_card(s14, 6.25, 6.18, 6.03, 0.5, border_hex="38BDF8", border_width=1.1, tint="cyan", corner_radius=0.35, add_gloss=False)
-tx_th = s14.shapes.add_textbox(Inches(6.35), Inches(6.23), Inches(5.8), Inches(0.38))
+box_thx = add_glass_card(s16, 6.25, 6.18, 6.03, 0.5, border_hex="38BDF8", border_width=1.1, tint="cyan", corner_radius=0.35, add_gloss=False)
+tx_th = s16.shapes.add_textbox(Inches(6.35), Inches(6.23), Inches(5.8), Inches(0.38))
 tf_th = tx_th.text_frame
 p_th = tf_th.paragraphs[0]
 p_th.alignment = PP_ALIGN.CENTER
 r_th = p_th.add_run()
 r_th.text = "Agradecimientos al Mag. Juan Carlos Giraldo Cardozo y al Jurado Calificador · Apertura a Preguntas"
 r_th.font.name = "Segoe UI"
-r_th.font.size = Pt(8.5)
+r_th.font.size = Pt(9.5)
 r_th.font.bold = True
 r_th.font.color.rgb = C_WHITE
 
@@ -1172,4 +1238,4 @@ output_res_secondary = os.path.join(output_dir_resources, "EduPulse_Final_Defens
 prs.save(output_res_primary)
 prs.save(output_res_secondary)
 
-print(f"Presentation successfully created inside documentation/resources:\n  - {output_res_primary}\n  - {output_res_secondary}")
+print(f"Presentation successfully created inside documentation/resources (16 slides):\n  - {output_res_primary}\n  - {output_res_secondary}")

@@ -821,18 +821,14 @@ def create_technical_document():
         "Firmas oficiales de entrega y radicación académica para el cierre del semestre 2026-II."
     )
 
-    # Output paths (English filenames)
+    # Output path (Only inside documentation/resources)
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "documentation", "resources"))
     os.makedirs(output_dir, exist_ok=True)
     
     file_path = os.path.join(output_dir, "EduPulse_Technical_Document_v2.3.docx")
     doc.save(file_path)
-    
-    # Also save a copy at root for quick opening
-    file_path_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Technical_Document_v2.3.docx"))
-    doc.save(file_path_root)
 
-    print(f"Technical Document (.docx) successfully generated with APA 7 and Custom Green/Blue Palette at:\n  - {file_path}\n  - {file_path_root}")
+    print(f"Technical Document (.docx) successfully generated inside documentation/resources:\n  - {file_path}")
 
 if __name__ == "__main__":
     create_technical_document()

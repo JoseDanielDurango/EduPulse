@@ -585,15 +585,15 @@ def create_technical_document():
         [2.16, 2.16, 2.16]
     )
 
-    # Output paths
-    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "documentation", "Resources"))
+    # Output paths (English filenames)
+    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "documentation", "resources"))
     os.makedirs(output_dir, exist_ok=True)
     
-    file_path = os.path.join(output_dir, "Documento_Tecnico_EduPulse_v2.3.docx")
+    file_path = os.path.join(output_dir, "EduPulse_Technical_Document_v2.3.docx")
     doc.save(file_path)
     
     # Also save a copy at root for quick opening
-    file_path_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "Documento_Tecnico_EduPulse_v2.3.docx"))
+    file_path_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Technical_Document_v2.3.docx"))
     doc.save(file_path_root)
 
     print(f"Technical Document (.docx) successfully generated at:\n  - {file_path}\n  - {file_path_root}")

@@ -27,19 +27,19 @@ Cada uno de los ocho documentos técnicos ha sido elaborado con el máximo nivel
 ```text
 documentation/
 ├── README.md                          # Índice general, mapa conceptual y articulación metodológica (v2.3)
-├── 01-modelo-del-tutor.md              # Modelo del Tutor: Mediación cualitativa, socrática, voz de Cereza y motor resiliente (v2.3)
-├── 02-modelo-del-conocimiento.md       # Modelo del Conocimiento: Categorías, saberes curriculares, TPACK, Ley 2626 y pilares (v2.3)
-├── 03-modelo-del-alumno.md             # Modelo del Alumno: Perfil del informante, etapas formativas (1°-10°) y traza mixta (v2.3)
-├── 04-modelo-del-mundo.md              # Modelo del Mundo (DESIGN.md): Glassmorphism, UX móvil, voz dual y validación interactiva (v2.3)
-├── 05-prompt-maestro-rocas.md          # Especificación del Prompt Maestro: Framework ROCAS, inferencia dual ES/EN y cascada Gemini (v2.3)
-├── 06-arquitectura-del-sistema.md      # Arquitectura del Sistema: Pipeline de 3 capas, endpoints Express, OAuth2.0 y stack técnico (v2.3)
-├── 07-instrumentos-y-triangulacion.md  # Instrumentos y Triangulación: Suite Google Forms, pestaña de síntesis global y triangulación mixta (v2.3)
-├── 08-seguridad-y-control-de-acceso.md # Seguridad y Control de Acceso: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas Firestore (v2.3)
-└── Resources/                         # Recursos Ejecutables y Entregables Finales de Cierre de Semestre:
-    ├── Documento_Tecnico_EduPulse_v2.3.docx # Documento Técnico Maestro integral del semestre (Ingeniería, UI/UX, Agente)
-    ├── GUION-DE-SUSTENTACION.md        # Guion detallado de sustentación oral (14 diapositivas técnicas)
-    ├── EduPulse_Desarrollo_y_Diseno_Final.pptx # Presentación oficial en formato panorámico 16:9
-    └── EduPulse_Sustentacion_Final.pptx # Copia de respaldo para la defensa oral ante jurado
+├── 01-tutor-model.md              # Modelo del Tutor: Mediación cualitativa, socrática, voz de Cereza y motor resiliente (v2.3)
+├── 02-knowledge-model.md       # Modelo del Conocimiento: Categorías, saberes curriculares, TPACK, Ley 2626 y pilares (v2.3)
+├── 03-student-model.md             # Modelo del Alumno: Perfil del informante, etapas formativas (1°-10°) y traza mixta (v2.3)
+├── 04-world-model.md              # Modelo del Mundo (DESIGN.md): Glassmorphism, UX móvil, voz dual y validación interactiva (v2.3)
+├── 05-master-prompt-rocas.md          # Especificación del Prompt Maestro: Framework ROCAS, inferencia dual ES/EN y cascada Gemini (v2.3)
+├── 06-system-architecture.md      # Arquitectura del Sistema: Pipeline de 3 capas, endpoints Express, OAuth2.0 y stack técnico (v2.3)
+├── 07-instruments-and-triangulation.md  # Instrumentos y Triangulación: Suite Google Forms, pestaña de síntesis global y triangulación mixta (v2.3)
+├── 08-security-and-access-control.md # Seguridad y Control de Acceso: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas Firestore (v2.3)
+└── resources/                         # Recursos Ejecutables y Entregables Finales de Cierre de Semestre:
+    ├── EduPulse_Technical_Document_v2.3.docx # Documento Técnico Maestro integral del semestre (Ingeniería, UI/UX, Agente)
+    ├── presentation-defense-script.md        # Guion detallado de sustentación oral (14 diapositivas técnicas)
+    ├── EduPulse_Development_and_Design_Final.pptx # Presentación oficial en formato panorámico 16:9
+    └── EduPulse_Final_Defense_Presentation.pptx # Copia de respaldo para la defensa oral ante jurado
 ```
 
 ---
@@ -98,3 +98,108 @@ documentation/
 
 ## Normas de Citación y Estilo
 Todos los documentos han sido rigurosamente estandarizados bajo las directrices de la **7.ª edición de las Normas APA** (American Psychological Association, 2020), asegurando la validez conceptual y la trazabilidad bibliográfica de las fuentes empleadas en el trabajo de grado.
+
+---
+
+# English Version
+
+# Technical, Pedagogical, and Methodological Documentation of EduPulse
+### Comprehensive Suite of Eight Architectural and Epistemic Components · Version 2.3
+
+This directory contains the formal and comprehensive specification of the **EduPulse** platform and intelligent agent, structured under the classical architecture of **Intelligent Educational Systems** adapted for large language models (LLMs), oriented toward the **collection, processing, and mixed analysis (hermeneutic and statistical)** of data for undergraduate thesis research at the University of Córdoba.
+
+Each of the eight technical documents has been crafted with the highest level of methodological rigor and conceptual development, incorporating specification tables, control matrices, operational boundaries, and standardized academic references according to the **American Psychological Association (APA, 7th edition)** standards.
+
+---
+
+## Project Technical Overview
+
+| Field | Detail |
+| :--- | :--- |
+| **Project Title** | Teacher education in the age of artificial intelligence: challenges and perspectives at the University of Córdoba |
+| **Institution** | University of Córdoba · Faculty of Education and Human Sciences |
+| **Academic Program** | Bachelor's Degree in Computer Science Education (Licenciatura en Informática) |
+| **Researchers (Authors)** | José Daniel Durango Caballero and Jefersson Ramírez Oviedo |
+| **Project Director** | Juan Carlos Giraldo Cardozo |
+| **Research Line** | Impact study of information and communication technologies in education · Subline: Educational assessment and ICT |
+| **Population and Sample** | Population: ~430 active students in the program · Sample: 20 to 40 pre-service teacher informants |
+| **Location and Year** | Montería, Córdoba, Colombia · 2025–2026 |
+
+---
+
+## Structure of the Eight Documentation Components
+
+```text
+documentation/
+├── README.md                          # General index, conceptual map, and methodological articulation (v2.3)
+├── 01-tutor-model.md                  # Tutor Model: Qualitative mediation, Socratic probing, Cereza voice, and resilient engine (v2.3)
+├── 02-knowledge-model.md              # Knowledge Model: Categories, curricular knowledge, TPACK, Law 2626, and pillars (v2.3)
+├── 03-student-model.md                # Student Model: Informant profile, formative stages (1st-10th), and mixed trace (v2.3)
+├── 04-world-model.md                  # World Model (DESIGN.md): Glassmorphism, mobile UX, dual voice, and interactive validation (v2.3)
+├── 05-master-prompt-rocas.md          # Master Prompt Specification: ROCAS framework, dual ES/EN inference, and Gemini cascade (v2.3)
+├── 06-system-architecture.md          # System Architecture: 3-layer pipeline, Express endpoints, OAuth 2.0, and technical stack (v2.3)
+├── 07-instruments-and-triangulation.md# Instruments and Triangulation: Google Forms suite, global synthesis tab, and mixed triangulation (v2.3)
+├── 08-security-and-access-control.md  # Security and Access Control: RBAC, Google OAuth 2.0 whitelist, PIN 0412, and Firestore rules (v2.3)
+└── resources/                         # Executable Resources and Final Semester Deliverables:
+    ├── EduPulse_Technical_Document_v2.3.docx # Master Technical Document (Software Engineering, UI/UX, Agent Architecture)
+    ├── presentation-defense-script.md # Detailed oral defense script (14 technical slides)
+    ├── EduPulse_Development_and_Design_Final.pptx # Official widescreen 16:9 presentation slides
+    └── EduPulse_Final_Defense_Presentation.pptx # Backup presentation copy for oral committee evaluation
+```
+
+---
+
+## Conceptual Articulation Map of the Models
+
+```text
++---------------------------------------------------------------------------------------+
+|                         05. MASTER PROMPT (ROCAS FRAMEWORK)                           |
+|             Inference Engine, Gemini Cascade, and JSON Structured Output              |
++---------------------------------------------------------------------------------------+
+         │                                       │                               │
+         ▼                                       ▼                               ▼
++-------------------------+             +-------------------------+    +-------------------------+
+| 01. TUTOR MODEL         |             | 02. KNOWLEDGE MODEL     |    | 03. STUDENT MODEL       |
+| (How to dialogue:       |             | (What to investigate:   |    | (Whom to guide:         |
+| Cereza persona,         |             | Categories A-B-C,       |    | Semester, stage 1st-10th|
+| Socratic probing,       |             | TPACK, Law 2626,        |    | consent, intervention   |
+| autonomous saturation)  |             | crutch effect theory)   |    | trace)                  |
++-------------------------+             +-------------------------+    +-------------------------+
+         │                                       │                               │
+         +───────────────────────────────────────+───────────────────────────────+
+                                                 │
+                                                 ▼
++---------------------------------------------------------------------------------------+
+| 04. WORLD MODEL (DESIGN.md: Glassmorphic Interface, Mobile UX, Web Audio & Speech)   |
++---------------------------------------------------------------------------------------+
+         │                                                                       │
+         ▼                                                                       ▼
++---------------------------------------+               +---------------------------------------+
+| 07. INSTRUMENTS AND TRIANGULATION     |               | 08. SECURITY AND ACCESS CONTROL       |
+| (Quantitative Likert 1-5 diagnostic,  |               | (RBAC, 2FA Google OAuth + PIN 0412,   |
+| offline autosave, statistical viewer) |               | firestore.rules, PII & Law 1581)      |
++---------------------------------------+               +---------------------------------------+
+         │                                                                       │
+         └───────────────────────────────────┬───────────────────────────────────┘
+                                             │
+                                             ▼
++---------------------------------------------------------------------------------------+
+| 06. SYSTEM ARCHITECTURE (3-Layer Pipeline, Express Endpoints, and Cloud Deployment)   |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+## Articulation with Thesis Report Chapters
+
+1. **Chapter 3 (Methodological Design):**
+   * Supported by **Document 01 (Tutor Model)**, **Document 02 (Knowledge Model)**, and **Document 07 (Instruments and Triangulation)**. Substantiates the concurrent mixed-methods design (QUAN + QUAL), axiological neutrality, reflective probing protocol, and construct validation of Likert scales.
+2. **Chapter 4 (Technopedagogical Development and Intervention):**
+   * Supported by **Document 03 (Student Model)**, **Document 04 (World Model / DESIGN.md)**, and **Document 05 (Master Prompt ROCAS)**. Describes curricular adaptation by formative stages (Foundation, Didactic Development, and Advanced Practicum), multimodal accessible experience (voice and mobile), and instruction engineering powering Cereza.
+3. **Chapter 5 (Results Analysis, Triangulation, and Ethical Governance):**
+   * Supported by **Document 06 (System Architecture)**, **Document 07 (Instruments and Triangulation)**, and **Document 08 (Security and Access Control)**. Details the three-layer data pipeline, ethical de-identification of participants (`E01`...`E40`), automated semantic pre-coding via `/api/analyze-interview`, hermeneutic-statistical convergence, and structured export to CAQDAS software (ATLAS.ti and NVivo).
+
+---
+
+## Citation and Style Standards
+All documents have been rigorously standardized following the **7th edition of the APA Standards** (American Psychological Association, 2020), ensuring conceptual validity and bibliographic traceability of the sources utilized in the undergraduate research thesis.

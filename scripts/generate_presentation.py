@@ -1090,12 +1090,20 @@ r_th.font.color.rgb = C_WHITE
 
 
 # =========================================================================
-# GUARDADO DE LA PRESENTACIÓN
+# GUARDADO DE LA PRESENTACIÓN / PRESENTATION EXPORT (ENGLISH NAMES)
 # =========================================================================
-output_path_primary = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Desarrollo_y_Diseno_Final.pptx"))
-output_path_secondary = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Sustentacion_Final.pptx"))
+output_dir_resources = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "documentation", "resources"))
+os.makedirs(output_dir_resources, exist_ok=True)
+
+output_path_primary = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Development_and_Design_Final.pptx"))
+output_path_secondary = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "EduPulse_Final_Defense_Presentation.pptx"))
+
+output_res_primary = os.path.join(output_dir_resources, "EduPulse_Development_and_Design_Final.pptx")
+output_res_secondary = os.path.join(output_dir_resources, "EduPulse_Final_Defense_Presentation.pptx")
 
 prs.save(output_path_primary)
 prs.save(output_path_secondary)
+prs.save(output_res_primary)
+prs.save(output_res_secondary)
 
-print(f"Presentation successfully created at:\n  - {output_path_primary}\n  - {output_path_secondary}")
+print(f"Presentation successfully created at:\n  - {output_path_primary}\n  - {output_path_secondary}\n  - {output_res_primary}\n  - {output_res_secondary}")

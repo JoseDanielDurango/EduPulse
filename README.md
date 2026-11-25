@@ -107,14 +107,14 @@ Bajo el **paradigma hermenéutico–interpretativo** y un diseño concurrente de
 EduPulse/
 ├── documentation/                   # Suite completa de documentación técnica y metodológica
 │   ├── README.md                    # Índice general y articulación con la tesis (v2.3)
-│   ├── 01-modelo-del-tutor.md        # Modelo del Tutor: Mediación socrática, voz de Cereza y motor resiliente (v2.3)
-│   ├── 02-modelo-del-conocimiento.md # Modelo del Conocimiento: TPACK, Ley 2626 y categorías (v2.3)
-│   ├── 03-modelo-del-alumno.md       # Modelo del Alumno: Perfil formativo y traza mixta (v2.3)
-│   ├── 04-modelo-del-mundo.md        # Modelo del Mundo: Glassmorphism, UX móvil, voz dual y validación interactiva (v2.3)
-│   ├── 05-prompt-maestro-rocas.md    # Prompt Maestro ROCAS: Inferencia dual ES/EN y Gemini (v2.3)
-│   ├── 06-arquitectura-del-sistema.md# Arquitectura del Sistema: Pipeline, endpoints Express y OAuth2.0 (v2.3)
-│   ├── 07-instrumentos-y-triangulacion.md # Instrumentos Likert, suite Google Forms general/individual (v2.3)
-│   └── 08-seguridad-y-control-de-acceso.md # Seguridad: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas (v2.3)
+│   ├── 01-tutor-model.md        # Modelo del Tutor: Mediación socrática, voz de Cereza y motor resiliente (v2.3)
+│   ├── 02-knowledge-model.md # Modelo del Conocimiento: TPACK, Ley 2626 y categorías (v2.3)
+│   ├── 03-student-model.md       # Modelo del Alumno: Perfil formativo y traza mixta (v2.3)
+│   ├── 04-world-model.md        # Modelo del Mundo: Glassmorphism, UX móvil, voz dual y validación interactiva (v2.3)
+│   ├── 05-master-prompt-rocas.md    # Prompt Maestro ROCAS: Inferencia dual ES/EN y Gemini (v2.3)
+│   ├── 06-system-architecture.md# Arquitectura del Sistema: Pipeline, endpoints Express y OAuth2.0 (v2.3)
+│   ├── 07-instruments-and-triangulation.md # Instrumentos Likert, suite Google Forms general/individual (v2.3)
+│   └── 08-security-and-access-control.md # Seguridad: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas (v2.3)
 ├── src/
 │   ├── components/
 │   │   ├── instruments/             # Módulo de instrumentos cuantitativos diagnósticos

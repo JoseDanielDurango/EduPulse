@@ -66,7 +66,7 @@ EduPulse implementa un modelo de control de acceso por roles (*Role-Based Access
 | **Formularios Diagnósticos (`InstrumentForm`)** | Escritura / Envío | Lectura y gestión | Registro validado en `instrument_responses`. |
 | **Panel de Sesiones (`SessionsDashboard`)** | Prohibido | Lectura total / Gestión | Restringido por credencial de investigación. |
 | **Visor Estadístico (`InstrumentResponsesViewer`)** | Prohibido | Lectura y cálculo | Restringido por credencial de investigación. |
-| **Suite de Analítica Visual Tipo Google Forms (General e Individual)** | Prohibido | Lectura total / Filtros | Restringido por `isAdminAuthenticated` (PIN 0412 + OAuth). |
+| **Suite de Analítica Visual Tipo Google Forms (General e Individual)** | Prohibido | Lectura total / Filtros | Restringido por `isAdminAuthenticated` (PIN `####` + OAuth). |
 | **Exportación a CAQDAS, CSV y Sheets Automatizado** | Prohibido | Descarga y sincronización | Restringido por credencial de investigación y OAuth 2.0. |
 | **Gestión de Guiones Cualitativos (`GuidesManager`)** | Lectura pasiva | Creación / Modificación | Escritura restringida en Firestore. |
 
@@ -92,7 +92,7 @@ export const AUTHORIZED_RESEARCHER_EMAILS = [
 *Cualquier intento de autenticación con una cuenta de Google externa a esta lista blanca es rechazado de inmediato con un mensaje de revocación de privilegios.*
 
 ### 3.2 Factor 2: PIN Maestro de Validación Criptográfica
-Adicionalmente a la autenticación federada, se exige el ingreso del **PIN Maestro de Investigador (`0412`)**:
+Adicionalmente a la autenticación federada, se exige el ingreso del **PIN Maestro de Investigador (`####`)**:
 * Previene el acceso no autorizado en computadores compartidos donde la sesión de Google pudiese haber quedado abierta.
 * El estado de autorización de administrador (`isAdminAuthenticated`) se conserva únicamente en memoria volátil de la sesión del cliente, expirando automáticamente al cerrar la pestaña o el navegador.
 
@@ -268,7 +268,7 @@ In qualitative and quantitative research with pre-service educators, information
 
 ## 2. Role-Based Access Control (RBAC) Model
 * **Informant (Pre-service Teacher):** Universal public access to landing page, informed consent acceptance, interactive interview with Cereza, and questionnaire submission. Strictly prohibited from accessing peer records or analytics.
-* **Authorized Researcher:** Dual-factor authentication (Google OAuth against whitelist + Master PIN `0412`), granting full oversight of sessions, verbatim quotes, psychometric dashboards, global synthesis reports, and CAQDAS/Sheets exports.
+* **Authorized Researcher:** Dual-factor authentication (Google OAuth against whitelist + Master PIN `####`), granting full oversight of sessions, verbatim quotes, psychometric dashboards, global synthesis reports, and CAQDAS/Sheets exports.
 
 ---
 
@@ -278,7 +278,7 @@ In qualitative and quantitative research with pre-service educators, information
    * `jdurangocaballero59@correo.unicordoba.edu.co`
    * `jramirezoviedo06@correo.unicordoba.edu.co`
    * `jgiraldo@correo.unicordoba.edu.co`
-2. **Factor 2 (Cryptographic Master PIN `0412`):**
+2. **Factor 2 (Cryptographic Master PIN `####`):**
    * Ephemeral session authorization stored strictly in volatile client memory, expiring upon tab or browser closure.
 3. **Google Cloud OAuth 2.0 Governance (*origin_mismatch* Prevention):**
    * Authorized JavaScript Origins: `https://edupulse-575b.onrender.com`, `http://localhost:3000`, `http://localhost:5173`.

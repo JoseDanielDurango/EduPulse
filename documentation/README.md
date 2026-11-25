@@ -34,7 +34,7 @@ documentation/
 ├── 05-master-prompt-rocas.md          # Especificación del Prompt Maestro: Framework ROCAS, inferencia dual ES/EN y cascada Gemini (v2.3)
 ├── 06-system-architecture.md      # Arquitectura del Sistema: Pipeline de 3 capas, endpoints Express, OAuth2.0 y stack técnico (v2.3)
 ├── 07-instruments-and-triangulation.md  # Instrumentos y Triangulación: Suite Google Forms, pestaña de síntesis global y triangulación mixta (v2.3)
-├── 08-security-and-access-control.md # Seguridad y Control de Acceso: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas Firestore (v2.3)
+├── 08-security-and-access-control.md # Seguridad y Control de Acceso: RBAC, Google OAuth 2.0 whitelist, PIN #### y reglas Firestore (v2.3)
 └── resources/                         # Recursos Ejecutables y Entregables Finales de Cierre de Semestre:
     ├── EduPulse_Technical_Document_v2.3.docx # Documento Técnico Maestro integral del semestre (Ingeniería, UI/UX, Agente)
     ├── presentation-defense-script.md        # Guion detallado de sustentación oral (14 diapositivas técnicas)
@@ -71,7 +71,7 @@ documentation/
          ▼                                                                       ▼
 +---------------------------------------+               +---------------------------------------+
 | 07. INSTRUMENTOS Y TRIANGULACIÓN      |               | 08. SEGURIDAD Y CONTROL DE ACCESO     |
-| (Diagnóstico cuantitativo Likert 1-5, |               | (RBAC, 2FA Google OAuth + PIN 0412,   |
+| (Diagnóstico cuantitativo Likert 1-5, |               | (RBAC, 2FA Google OAuth + PIN ####,   |
 | autosave offline, visor estadístico)  |               | firestore.rules, PII y Ley 1581)      |
 +---------------------------------------+               +---------------------------------------+
          │                                                                       │
@@ -139,7 +139,7 @@ documentation/
 ├── 05-master-prompt-rocas.md          # Master Prompt Specification: ROCAS framework, dual ES/EN inference, and Gemini cascade (v2.3)
 ├── 06-system-architecture.md          # System Architecture: 3-layer pipeline, Express endpoints, OAuth 2.0, and technical stack (v2.3)
 ├── 07-instruments-and-triangulation.md# Instruments and Triangulation: Google Forms suite, global synthesis tab, and mixed triangulation (v2.3)
-├── 08-security-and-access-control.md  # Security and Access Control: RBAC, Google OAuth 2.0 whitelist, PIN 0412, and Firestore rules (v2.3)
+├── 08-security-and-access-control.md  # Security and Access Control: RBAC, Google OAuth 2.0 whitelist, PIN ####, and Firestore rules (v2.3)
 └── resources/                         # Executable Resources and Final Semester Deliverables:
     ├── EduPulse_Technical_Document_v2.3.docx # Master Technical Document (Software Engineering, UI/UX, Agent Architecture)
     ├── presentation-defense-script.md # Detailed oral defense script (14 technical slides)
@@ -176,7 +176,7 @@ documentation/
          ▼                                                                       ▼
 +---------------------------------------+               +---------------------------------------+
 | 07. INSTRUMENTS AND TRIANGULATION     |               | 08. SECURITY AND ACCESS CONTROL       |
-| (Quantitative Likert 1-5 diagnostic,  |               | (RBAC, 2FA Google OAuth + PIN 0412,   |
+| (Quantitative Likert 1-5 diagnostic,  |               | (RBAC, 2FA Google OAuth + PIN ####,   |
 | offline autosave, statistical viewer) |               | firestore.rules, PII & Law 1581)      |
 +---------------------------------------+               +---------------------------------------+
          │                                                                       │

@@ -95,7 +95,7 @@ The research adopts a concurrent mixed triangulation design (**QUAN + QUAL**). W
   * Consolidated academic report triangulating qualitative interviews with Likert metrics.
   * Organized in 5 chapters: Methodological overview, executive summary & crutch effect analysis, 4-dimension qualitative meta-analysis, concurrent triangulation matrix, and 5 policy-pedagogical recommendations for UniCórdoba.
   * One-click export to Word/Docs and hot regeneration via `/api/global-analysis`.
-* **RBAC Protection:** Restricted to authorized researchers via Google OAuth whitelist and Master PIN `0412`.
+* **RBAC Protection:** Restricted to authorized researchers via Google OAuth whitelist and Master PIN `####`.
 
 ---
 

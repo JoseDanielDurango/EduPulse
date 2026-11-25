@@ -31,7 +31,7 @@ en_06 = """DOCUMENT 06 | SYSTEM ARCHITECTURE AND FUNCTIONAL SPECIFICATION
 * Features a **Google Forms-style Visual Analytics Suite** with general demographic charts and individualized qualitative analytics (competency radar and dialogue sentiment).
 * Implements a **Dual Voice Engine** combining native `MediaRecorder` capture, real-time audio visualizer (`LiveMicVisualizer`), and backend multimodal transcription (`/api/transcribe-audio`).
 * Integrates **Google OAuth 2.0 and Google Sheets API v4** (`/api/export-sheets`), generating 3-tab structured spreadsheets directly in the researcher's Google Drive.
-* Implements Role-Based Access Control (RBAC) with researcher 2FA (Google OAuth whitelist + Master PIN `0412`).
+* Implements Role-Based Access Control (RBAC) with researcher 2FA (Google OAuth whitelist + Master PIN `####`).
 * Offers responsive mobile navigation (`MobileBottomNav.tsx`, universal `ArrowLeft` return buttons, and `popstate` gesture guards).
 
 ### 1.2 Boundaries: What It IS NOT
@@ -74,7 +74,7 @@ Mixed Triangulation & CAQDAS (SummaryView · ResponsesViewer · Sheets)
 * **05. Master Prompt ROCAS:** Dual-language system instructions (ES/EN) in `server.ts`, strict JSON schema, temperature 0.4.
 * **06. System Architecture:** Three-layer pipeline, Express endpoints, full TypeScript/Vite stack, and cloud deployment.
 * **07. Instruments & Triangulation:** Likert questionnaires, statistical descriptive viewer, and mixed triangulation matrix.
-* **08. Security & Access Control:** RBAC, 2FA (OAuth + PIN `0412`), Firestore rules, and Law 1581 Habeas Data compliance.
+* **08. Security & Access Control:** RBAC, 2FA (OAuth + PIN `####`), Firestore rules, and Law 1581 Habeas Data compliance.
 
 ---
 

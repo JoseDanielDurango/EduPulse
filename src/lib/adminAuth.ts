@@ -13,7 +13,7 @@ export const AUTHORIZED_RESEARCHER_EMAILS: readonly string[] = [
 
 /**
  * Secret master passcode / PIN for instant researcher unlocking on any device.
- * Accepts 'unicordoba2026' or '0412'.
+ * Protected researcher credentials (####).
  */
 export const RESEARCHER_MASTER_PIN = '0412';
 

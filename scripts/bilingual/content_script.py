@@ -131,7 +131,7 @@ Slide 14: Live Production Demonstration & Technical Closure     [01:15 min]
 * **Suggested Speaker (Lead Researcher 1 / José Daniel):**
   > *"In security and data governance:  
   > * **Habeas Data & Anonymity:** Students participate under alphanumeric codes (`E01`...`E40`); private contact channels are masked in the public interface.  
-  > * **Two-Factor Access Control (RBAC):** Research views are guarded by Google OAuth whitelist verification and an ephemeral **Master PIN (`0412`)**.  
+  > * **Two-Factor Access Control (RBAC):** Research views are guarded by Google OAuth whitelist verification and an ephemeral **Master PIN (`####`)**.  
   > * **Google Cloud OAuth 2.0 Governance:** Normalized authorized origins (`edupulse-575b.onrender.com` and `localhost`) allow `/api/export-sheets` to export 3-tab spreadsheets directly to Google Drive."*
 
 ### Slide 14 · Live Production Demonstration & Technical Closure

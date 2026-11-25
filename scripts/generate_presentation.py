@@ -797,7 +797,7 @@ sprints = [
     ("SPRINT 4", "Nov 2026", "Frutiger Aero", [
         "Rediseño Glassmorphism.",
         "Barra de navegación móvil.",
-        "Panel Admin con PIN 0412."
+        "Panel Admin con PIN ####."
     ], C_AMBER_LIGHT, "F59E0B", "amber"),
     ("SPRINT 5", "Nov 2026 (Final)", "Versión 2.3", [
         "Motor de voz dual nativo.",
@@ -1025,7 +1025,7 @@ tf_an2.margin_left = tf_an2.margin_top = tf_an2.margin_right = tf_an2.margin_bot
 add_bullet_item(tf_an2, "1. Radar de Competencias Tecno-Pedagógicas:", "Mapea 5 dimensiones formativas de cada estudiante, identificando fortalezas didácticas y brechas de formación.", font_size=9, space_before=2)
 add_bullet_item(tf_an2, "2. Fichas de Citas Textuales Pre-Categorizadas:", "Tarjetas bioluminiscentes con las citas literales más enriquecedoras extraídas durante la entrevista socrática.", font_size=9, space_before=7)
 add_bullet_item(tf_an2, "3. Polaridad y Turnos de Diálogo:", "Inspección paso a paso de cada turno conversacional entre el estudiante y Cereza.", font_size=9, space_before=7)
-add_bullet_item(tf_an2, "4. Protección de Privacidad:", "Acceso exclusivo restringido a investigadores autorizados mediante doble factor (OAuth + PIN 0412).", font_size=9, space_before=7)
+add_bullet_item(tf_an2, "4. Protección de Privacidad:", "Acceso exclusivo restringido a investigadores autorizados mediante doble factor (OAuth + PIN ####).", font_size=9, space_before=7)
 
 
 # =========================================================================
@@ -1044,7 +1044,7 @@ shields = [
     ]),
     ("ESCUDO 2: CONTROL RBAC", "Doble Factor de Acceso", C_EMERALD_LIGHT, "10B981", "emerald", [
         ("Factor 1 (Google OAuth):", "Restricción por lista blanca oficial de correos autorizados en Firestore."),
-        ("Factor 2 (PIN Criptográfico):", "PIN Maestro de Investigador (`0412`) almacenado en memoria volátil de sesión."),
+        ("Factor 2 (PIN Criptográfico):", "PIN Maestro de Investigador (`####`) almacenado en memoria volátil de sesión."),
         ("Expiración Automática:", "La sesión de administrador expira al cerrar la pestaña.")
     ]),
     ("ESCUDO 3: GOOGLE OAUTH 2.0", "Exportación a Google Drive", C_AMBER_LIGHT, "F59E0B", "amber", [

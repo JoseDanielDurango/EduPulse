@@ -204,7 +204,7 @@ Ubicado en el portal protegido de administración e investigación (`AdminAuthMo
      * **Herramientas de Exportación:** Copiado íntegro al portapapeles para procesadores de texto, descarga en formato `.doc` / `.txt` y regeneración en caliente con IA mediante el endpoint `/api/global-analysis`.
 
 4. **Restricción de Seguridad RBAC:**
-   * Tanto el visualizador estadístico de respuestas como los gráficos generales, individuales y la síntesis global están estrictamente restringidos al perfil de Investigador Autenticado (mediante PIN Maestro 0412 y Google OAuth en lista blanca), garantizando que ningún informante externo acceda a los datos agregados de sus pares.
+   * Tanto el visualizador estadístico de respuestas como los gráficos generales, individuales y la síntesis global están estrictamente restringidos al perfil de Investigador Autenticado (mediante PIN Maestro `####` y Google OAuth en lista blanca), garantizando que ningún informante externo acceda a los datos agregados de sus pares.
 
 5. **Exportación Estructurada y Respaldo:**
    * Generación instantánea de archivos tabulares (.CSV / .TSV) para SPSS, R, Jamovi y Excel.
@@ -349,7 +349,7 @@ The research adopts a concurrent mixed triangulation design (**QUAN + QUAL**). W
   * Consolidated academic report triangulating qualitative interviews with Likert metrics.
   * Organized in 5 chapters: Methodological overview, executive summary & crutch effect analysis, 4-dimension qualitative meta-analysis, concurrent triangulation matrix, and 5 policy-pedagogical recommendations for UniCórdoba.
   * One-click export to Word/Docs and hot regeneration via `/api/global-analysis`.
-* **RBAC Protection:** Restricted to authorized researchers via Google OAuth whitelist and Master PIN `0412`.
+* **RBAC Protection:** Restricted to authorized researchers via Google OAuth whitelist and Master PIN `####`.
 
 ---
 

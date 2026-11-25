@@ -690,7 +690,7 @@ export default function App() {
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-cyan-200/70 max-w-sm mx-auto leading-relaxed">
                   {language === 'en'
-                    ? 'Access to raw qualitative transcripts is protected for authorized researchers. Enter your PIN (0412) to unlock.'
+                    ? 'Access to raw qualitative transcripts is protected for authorized researchers. Enter your PIN (####) to unlock.'
                     : 'El acceso a las transcripciones cualitativas está protegido para los investigadores del proyecto de grado. Ingresa tu clave para desbloquear.'}
                 </p>
               </div>
@@ -699,7 +699,7 @@ export default function App() {
                 className="btn-aero-green inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-xs text-white shadow-md transition cursor-pointer active:scale-95"
               >
                 <KeyRound className="h-4 w-4" />
-                <span>{language === 'en' ? 'Unlock with PIN (0412)' : 'Desbloquear con PIN (0412)'}</span>
+                <span>{language === 'en' ? 'Unlock with PIN (####)' : 'Desbloquear con PIN (####)'}</span>
               </button>
             </div>
           )

@@ -156,7 +156,7 @@ Diapositiva 14: Demostración en Vivo en Producción y Cierre Técnico      [01:
 * **Voz sugerida (Investigador 1 / José Daniel):**
   > *"En materia de seguridad y gobernanza de la información, EduPulse implementa controles estrictos en todos los niveles:  
   > * **Habeas Data y Anonimato:** Los estudiantes participan bajo anonimización completa; sus datos se asocian únicamente a códigos seudonimizados alfanuméricos y nunca a identificadores personales.  
-  > * **Control de Acceso de Doble Factor (RBAC):** La vista de investigación está restringida mediante validación de correos en lista blanca con Google OAuth y un **PIN Maestro de Validación Criptográfica (`0412`)** en memoria de sesión volátil.  
+  > * **Control de Acceso de Doble Factor (RBAC):** La vista de investigación está restringida mediante validación de correos en lista blanca con Google OAuth y un **PIN Maestro de Validación Criptográfica (`####`)** en memoria de sesión volátil.  
   > * **Gobernanza Google Cloud OAuth 2.0:** Registramos los orígenes autorizados de JavaScript (`edupulse-575b.onrender.com` y `localhost`) bajo el cliente OAuth en Google Cloud Console, permitiendo que el endpoint `/api/export-sheets` exporte automáticamente libros de cálculo en tres pestañas organizadas (*Resumen Ejecutivo*, *Respuestas Estructuradas* y *Transcripción Turno a Turno*) directamente al Google Drive del investigador."*
 
 ---
@@ -321,7 +321,7 @@ Slide 14: Live Production Demonstration & Technical Closure     [01:15 min]
 * **Suggested Speaker (Lead Researcher 1 / José Daniel):**
   > *"In security and data governance:  
   > * **Habeas Data & Anonymity:** Students participate under alphanumeric codes (`E01`...`E40`); private contact channels are masked in the public interface.  
-  > * **Two-Factor Access Control (RBAC):** Research views are guarded by Google OAuth whitelist verification and an ephemeral **Master PIN (`0412`)**.  
+  > * **Two-Factor Access Control (RBAC):** Research views are guarded by Google OAuth whitelist verification and an ephemeral **Master PIN (`####`)**.  
   > * **Google Cloud OAuth 2.0 Governance:** Normalized authorized origins (`edupulse-575b.onrender.com` and `localhost`) allow `/api/export-sheets` to export 3-tab spreadsheets directly to Google Drive."*
 
 ### Slide 14 · Live Production Demonstration & Technical Closure

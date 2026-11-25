@@ -31,7 +31,7 @@ El sistema **EduPulse** se define como una plataforma web inteligente y co-pilot
 * Despliega una **Suite de Analítica Visual tipo Google Forms** con gráficos generales (barras, donas demográficas) y análisis hermenéutico individualizado por informante (radar de competencias y sentimiento dialógico).
 * Implementa **Motor de Voz Dual** combinando captura nativa con `MediaRecorder`, visualizador dinámico de audio en vivo (`LiveMicVisualizer`) y transcripción multimodal en backend con Google Gemini (`/api/transcribe-audio`).
 * Integra **Google OAuth 2.0 y Google Sheets API v4** (`/api/export-sheets`), generando libros de cálculo automatizados con 3 pestañas estructuradas en el Google Drive de los investigadores con 1 clic.
-* Implementa control de acceso basado en roles (RBAC) con autenticación para investigadores (Google OAuth contra lista blanca y PIN Maestro `0412`), restringiendo estrictamente la visualización de analíticas y transcripciones crudas.
+* Implementa control de acceso basado en roles (RBAC) con autenticación para investigadores (Google OAuth contra lista blanca y PIN Maestro `####`), restringiendo estrictamente la visualización de analíticas y transcripciones crudas.
 * Ofrece navegación móvil adaptativa (`MobileBottomNav.tsx`, botones universales de retorno `ArrowLeft` y control de gestos `popstate` para prevenir cierres involuntarios).
 
 ### 1.2 Límites: Lo que NO ES
@@ -77,7 +77,7 @@ Triangulación Mixta y CAQDAS (SummaryView · ResponsesViewer · Sheets)
 | **05. Prompt Maestro ROCAS** | Instrucción maestra de inferencia en tiempo de ejecución. | System Instruction dual (ES/EN) en `server.ts`, esquema JSON estricto y temperatura 0.4. |
 | **06. Arquitectura del Sistema** | Especificación técnica, pipeline en tres capas y stack completo. | Pipeline de datos, endpoints Express, TypeScript, Vite, Firebase y despliegue en la nube. |
 | **07. Instrumentos y Triangulación** | Diagnóstico cuantitativo y convergencia multimétodo. | Cuestionarios Likert (Percepciones y Autoeficacia), persistencia en `instrument_responses` y visor estadístico. |
-| **08. Seguridad y Control de Acceso**| Gobernanza de datos, RBAC y confidencialidad ética. | Doble factor de autenticación (Google OAuth + PIN `0412`), reglas `firestore.rules`, anonimización PII y Ley 1581. |
+| **08. Seguridad y Control de Acceso**| Gobernanza de datos, RBAC y confidencialidad ética. | Doble factor de autenticación (Google OAuth + PIN `####`), reglas `firestore.rules`, anonimización PII y Ley 1581. |
 
 ---
 
@@ -120,7 +120,7 @@ Triangulación Mixta y CAQDAS (SummaryView · ResponsesViewer · Sheets)
 * **RF-02 (Saturación Cualitativa Autónoma):** El agente evalúa dinámicamente si los testimonios recolectados saturan las 4 dimensiones de indagación para concluir la sesión de forma armónica tras 6 o más turnos sustantivos.
 * **RF-03 (Cuestionarios Diagnósticos con Autosave y Validación Guiada):** El sistema permite diligenciar encuestas Likert y matrices de frecuencia con guardado automático en `localStorage`, banner de validación con enlaces de salto interactivos y resaltado fila por fila.
 * **RF-04 (Visor Estadístico Descriptivo y Gráficos Tipo Google Forms):** El panel de investigación calcula reactivamente medidas de tendencia central, frecuencias porcentuales y genera gráficos de barras y donas demográficas.
-* **RF-05 (Autenticación Dual para Investigadores):** Acceso al panel administrativo y a las analíticas gráficas condicionado a Google OAuth autorizado en lista blanca y PIN Maestro `0412`.
+* **RF-05 (Autenticación Dual para Investigadores):** Acceso al panel administrativo y a las analíticas gráficas condicionado a Google OAuth autorizado en lista blanca y PIN Maestro `####`.
 * **RF-06 (Salida Estructurada JSON):** Todas las respuestas del backend son emitidas bajo esquemas JSON estrictos procesables por React.
 * **RF-07 (Navegación Móvil Segura):** Implementación de barra de navegación móvil inferior, botones de retorno universales (`ArrowLeft`) y captura de eventos `popstate` para evitar pérdidas accidentales de sesión.
 * **RF-08 (Motor de Voz Dual con Transcripción Multimodal):** Grabación nativa de audio mediante `MediaRecorder`, retroalimentación visual en vivo con `LiveMicVisualizer` y procesamiento neuronal en backend (`/api/transcribe-audio`).
@@ -202,7 +202,7 @@ DOCUMENT 06 | SYSTEM ARCHITECTURE AND FUNCTIONAL SPECIFICATION
 * Features a **Google Forms-style Visual Analytics Suite** with general demographic charts and individualized qualitative analytics (competency radar and dialogue sentiment).
 * Implements a **Dual Voice Engine** combining native `MediaRecorder` capture, real-time audio visualizer (`LiveMicVisualizer`), and backend multimodal transcription (`/api/transcribe-audio`).
 * Integrates **Google OAuth 2.0 and Google Sheets API v4** (`/api/export-sheets`), generating 3-tab structured spreadsheets directly in the researcher's Google Drive.
-* Implements Role-Based Access Control (RBAC) with researcher 2FA (Google OAuth whitelist + Master PIN `0412`).
+* Implements Role-Based Access Control (RBAC) with researcher 2FA (Google OAuth whitelist + Master PIN `####`).
 * Offers responsive mobile navigation (`MobileBottomNav.tsx`, universal `ArrowLeft` return buttons, and `popstate` gesture guards).
 
 ### 1.2 Boundaries: What It IS NOT
@@ -245,7 +245,7 @@ Mixed Triangulation & CAQDAS (SummaryView · ResponsesViewer · Sheets)
 * **05. Master Prompt ROCAS:** Dual-language system instructions (ES/EN) in `server.ts`, strict JSON schema, temperature 0.4.
 * **06. System Architecture:** Three-layer pipeline, Express endpoints, full TypeScript/Vite stack, and cloud deployment.
 * **07. Instruments & Triangulation:** Likert questionnaires, statistical descriptive viewer, and mixed triangulation matrix.
-* **08. Security & Access Control:** RBAC, 2FA (OAuth + PIN `0412`), Firestore rules, and Law 1581 Habeas Data compliance.
+* **08. Security & Access Control:** RBAC, 2FA (OAuth + PIN `####`), Firestore rules, and Law 1581 Habeas Data compliance.
 
 ---
 

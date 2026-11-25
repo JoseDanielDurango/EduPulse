@@ -432,7 +432,7 @@ def create_technical_document():
         "PROTOCOLO DE ACCESO AL PORTAL DE INVESTIGACIÓN Y ANALÍTICA:\n"
         "• Modalidad de Acceso: En la barra superior (Navbar), hacer clic en el candado o en 'Acceso Investigadores'.\n"
         "• Factor 1 (Google OAuth en Lista Blanca): Cuentas autorizadas: josedudaca@gmail.com, jdurangocaballero59@correo.unicordoba.edu.co, jramirezoviedo06@correo.unicordoba.edu.co, jgiraldo@correo.unicordoba.edu.co.\n"
-        "• Factor 2 (PIN Maestro de Investigador): Digitar '0412' para desbloquear el panel completo de sesiones, transcripciones íntegras, el radar de competencias y la pestaña de Síntesis Escrita Global.",
+        "• Factor 2 (PIN Maestro de Investigador): Digitar '####' (Credencial Protegida) para desbloquear el panel completo de sesiones, transcripciones íntegras, el radar de competencias y la pestaña de Síntesis Escrita Global.",
         "Credenciales y Gobernanza de Acceso para el Jurado Calificador",
         HEX_BG_MINT,
         HEX_EMERALD
@@ -658,7 +658,7 @@ def create_technical_document():
     add_body(
         "La protección de la información en EduPulse está regida por directrices de seguridad institucionales y legales:\n"
         "• Ley 1581 de 2012 de Habeas Data: Ningún dato personal identificable (PII) es capturado. Los informantes son seudonimizados con códigos alfanuméricos únicos (E01 a E40).\n"
-        "• Control de Acceso de Doble Factor (RBAC): Los paneles de investigación y resultados están blindados mediante autenticación federada con Google (restringida a lista blanca de correos institucionales) y el PIN Maestro Criptográfico de Investigador (0412), almacenado en memoria volátil de sesión.\n"
+        "• Control de Acceso de Doble Factor (RBAC): Los paneles de investigación y resultados están blindados mediante autenticación federada con Google (restringida a lista blanca de correos institucionales) y el PIN Maestro Criptográfico de Investigador (####), almacenado en memoria volátil de sesión.\n"
         "• Gobernanza OAuth 2.0 y Sheets API: Configuración de orígenes autorizados de JavaScript en Google Cloud Console para edupulse-575b.onrender.com y entornos de desarrollo, resolviendo errores de origen (origin_mismatch) y permitiendo la exportación en 1 clic de libros estructurados en tres pestañas a Google Drive."
     )
 

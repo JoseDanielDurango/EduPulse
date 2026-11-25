@@ -28,7 +28,7 @@ In qualitative and quantitative research with pre-service educators, information
 
 ## 2. Role-Based Access Control (RBAC) Model
 * **Informant (Pre-service Teacher):** Universal public access to landing page, informed consent acceptance, interactive interview with Cereza, and questionnaire submission. Strictly prohibited from accessing peer records or analytics.
-* **Authorized Researcher:** Dual-factor authentication (Google OAuth against whitelist + Master PIN `0412`), granting full oversight of sessions, verbatim quotes, psychometric dashboards, global synthesis reports, and CAQDAS/Sheets exports.
+* **Authorized Researcher:** Dual-factor authentication (Google OAuth against whitelist + Master PIN `####`), granting full oversight of sessions, verbatim quotes, psychometric dashboards, global synthesis reports, and CAQDAS/Sheets exports.
 
 ---
 
@@ -38,7 +38,7 @@ In qualitative and quantitative research with pre-service educators, information
    * `jdurangocaballero59@correo.unicordoba.edu.co`
    * `jramirezoviedo06@correo.unicordoba.edu.co`
    * `jgiraldo@correo.unicordoba.edu.co`
-2. **Factor 2 (Cryptographic Master PIN `0412`):**
+2. **Factor 2 (Cryptographic Master PIN `####`):**
    * Ephemeral session authorization stored strictly in volatile client memory, expiring upon tab or browser closure.
 3. **Google Cloud OAuth 2.0 Governance (*origin_mismatch* Prevention):**
    * Authorized JavaScript Origins: `https://edupulse-575b.onrender.com`, `http://localhost:3000`, `http://localhost:5173`.

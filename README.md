@@ -72,9 +72,10 @@ Bajo el **paradigma hermenéutico–interpretativo** y un diseño concurrente de
 * **Navegación Protegida con Botones de Retorno (`ArrowLeft`):** Botones explícitos de regreso en pantalla para evitar el cierre accidental de páginas.
 * **Intercepción de Gestos del Navegador (`popstate` + `beforeunload`):** Protección contra el botón atrás nativo del dispositivo y gestos táctiles de deslizamiento durante las sesiones de entrevista activa.
 * **Validación Guiada Fila por Fila en Cuestionarios (`InstrumentForm.tsx`):** Banner interactivo con píldoras de salto directo, animación luminiscente en campos pendientes, distintivos *"Falta responder"* en cada fila de tablas matriciales y aceptación de consentimiento ético en un clic.
-* **Suite de Analítica Visual Tipo Google Forms (General e Individual):**
+* **Suite de Analítica Visual Tipo Google Forms y Síntesis Escrita Global:**
   * Dashboard cuantitativo general con diagramas circulares (dona demográfica por semestre y sede) y gráficos de barras horizontales con porcentajes.
   * Visor hermenéutico individualizado (`InterviewsAnalyticsView.tsx`): radar de competencias docentes, desglose de polaridad/sentimiento dialógico y citas directas organizadas por informante (`E01`...`E40`).
+  * **Pestaña de Síntesis Escrita Global (`GlobalSynthesisReport.tsx`):** Informe macro-cualitativo consolidado que triangula concurrentemente todas las entrevistas de Cereza con los diagnósticos Likert, estructurado en capítulos (ficha metodológica, síntesis ejecutiva, análisis del efecto muleta, disparidades territoriales y 5 recomendaciones político-pedagógicas), con exportación a Word/Docs y regeneración en caliente vía `/api/global-analysis`.
 
 ---
 

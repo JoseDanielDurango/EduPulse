@@ -20,22 +20,28 @@ import {
   Lightbulb,
 } from 'lucide-react';
 import { InterviewSession } from '../../types';
+import { InstrumentResponse } from '../../types/instruments';
 import { Language } from '../../lib/i18n';
 import { FormsDonutChart, FormsBarChart, ChartDataPoint } from './GoogleFormsCharts';
 import { openEmailForSession, copySessionToClipboard } from '../../lib/sheetsExport';
+import { GlobalSynthesisReport } from './GlobalSynthesisReport';
 
 interface InterviewsAnalyticsViewProps {
   sessions: InterviewSession[];
+  instrumentResponses?: InstrumentResponse[];
   language: Language;
   onViewSessionSummary?: (session: InterviewSession) => void;
+  initialTab?: 'general' | 'individual' | 'synthesis';
 }
 
 export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = ({
   sessions,
+  instrumentResponses = [],
   language,
   onViewSessionSummary,
+  initialTab = 'general',
 }) => {
-  const [analyticsTab, setAnalyticsTab] = useState<'general' | 'individual'>('general');
+  const [analyticsTab, setAnalyticsTab] = useState<'general' | 'individual' | 'synthesis'>(initialTab);
   const [individualIndex, setIndividualIndex] = useState(0);
   const [copiedQuote, setCopiedQuote] = useState<string | null>(null);
   const [copiedSession, setCopiedSession] = useState(false);
@@ -497,6 +503,21 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
           >
             <User className="h-3.5 w-3.5" />
             <span>{language === 'en' ? 'Individual Graphics (By Informant)' : 'Gráficos Individuales (Por Informante)'}</span>
+          </button>
+
+          <button
+            onClick={() => setAnalyticsTab('synthesis')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+              analyticsTab === 'synthesis'
+                ? 'btn-aero-cyan text-white shadow-xs'
+                : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300'
+            }`}
+          >
+            <FileText className="h-3.5 w-3.5" />
+            <span>{language === 'en' ? 'Written Global Synthesis' : 'Síntesis Escrita Global'}</span>
+            <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/80 text-white font-bold">
+              QUAN+QUAL
+            </span>
           </button>
         </div>
 
@@ -1074,6 +1095,15 @@ export const InterviewsAnalyticsView: React.FC<InterviewsAnalyticsViewProps> = (
             </div>
           )}
         </div>
+      )}
+
+      {/* TAB 3: WRITTEN GLOBAL SYNTHESIS REPORT (MACRO QUAN + QUAL) */}
+      {analyticsTab === 'synthesis' && (
+        <GlobalSynthesisReport
+          sessions={sessions}
+          instrumentResponses={instrumentResponses}
+          language={language}
+        />
       )}
     </div>
   );

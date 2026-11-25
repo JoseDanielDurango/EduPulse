@@ -33,8 +33,13 @@ documentation/
 ├── 04-modelo-del-mundo.md              # Modelo del Mundo (DESIGN.md): Glassmorphism, UX móvil, voz dual y validación interactiva (v2.3)
 ├── 05-prompt-maestro-rocas.md          # Especificación del Prompt Maestro: Framework ROCAS, inferencia dual ES/EN y cascada Gemini (v2.3)
 ├── 06-arquitectura-del-sistema.md      # Arquitectura del Sistema: Pipeline de 3 capas, endpoints Express, OAuth2.0 y stack técnico (v2.3)
-├── 07-instrumentos-y-triangulacion.md  # Instrumentos y Triangulación: Suite Google Forms general/individual y convergencia mixta (v2.3)
-└── 08-seguridad-y-control-de-acceso.md # Seguridad y Control de Acceso: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas Firestore (v2.3)
+├── 07-instrumentos-y-triangulacion.md  # Instrumentos y Triangulación: Suite Google Forms, pestaña de síntesis global y triangulación mixta (v2.3)
+├── 08-seguridad-y-control-de-acceso.md # Seguridad y Control de Acceso: RBAC, Google OAuth 2.0 whitelist, PIN 0412 y reglas Firestore (v2.3)
+└── Resources/                         # Recursos Ejecutables y Entregables Finales de Cierre de Semestre:
+    ├── Documento_Tecnico_EduPulse_v2.3.docx # Documento Técnico Maestro integral del semestre (Ingeniería, UI/UX, Agente)
+    ├── GUION-DE-SUSTENTACION.md        # Guion detallado de sustentación oral (14 diapositivas técnicas)
+    ├── EduPulse_Desarrollo_y_Diseno_Final.pptx # Presentación oficial en formato panorámico 16:9
+    └── EduPulse_Sustentacion_Final.pptx # Copia de respaldo para la defensa oral ante jurado
 ```
 
 ---

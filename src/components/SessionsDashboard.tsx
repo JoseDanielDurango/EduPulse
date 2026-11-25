@@ -16,8 +16,10 @@ import {
   Check,
   BarChart3,
   LayoutGrid,
+  FileText,
 } from 'lucide-react';
 import { InterviewSession } from '../types';
+import { InstrumentResponse } from '../types/instruments';
 import { removeSession } from '../lib/firebase';
 import { Language, translations } from '../lib/i18n';
 import {
@@ -30,6 +32,7 @@ import { InterviewsAnalyticsView } from './charts/InterviewsAnalyticsView';
 
 interface SessionsDashboardProps {
   sessions: InterviewSession[];
+  instrumentResponses?: InstrumentResponse[];
   onOpenSession: (session: InterviewSession) => void;
   onViewSummary: (session: InterviewSession) => void;
   onNewSession: () => void;
@@ -39,6 +42,7 @@ interface SessionsDashboardProps {
 
 export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
   sessions,
+  instrumentResponses = [],
   onOpenSession,
   onViewSummary,
   onNewSession,
@@ -49,7 +53,7 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'cards' | 'charts'>('cards');
+  const [viewMode, setViewMode] = useState<'cards' | 'charts' | 'synthesis'>('cards');
 
   const filtered = sessions.filter((s) => {
     const matchesSearch =
@@ -221,6 +225,21 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
               {sessions.length}
             </span>
           </button>
+
+          <button
+            onClick={() => setViewMode('synthesis')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+              viewMode === 'synthesis'
+                ? 'btn-aero-cyan text-white shadow-xs'
+                : 'text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300'
+            }`}
+          >
+            <FileText className="h-3.5 w-3.5" />
+            <span>{language === 'en' ? 'Global Synthesis' : 'Síntesis Escrita Global'}</span>
+            <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/80 text-white font-bold">
+              QUAN+QUAL
+            </span>
+          </button>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
@@ -288,12 +307,14 @@ export const SessionsDashboard: React.FC<SessionsDashboardProps> = ({
         </div>
       )}
 
-      {/* Content: Charts Mode vs Cards Mode */}
-      {viewMode === 'charts' ? (
+      {/* Content: Charts/Synthesis Mode vs Cards Mode */}
+      {viewMode === 'charts' || viewMode === 'synthesis' ? (
         <InterviewsAnalyticsView
           sessions={filtered}
+          instrumentResponses={instrumentResponses}
           language={language}
           onViewSessionSummary={onViewSummary}
+          initialTab={viewMode === 'synthesis' ? 'synthesis' : 'general'}
         />
       ) : filtered.length === 0 ? (
         <div className="aero-card rounded-3xl p-12 text-center shadow-sm border border-white/90 dark:border-cyan-500/30">

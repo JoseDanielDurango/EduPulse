@@ -622,6 +622,76 @@ Genera el análisis cualitativo estructurado en formato JSON válido.
   }
 });
 
+// Endpoint: Consolidated Macro Qualitative & Mixed Triangulation Analysis
+app.post('/api/global-analysis', async (req: Request, res: Response) => {
+  const { sessions = [], instrumentResponses = [], language = 'es' } = req.body || {};
+  const isEn = language === 'en';
+
+  try {
+    if (!sessions || sessions.length === 0) {
+      return res.status(400).json({ error: 'Se requieren sesiones para generar el análisis global.' });
+    }
+
+    // Prepare consolidated corpus
+    let corpus = `CORPUS DE INVESTIGACIÓN (Total entrevistas: ${sessions.length}, Total diagnósticos: ${instrumentResponses.length}):\n\n`;
+    sessions.forEach((s: any, idx: number) => {
+      corpus += `--- INFORMANTE [${s.studentCode || `E0${idx + 1}`}] (${s.semester || 'N/A'} Semestre, Sede: ${s.centerLocation || 'Montería'}) ---\n`;
+      if (s.summary?.overview) corpus += `Síntesis individual: ${s.summary.overview}\n`;
+      if (s.summary?.keyThemes) corpus += `Temas: ${s.summary.keyThemes.join(', ')}\n`;
+      const quotes: string[] = [];
+      (s.structuredResponses || []).forEach((sr: any) => {
+        (sr.directQuotes || []).forEach((q: string) => quotes.push(q));
+      });
+      if (quotes.length > 0) {
+        corpus += `Citas textuales: "${quotes.slice(0, 3).join('" | "')}"\n`;
+      }
+      corpus += `\n`;
+    });
+
+    const systemInstruction = isEn
+      ? `You are the Lead Methodologist and Senior Qualitative Analyst for the thesis "La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba".
+Analyze this multi-informant research corpus. Generate a high-level academic executive synthesis triangulating the interviews with Cereza and quantitative diagnostics.
+Return strictly valid JSON:
+{
+  "executiveSummary": "A 3-paragraph rigorous academic qualitative narrative in English.",
+  "dominantThemes": ["theme 1", "theme 2", "theme 3", "theme 4"],
+  "crutchEffectSynthesis": "Analysis on Bastani et al. crutch effect and cognitive autonomy.",
+  "territorialSynthesis": "Synthesis of differences between central campus Montería and regional centers.",
+  "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3", "recommendation 4"]
+}`
+      : `Eres el Metodólogo Principal y Analista Cualitativo Senior del trabajo de grado "La formación docente en la era de la inteligencia artificial: desafíos y perspectivas en la Universidad de Córdoba".
+Analiza este corpus multi-informante de la Licenciatura en Informática. Genera una síntesis ejecutiva transversal de alto nivel académico triangulando los diálogos cualitativos de Cereza con los diagnósticos cuantitativos.
+Responde estrictamente en formato JSON válido:
+{
+  "executiveSummary": "Narrativa cualitativa académica de 3 párrafos en español, rigurosa, profunda y contextualizada en Unicórdoba.",
+  "dominantThemes": ["tema 1", "tema 2", "tema 3", "tema 4"],
+  "crutchEffectSynthesis": "Análisis sobre el efecto muleta de Bastani et al. y la autonomía cognitiva.",
+  "territorialSynthesis": "Síntesis de las disparidades entre Sede Central Montería y sedes regionales.",
+  "recommendations": ["recomendación 1", "recomendación 2", "recomendación 3", "recomendación 4"]
+}`;
+
+    const response = await generateWithRetry('gemini-3.5-flash-lite', corpus, {
+      systemInstruction,
+      responseMimeType: 'application/json',
+      temperature: 0.35,
+    });
+
+    const text = response.text || '{}';
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      const cleaned = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      parsed = JSON.parse(cleaned);
+    }
+
+    return res.json(parsed);
+  } catch (error: any) {
+    console.error('Error in /api/global-analysis:', error);
+    return res.status(500).json({ error: error.message || 'Error al generar síntesis global.' });
+  }
+});
+
 // Endpoint: High-Precision Multimodal Voice Audio Transcription via Gemini
 app.post('/api/transcribe-audio', async (req: Request, res: Response) => {
   try {

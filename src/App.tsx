@@ -669,6 +669,7 @@ export default function App() {
           isAdmin ? (
             <SessionsDashboard
               sessions={sessions}
+              instrumentResponses={instrumentResponses}
               onOpenSession={handleOpenExistingSession}
               onViewSummary={handleViewSummary}
               onNewSession={() => {

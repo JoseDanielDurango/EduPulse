@@ -193,12 +193,22 @@ Ubicado en el portal protegido de administración e investigación (`AdminAuthMo
      * **Desglose Emocional y de Sentimiento:** Proporción de reflexiones entusiastas, críticas o de cautela metodológica frente a la IA.
      * **Citas Textuales Categorizadas:** Fichas visuales con los testimonios más densos del estudiante, listas para citación directa en el informe de tesis.
 
-3. **Restricción de Seguridad RBAC:**
-   * Tanto el visualizador estadístico de respuestas como los gráficos generales e individuales están estrictamente restringidos al perfil de Investigador Autenticado (mediante PIN Maestro y Google OAuth en lista blanca), garantizando que ningún informante externo acceda a los datos agregados de sus pares.
+3. **Pestaña de Síntesis Escrita Global (Macro-Análisis Mixto):**
+   * Incorporada por recomendación explícita del docente evaluador del curso en la versión final v2.3 (`GlobalSynthesisReport.tsx`).
+   * Consolida la totalidad del corpus cualitativo y cuantitativo en un único informe académico estructurado:
+     * **Capítulo I:** Ficha metodológica y metadatos de la muestra consolidada ($N$ informantes, turnos, sedes y estado de saturación teórica).
+     * **Capítulo II:** Síntesis ejecutiva transversal de hallazgos y análisis del "efecto muleta" (Bastani et al., 2024).
+     * **Capítulo III:** Meta-análisis por las 4 dimensiones cualitativas del proyecto con citas representativas.
+     * **Capítulo IV:** Matriz de triangulación concurrente sistemática que contrasta indicadores Likert con reflexiones dialógicas de Cereza.
+     * **Capítulo V:** Repositorio curado de citas textuales verbatim por informante y 5 recomendaciones político-pedagógicas para la Universidad de Córdoba.
+     * **Herramientas de Exportación:** Copiado íntegro al portapapeles para procesadores de texto, descarga en formato `.doc` / `.txt` y regeneración en caliente con IA mediante el endpoint `/api/global-analysis`.
 
-4. **Exportación Estructurada y Respaldo:**
-   * Generación instantánea de archivos tabulares (.CSV) para SPSS, R y Jamovi.
-   * Sincronización directa hacia Google Sheets con formato de 3 pestañas estructuradas.
+4. **Restricción de Seguridad RBAC:**
+   * Tanto el visualizador estadístico de respuestas como los gráficos generales, individuales y la síntesis global están estrictamente restringidos al perfil de Investigador Autenticado (mediante PIN Maestro 0412 y Google OAuth en lista blanca), garantizando que ningún informante externo acceda a los datos agregados de sus pares.
+
+5. **Exportación Estructurada y Respaldo:**
+   * Generación instantánea de archivos tabulares (.CSV / .TSV) para SPSS, R, Jamovi y Excel.
+   * Sincronización directa hacia Google Sheets con formato de 3 pestañas estructuradas en Google Drive.
 
 ---
 

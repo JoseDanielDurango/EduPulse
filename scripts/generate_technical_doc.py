@@ -114,6 +114,31 @@ def create_technical_document():
         run.font.color.rgb = COLOR_TEXT
         return p
 
+    # Helper: APA 7th Edition Reference Paragraph (with hanging indent)
+    def add_apa7_reference(author_year, title_italic, source_info):
+        p = doc.add_paragraph()
+        p.paragraph_format.space_after = Pt(6)
+        p.paragraph_format.line_spacing = 1.15
+        p.paragraph_format.left_indent = Inches(0.5)
+        p.paragraph_format.first_line_indent = Inches(-0.5)
+        
+        r1 = p.add_run(author_year + " ")
+        r1.font.name = "Segoe UI"
+        r1.font.size = Pt(9.5)
+        r1.font.color.rgb = COLOR_TEXT
+        
+        r2 = p.add_run(title_italic + " ")
+        r2.font.name = "Segoe UI"
+        r2.font.size = Pt(9.5)
+        r2.font.italic = True
+        r2.font.color.rgb = COLOR_TEXT
+        
+        r3 = p.add_run(source_info)
+        r3.font.name = "Segoe UI"
+        r3.font.size = Pt(9.5)
+        r3.font.color.rgb = COLOR_TEXT
+        return p
+
     # Helper: Callout Box
     def add_callout(text, title=None, hex_bg=HEX_BG_ACCENT, hex_border=HEX_PRIMARY):
         tbl = doc.add_table(rows=1, cols=1)
@@ -475,6 +500,75 @@ def create_technical_document():
     add_body("2. Potencia de la Triangulación Concurrente: Cruzar en tiempo real las escalas cuantitativas con el análisis temático cualitativo permitió identificar discrepancias críticas entre la autoeficacia declarada y la práctica real de aula.")
     add_body("3. Directriz Curricular Prioritaria: Se recomienda al Comité Curricular incorporar en los semestres de profundización (6° a 8°) una asignatura obligatoria de 'Didáctica de la Inteligencia Artificial y Mediación Tecnológica', dotando a los egresados de competencias para diseñar evaluaciones de procesos y promover la soberanía cognitiva en las instituciones del departamento de Córdoba.")
     add_body("4. Transferencia de Tecnología: EduPulse queda entregado a la institución como un producto de software libre, documentado, con pruebas de estrés superadas y plenamente operativo en la nube para futuras investigaciones de la Facultad de Educación.")
+
+    # ==========================================
+    # 12. REFERENCIAS BIBLIOGRÁFICAS (APA 7.ª EDICIÓN)
+    # ==========================================
+    add_h1("12. Referencias Bibliográficas (Normas APA 7.ª Edición)")
+    add_body(
+        "Todas las fuentes bibliográficas, marcos conceptuales, normativas legales y citas textuales de este documento técnico han sido normalizadas bajo las directrices oficiales de la 7.ª edición de las Normas APA (American Psychological Association, 2020), aplicando sangría francesa (hanging indent) y enlaces DOI activos:"
+    )
+
+    add_apa7_reference(
+        "Bandura, A. (1997).",
+        "Self-efficacy: The exercise of control.",
+        "W. H. Freeman and Company."
+    )
+    add_apa7_reference(
+        "Bastani, H., Bastani, O., Sungu, A., Ge, H., Kabakcı, H., & Mariman, R. (2024).",
+        "Generative AI can harm learning: Evidence from high school mathematics.",
+        "Social Science Research Network (SSRN). https://doi.org/10.2139/ssrn.4895486"
+    )
+    add_apa7_reference(
+        "Congreso de la República de Colombia. (2012, 18 de octubre).",
+        "Ley Estatutaria 1581 de 2012, por la cual se dictan disposiciones generales para la protección de datos personales.",
+        "Diario Oficial No. 48.587."
+    )
+    add_apa7_reference(
+        "Congreso de la República de Colombia. (2026, 24 de agosto).",
+        "Ley 2626 de 2026, por medio de la cual se expide la Ley de Educación Digital en Colombia y se promueven ambientes híbridos de aprendizaje.",
+        "Diario Oficial."
+    )
+    add_apa7_reference(
+        "Creswell, J. W., & Creswell, J. D. (2018).",
+        "Research design: Qualitative, quantitative, and mixed methods approaches",
+        "(5.ª ed.). SAGE Publications."
+    )
+    add_apa7_reference(
+        "Davis, F. D. (1989).",
+        "Perceived usefulness, perceived ease of use, and user acceptance of information technology.",
+        "MIS Quarterly, 13(3), 319–340. https://doi.org/10.2307/249008"
+    )
+    add_apa7_reference(
+        "Denzin, N. K. (2012).",
+        "Triangulation 2.0.",
+        "Journal of Mixed Methods Research, 6(2), 80–88. https://doi.org/10.1177/1558689812437186"
+    )
+    add_apa7_reference(
+        "Google. (2024).",
+        "Google Gen AI SDK for Node.js and TypeScript",
+        "(Versión 2.4.0) [Software de computación]. https://www.npmjs.com/package/@google/genai"
+    )
+    add_apa7_reference(
+        "Hernández-Sampieri, R., Fernández-Collado, C., & Baptista-Lucio, P. (2014).",
+        "Metodología de la investigación",
+        "(6.ª ed.). McGraw-Hill Education."
+    )
+    add_apa7_reference(
+        "Mishra, P., & Koehler, M. J. (2006).",
+        "Technological pedagogical content knowledge: A framework for teacher knowledge.",
+        "Teachers College Record, 108(6), 1017–1054. https://doi.org/10.1111/j.1467-9620.2006.00684.x"
+    )
+    add_apa7_reference(
+        "Tschannen-Moran, M., & Woolfolk Hoy, A. (2001).",
+        "Teacher efficacy: Capturing an elusive construct.",
+        "Teaching and Teacher Education, 17(7), 783–805. https://doi.org/10.1016/S0742-051X(01)00036-1"
+    )
+    add_apa7_reference(
+        "UNESCO. (2023).",
+        "Guía para el uso de IA generativa en educación e investigación.",
+        "Organización de las Naciones Unidas para la Educación, la Ciencia y la Cultura. https://unesdoc.unesco.org/ark:/48223/pf0000386693_spa"
+    )
 
     doc.add_paragraph().paragraph_format.space_after = Pt(24)
 
